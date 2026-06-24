@@ -108,10 +108,10 @@
         <tr><td>~5 ต.ค. 2026</td><td>Go-live ระลอก 1 (บางส่วนนิ่ง)</td><td>กำลัง Paper Fit/Gap + Design</td></tr>
         <tr class="hl-red"><td><b>8 พ.ย. 2026</b></td><td>ยังไม่ครบ (Pilot ถึง 6 พ.ย.)</td><td><b>← M2 deadline (ต้องส่ง Fit/Gap+ออกแบบ)</b></td></tr>
         <tr class="hl-red"><td><b>11 พ.ย. 2026</b></td><td><b>★ Go-live ระลอก 2 = baseline ครบ</b></td><td>เริ่ม Build</td></tr>
-        <tr><td>พ.ย. 26 → เป็นต้นไป</td><td>ทีมมหิดลเริ่มว่าง + ระบบนิ่ง</td><td>Build + Integration (ใช้ทีมมหิดลได้)</td></tr>
+        <tr><td>พ.ย. 26 → เป็นต้นไป</td><td><b>มหิดลทำ Phase 2 ต่อ</b> (ทีมไม่ว่าง) · ระบบ Phase 1 นิ่ง</td><td>Build + Integration <b>โดยเรียนจากระบบ/เอกสาร</b> (ทีมมหิดลไม่ว่าง)</td></tr>
       </tbody>
     </table>
-    <div class="good"><b>🟢 จุดบวก:</b> มหิดล go-live กลาง พ.ย. = <b>ตรงกับที่เราเริ่ม Build พอดี</b> → ทีมมหิดล + baseline จะ “ว่างและนิ่ง” ตอนที่เราต้องใช้จริง (Integration/Migration) — ถ้าไม่เลื่อน นี่คือหน้าต่างทองที่ต้องจองทันที</div>
+    <div class="bad"><b>🔴 แก้ความเข้าใจ (สำคัญ):</b> หลัง baseline (11 พ.ย.) <b>ทีมมหิดลจะ “ไม่ว่าง”</b> เพราะต้องทำ <b>Phase 2 ของตัวเองต่อ</b> (โมดูลที่ทำไม่ทัน — ยังไม่วางแผน) → เรา <b>พึ่งทีมมหิดลไม่ได้</b> ตลอดไทม์ไลน์ · สิ่งเดียวที่ได้คือ <b>“ระบบ Phase 1 ที่นิ่งแล้ว”</b> ไว้ศึกษา/เชื่อมต่อ — <b>ความรู้ต้องมาจากระบบจริง + เอกสาร (artifact) ไม่ใช่จากคน</b></div>
   </section>
 
   <!-- Gantt ซ้อน -->
@@ -146,8 +146,8 @@
       <div class="grow sechead mah"><div class="glabel">🟠 HIS มหิดล (ฐาน)</div><div class="gtrack"></div></div>
       <div class="grow"><div class="glabel"><small>›</small> UAT + Pilot + Stabilization</div><div class="gtrack"><div class="bar b-mah" style="left:3.67%;width:45.66%">UAT / Pilot</div></div></div>
       <div class="grow"><div class="glabel"><small>›</small> SAP Interface (IAM)</div><div class="gtrack"><div class="bar b-mahl" style="left:6.67%;width:35%">SAP IAM (แม่แบบเชื่อม)</div></div></div>
-      <div class="grow"><div class="glabel"><small>›</small> ★ Baseline พร้อม (Go-live ระลอก2)</div><div class="gtrack"><div class="star" style="left:51%">★</div><div class="mk-lab" style="left:51%;top:14px;color:var(--mahidol)">11 พ.ย.</div></div></div>
-      <div class="grow"><div class="glabel"><small>›</small> ทีมมหิดลเริ่มว่าง</div><div class="gtrack"><div class="bar b-good" style="left:51%;width:49%">ว่าง + ระบบนิ่ง → ขอความรู้/เชื่อมต่อได้</div></div></div>
+      <div class="grow"><div class="glabel"><small>›</small> ★ ระบบ Phase 1 นิ่ง (11 พ.ย.)</div><div class="gtrack"><div class="bar b-good" style="left:51%;width:49%">ระบบนิ่ง → ใช้ศึกษา/เชื่อมต่อได้ (แต่คนไม่ว่าง)</div></div></div>
+      <div class="grow"><div class="glabel"><small>›</small> ⚠️ มหิดลทำ Phase 2 ต่อ (ทีมไม่ว่าง)</div><div class="gtrack"><div class="bar b-mah" style="left:51%;width:49%;opacity:.92">Phase 2 (ยังไม่วางแผน) → พึ่งทีมไม่ได้</div></div></div>
 
       <!-- วลัยลักษณ์ -->
       <div class="grow sechead wl"><div class="glabel">🟢 วลัยลักษณ์ (ปรับใหม่)</div><div class="gtrack"></div></div>
@@ -157,14 +157,16 @@
       <div class="grow"><div class="glabel"><small>›</small> ออกแบบ M2 (provisional)</div><div class="gtrack"><div class="bar b-teal" style="left:30%;width:20%">Design (รออัปเดต)</div></div></div>
       <div class="grow"><div class="glabel"><small>›</small> ⚠️ System Fit/Gap (vs ระบบจริง)</div><div class="gtrack"><div class="bar b-risk" style="left:51%;width:17.33%">หลัง baseline เท่านั้น</div></div></div>
       <div class="grow"><div class="glabel"><small>›</small> Build (Config+Develop)</div><div class="gtrack"><div class="bar b-blue" style="left:51.67%;width:31.66%">Build</div></div></div>
-      <div class="grow"><div class="glabel"><small>›</small> Integration + Migration</div><div class="gtrack"><div class="bar b-blue" style="left:55%;width:28.33%">ใช้ทีมมหิดล (ว่างแล้ว)</div></div></div>
+      <div class="grow"><div class="glabel"><small>›</small> Integration + Migration</div><div class="gtrack"><div class="bar b-blue" style="left:55%;width:28.33%">เรียนจากระบบ+เอกสาร (ทีมไม่ว่าง)</div></div></div>
+      <div class="grow"><div class="glabel"><small>›</small> 🧩 Track B · Build โมดูลใหม่</div><div class="gtrack"><div class="bar" style="left:27.3%;width:56%;background:#8e44ad;color:#fff">Dental Lab/Mobile ฯลฯ — ไม่ต้องรอ baseline</div></div></div>
       <div class="grow"><div class="glabel"><small>›</small> Test / Train</div><div class="gtrack"><div class="bar b-amber" style="left:76.67%;width:16.66%">Test/Train</div></div></div>
       <div class="grow"><div class="glabel"><small>›</small> Go-Live</div><div class="gtrack"><div class="bar b-risk" style="left:93.33%;width:6.67%">Go-Live</div></div></div>
     </div>
     <div class="glegend">
-      <span><i class="b-mah"></i>มหิดล (ฐาน)</span><span><i class="b-good"></i>ทำได้เลย/โอกาส</span>
+      <span><i class="b-mah"></i>มหิดล (ฐาน/Phase 2)</span><span><i class="b-good"></i>ทำได้เลย/ระบบนิ่ง</span>
       <span><i class="b-teal"></i>วลัยลักษณ์</span><span><i class="b-risk"></i>ความเสี่ยง/หลัง baseline</span>
-      <span><i class="b-blue"></i>Build</span><span><span class="ln"></span>เส้น M2</span><span style="color:var(--mahidol)">★ baseline มหิดล</span>
+      <span><i class="b-blue"></i>Build</span><span><i style="background:#8e44ad"></i>Track B (build ใหม่)</span>
+      <span><span class="ln"></span>เส้น M2</span><span style="color:var(--mahidol)">★ baseline มหิดล</span>
     </div>
     <div class="warn"><b>อ่านกราฟ:</b> งาน <b>Paper Fit/Gap (เขียว) เริ่มได้เลยตอนนี้</b> โดยไม่ต้องรอมหิดล — แต่ <b>System Fit/Gap (แดง) ติดอยู่หลังเส้น baseline (11 พ.ย.)</b> ซึ่งเลย M2 ไปแล้ว → จึงต้องส่ง M2 แบบ provisional แล้วยืนยันกับระบบจริงในช่วง Build</div>
   </section>
@@ -180,7 +182,7 @@
         <tr><td><b>Phase 2</b> Design (M2)</td><td>ก.ย.–8 พ.ย.</td><td>ออกแบบจาก Paper Fit/Gap · <b>ติดป้าย “Provisional — รอยืนยันกับ baseline”</b> ในเอกสารส่งมอบ M2</td></tr>
         <tr class="hl-red"><td colspan="3" style="text-align:center;color:#b3372e;font-weight:700">— GATE: baseline มหิดลพร้อม ~11 พ.ย. 2026 —</td></tr>
         <tr><td><b>Phase 1b</b> System Fit/Gap ⚠️</td><td>กลาง พ.ย.–ธ.ค.</td><td><b>ใหม่:</b> ยืนยัน gap ที่วิเคราะห์บนกระดาษ กับระบบจริง → ปรับ design · <b>คาบกับ Build ตอนต้น</b> (เผื่อ rework)</td></tr>
-        <tr><td><b>Phase 3</b> Build</td><td>พ.ย.–ก.พ.</td><td>Config + Develop gap + <b>Integration/Migration ใช้ทีมมหิดลที่ว่างแล้ว</b> (จองหน้าต่างหลัง go-live)</td></tr>
+        <tr><td><b>Phase 3</b> Build</td><td>พ.ย.–ก.พ.</td><td>Config + Develop gap + Integration/Migration <b>โดยเรียนจากระบบ Phase 1 ที่นิ่ง + เอกสาร</b> (ทีมมหิดลไม่ว่าง—ทำ Phase 2 ต่อ) · <b>+ Track B build โมดูลใหม่คู่ขนาน</b> (ดู <a href="ความครอบคลุมโมดูล.html">Module Coverage</a>)</td></tr>
         <tr><td><b>Phase 4–5</b> Test/Go-Live</td><td>ม.ค.–7 เม.ย.</td><td>เหมือนเดิม แต่ buffer หดเพราะ Phase 1b กินเวลา → ต้องเฝ้าระวัง</td></tr>
       </tbody>
     </table>
@@ -195,7 +197,7 @@
       <tbody>
         <tr><td><b>R1</b> มหิดลเลื่อนจาก 11 พ.ย. (ตอนนี้ติด UAT)</td><td><span class="badge" style="background:var(--risk)">สูงมาก</span></td><td>ขอ commit baseline date เป็นลายลักษณ์, ทำ Paper Fit/Gap คู่ขนาน, กำหนด drop-dead date, แจ้งลูกค้าเร็ว (ดู memo ข้อ 6)</td></tr>
         <tr><td><b>R2</b> ฐานเปลี่ยนระหว่างทาง (ยังพัฒนาอยู่)</td><td><span class="badge" style="background:var(--risk)">สูง</span></td><td>Freeze เวอร์ชันที่จะ Fit/Gap, จัดการผ่าน Change Request, ออกแบบ M2 เป็น provisional</td></tr>
-        <tr><td><b>R3</b> ไม่มีใครรู้ระบบมหิดล + ทีมมหิดลบล็อก</td><td><span class="badge" style="background:var(--risk)">สูง</span></td><td>เรียนจาก artifact + เคส UAT มหิดล, async Q&amp;A ผ่าน SPOC, ให้ Dev+BA reverse-engineer, จองทีมมหิดลหลัง go-live</td></tr>
+        <tr><td><b>R3</b> ทีมมหิดลไม่ว่างตลอด (Phase 1 → ต่อ Phase 2) + ไม่มีใครรู้ระบบ</td><td><span class="badge" style="background:var(--risk)">สูงมาก</span></td><td><b>พึ่งทีมไม่ได้</b> → เรียนจาก <b>ระบบ Phase 1 ที่นิ่ง + เอกสาร + เคส UAT</b>, ขอ async Q&amp;A เท่าที่ได้, ให้ Dev+BA reverse-engineer เป็นงานหลัก</td></tr>
         <tr><td><b>R4</b> ทีมเรา 7 คน ไม่ครบบทบาทตาม TOR</td><td><span class="badge" style="background:var(--accent)">กลาง-สูง</span></td><td>เคาะคนทำ Migration/QA/Integration, จัดคนเพิ่มจุดวิกฤต หรือ re-scope, เคลียร์ compliance กับวลัยลักษณ์ (ดูข้อ 5)</td></tr>
       </tbody>
     </table>
@@ -241,7 +243,8 @@
       <ol>
         <li>ยืนยัน <b>baseline date ของฐานมหิดลเป็นลายลักษณ์อักษร</b> และแจ้งทันทีหากมีการเลื่อน</li>
         <li>รับทราบและยอมรับแนวทาง <b>Fit/Gap แบบ 2 ระยะ</b> (Paper ก่อน → System หลัง baseline) สำหรับงวด M2</li>
-        <li>จัดสรร <b>หน้าต่างทีมมหิดลหลัง Go-live (กลาง พ.ย. เป็นต้นไป)</b> เพื่อถ่ายทอดความรู้ + ร่วม Integration/Migration</li>
+        <li>เนื่องจากทีมมหิดลจะทำ <b>Phase 2 ต่อ (ไม่ว่าง)</b> ขออย่างน้อย <b>ช่องทาง async Q&amp;A + สิทธิ์เข้าถึงระบบ Phase 1 ที่นิ่ง + เอกสาร</b> เพื่อให้ทีมเราศึกษา/เชื่อมต่อเองได้</li>
+        <li><b>ขอบเขต Track B (โมดูลไม่มีฐาน: Dental Lab, Mobile, Micro/Patho, MIS ฯลฯ):</b> ต้อง build ใหม่ — ตกลงแนวทาง (เพิ่มคน / ส่งเป็นเฟส) ดู <a href="ความครอบคลุมโมดูล.html">Module Coverage</a></li>
         <li>ส่งมอบ <b>เอกสาร req / เคส UAT / แนวทาง SAP Interface (IAM) / DB schema</b> ของฐานมหิดล เป็นฐานความรู้</li>
         <li>ตัดสินใจเรื่อง <b>กำลังคนบทบาทที่ยังขาด</b> (Data Migration, QA, Integration) — จัดเพิ่มหรือใช้ทีมมหิดลร่วม</li>
       </ol>
