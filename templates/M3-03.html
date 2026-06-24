@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M3-03 แผนและใบลงนามยอมรับการทดสอบ (UAT Plan &amp; Sign-off)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m3">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M3-02.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M3-04.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M3-03 · งวดที่ 3</span>
+    <h1>แผนและใบลงนามยอมรับการทดสอบ (UAT Plan &amp; Sign-off)</h1>
+    <div class="en">UAT Plan &amp; Sign-off</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-UAT-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">QA Lead</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2027</span></div>
+      <div><b>ผู้ทดสอบ:</b> <span class="fill">Business Process Owner</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.3 · เงื่อนไขเบิกงวดที่ 3 (40%)</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ปลายงวด M3 — กำหนดส่งภายใน 18/03/2027</span>
+      <span class="chip who">ผู้ทดสอบ: Business Process Owner</span>
+      <span class="chip iso">ISO 29110: SI.7 Acceptance</span>
+    </div>
+    <div class="warn"><b>⚠️ สำคัญ:</b> เอกสารฉบับนี้ — โดยเฉพาะ <b>ใบลงนาม Sign-off (ข้อ 5)</b> — เป็น<strong>เงื่อนไขในการเบิกจ่ายงวดที่ 3 (40%)</strong> การยอมรับต้องลงนามโดย Process Owner รายโมดูล และไม่มี Defect ระดับ Critical/High ค้างอยู่</div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> กำหนดแผนการทดสอบยอมรับโดยผู้ใช้ (User Acceptance Test) ผู้ทดสอบ เกณฑ์ยอมรับ และเก็บใบลงนาม Sign-off จาก Business Process Owner รายโมดูล เพื่อยืนยันว่าระบบ DIS พร้อมใช้งานจริง · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2027</td><td>QA</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 วัตถุประสงค์ / ขอบเขต -->
+    <h2 class="sec"><span class="n">1</span>วัตถุประสงค์และขอบเขต UAT</h2>
+    <p><strong>1.1 วัตถุประสงค์</strong> — ให้ผู้ใช้งานจริง (Business Process Owner) ทดสอบระบบ DIS ตามกระบวนการทำงานจริง เพื่อยืนยันว่าระบบรองรับงานได้ครบถ้วนถูกต้องก่อนขึ้นใช้งานจริง (Go-Live ในงวด M4)</p>
+    <p><strong>1.2 ขอบเขต</strong> — ครอบคลุมทุกโมดูลหลัก: เวชระเบียน, ห้องยา (เตือนแพ้ยา), นัดหมาย/Recall, Consent, Dental Lab, LIS, PACS, เก็บเงิน และการเชื่อมต่อ HAIT Plus/SAP/PACS/LIS-RIS</p>
+    <p><strong>1.3 สิ่งที่ต้องเตรียมก่อน UAT</strong></p>
+    <ul class="chk">
+      <li>SIT ผ่านแล้ว (อ้าง M3-02) ไม่มี Defect Critical/High ค้าง</li>
+      <li>Master Data ตั้งค่าครบ (อ้าง M3-04)</li>
+      <li>สภาพแวดล้อม UAT พร้อม + ข้อมูลทดสอบที่ผ่านการ mask</li>
+      <li>กำหนดผู้ทดสอบ Process Owner รายโมดูลและช่วงเวลาทดสอบ</li>
+    </ul>
+
+    <!-- 2 ผู้ทดสอบ -->
+    <h2 class="sec"><span class="n">2</span>ผู้ทดสอบ (Business Process Owner รายโมดูล)</h2>
+    <table>
+      <thead><tr><th style="width:24%">โมดูล</th><th>หน่วยงานเจ้าของกระบวนการ</th><th style="width:24%">ผู้ทดสอบ (Process Owner)</th></tr></thead>
+      <tbody>
+        <tr><td>เวชระเบียน / Dental chart</td><td>งานเวชระเบียน + ทันตแพทย์</td><td class="fill">&nbsp;</td></tr>
+        <tr><td>ห้องยา (เตือนแพ้ยา)</td><td>งานเภสัชกรรม</td><td class="fill">&nbsp;</td></tr>
+        <tr><td>นัดหมาย / Recall</td><td>งานนัดหมาย/เวชระเบียน</td><td class="fill">&nbsp;</td></tr>
+        <tr><td>Consent</td><td>งานเวชระเบียน/นิติการ</td><td class="fill">&nbsp;</td></tr>
+        <tr><td>Dental Lab</td><td>งานห้องปฏิบัติการทันตกรรม</td><td class="fill">&nbsp;</td></tr>
+        <tr><td>LIS</td><td>งานชันสูตร/ห้องปฏิบัติการ</td><td class="fill">&nbsp;</td></tr>
+        <tr><td>PACS / รังสี</td><td>งานรังสีทันตกรรม</td><td class="fill">&nbsp;</td></tr>
+        <tr><td>เก็บเงิน (Billing)</td><td>งานการเงิน/เก็บเงิน</td><td class="fill">&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 3 ตาราง UAT Scenario -->
+    <h2 class="sec"><span class="n">3</span>สถานการณ์ทดสอบ UAT (UAT Scenario)</h2>
+    <table>
+      <thead><tr><th style="width:10%">UAT-ID</th><th style="width:16%">โมดูล</th><th>สถานการณ์ (Business Scenario)</th><th style="width:16%">ผลคาดหวัง</th><th style="width:9%">ผล</th></tr></thead>
+      <tbody>
+        <tr><td>UAT-01</td><td>ห้องยา</td><td>เภสัชกรสั่งจ่ายยาให้ผู้ป่วยแพ้ยา — ทดสอบการเตือนและบล็อก</td><td>ระบบเตือนแพ้ยาและบล็อกตามจริง</td><td><span class="badge b-par">รอทดสอบ</span></td></tr>
+        <tr><td>UAT-02</td><td>นัดหมาย/Recall</td><td>เจ้าหน้าที่จองนัดผู้ป่วย + ระบบสร้าง Recall ขูดหินปูน 6 เดือน</td><td>จองนัด/Recall + แจ้งเตือนถูกต้อง</td><td><span class="badge b-par">รอทดสอบ</span></td></tr>
+        <tr><td>UAT-03</td><td>เวชระเบียน</td><td>ทันตแพทย์บันทึก Dental chart + ลงรหัสหัตถการรายซี่</td><td>บันทึก/แสดงผลถูกต้อง</td><td><span class="badge b-par">รอทดสอบ</span></td></tr>
+        <tr><td>UAT-04</td><td>Consent</td><td>บันทึกความยินยอมผู้ป่วยก่อนหัตถการ</td><td>จัดเก็บ Consent ผูกกับ visit</td><td><span class="badge b-par">รอทดสอบ</span></td></tr>
+        <tr><td>UAT-05</td><td>เก็บเงิน</td><td>เก็บเงินผู้ป่วยหลายสิทธิ + ออกใบเสร็จ + ส่ง SAP</td><td>ยอด/สิทธิ/ใบเสร็จถูกต้อง</td><td><span class="badge b-par">รอทดสอบ</span></td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 4 เกณฑ์ยอมรับ -->
+    <h2 class="sec"><span class="n">4</span>เกณฑ์การยอมรับ (Acceptance Criteria)</h2>
+    <table>
+      <thead><tr><th style="width:18%">ระดับ Defect</th><th style="width:24%">จำนวนที่ยอมรับได้</th><th>เงื่อนไข</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge b-must">Critical</span></td><td><strong>0</strong> (ห้ามมี)</td><td>ต้องแก้ให้หมดก่อน Sign-off</td></tr>
+        <tr><td><span class="badge b-gap">High</span></td><td><strong>0</strong> (ห้ามมี)</td><td>ต้องแก้ให้หมดก่อน Sign-off</td></tr>
+        <tr><td><span class="badge b-should">Medium</span></td><td>ยอมรับได้แบบมีเงื่อนไข</td><td>มีแผนแก้ไขและกำหนดเวลาชัดเจน</td></tr>
+        <tr><td><span class="badge b-could">Low</span></td><td>ยอมรับได้</td><td>บันทึกเข้า backlog แก้ไขภายหลัง</td></tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>ทุก UAT Scenario ต้องมีผล <span class="badge b-fit">Pass/ผ่าน</span> หรือผ่านแบบมีเงื่อนไข (Medium/Low เท่านั้น)</li>
+      <li>Process Owner รายโมดูลต้องลงนามยอมรับครบทุกโมดูลที่อยู่ในขอบเขต</li>
+    </ul>
+
+    <!-- 5 ใบลงนาม Sign-off (.ascii form) -->
+    <h2 class="sec"><span class="n">5</span>ใบลงนามยอมรับการทดสอบ (UAT Sign-off Form)</h2>
+    <div class="ascii">┌────────────────────────────────────────────────────────────────────────────┐
+│        ใบลงนามยอมรับการทดสอบโดยผู้ใช้ (UAT SIGN-OFF) — โครงการ DIS              │
+│        รอบทดสอบวันที่ : ___/___/2027  ถึง  ___/___/2027                          │
+├──────────────────────┬────────┬─────────┬──────────────┬──────────────────────┤
+│ โมดูล                 │ Pass   │ Fail    │ Defect คงเหลือ│ ลงนาม Process Owner   │
+│                      │        │         │ (C/H/M/L)    │                      │
+├──────────────────────┼────────┼─────────┼──────────────┼──────────────────────┤
+│ เวชระเบียน/Dental chart│  ☐     │   ☐     │ _/_/_/_       │ ____________________ │
+│ ห้องยา (เตือนแพ้ยา)   │  ☐     │   ☐     │ _/_/_/_       │ ____________________ │
+│ นัดหมาย / Recall      │  ☐     │   ☐     │ _/_/_/_       │ ____________________ │
+│ Consent              │  ☐     │   ☐     │ _/_/_/_       │ ____________________ │
+│ Dental Lab           │  ☐     │   ☐     │ _/_/_/_       │ ____________________ │
+│ LIS                  │  ☐     │   ☐     │ _/_/_/_       │ ____________________ │
+│ PACS / รังสี          │  ☐     │   ☐     │ _/_/_/_       │ ____________________ │
+│ เก็บเงิน (Billing)    │  ☐     │   ☐     │ _/_/_/_       │ ____________________ │
+├──────────────────────┴────────┴─────────┴──────────────┴──────────────────────┤
+│  เงื่อนไขยอมรับ : Defect คงเหลือ Critical = 0  และ  High = 0  (ทุกโมดูล)         │
+│  หมายเหตุ : C=Critical  H=High  M=Medium  L=Low                                 │
+└────────────────────────────────────────────────────────────────────────────┘</div>
+
+    <!-- 6 สรุปผลรวม -->
+    <h2 class="sec"><span class="n">6</span>สรุปผลรวมและการยอมรับ</h2>
+    <table>
+      <thead><tr><th style="width:50%">รายการ</th><th>ผล</th></tr></thead>
+      <tbody>
+        <tr><td>จำนวนโมดูลที่ทดสอบ</td><td class="fill">8 (ตัวอย่าง)</td></tr>
+        <tr><td>โมดูลที่ Pass</td><td class="fill">&nbsp;</td></tr>
+        <tr><td>Defect คงเหลือ — Critical / High</td><td class="fill">&nbsp;</td></tr>
+        <tr><td>ผลการยอมรับโดยรวม</td><td class="fill">☐ ยอมรับ (Accepted) &nbsp; ☐ ยอมรับมีเงื่อนไข &nbsp; ☐ ไม่ยอมรับ</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>มติคณะกรรมการตรวจรับ:</b> <span class="blank">&nbsp;</span> — เมื่อยอมรับครบทุกโมดูลและไม่มี Defect Critical/High ค้าง ถือเป็นเงื่อนไขครบถ้วนสำหรับการเบิกจ่ายงวดที่ 3 (40%)</div>
+
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — QA Lead</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้แทน Business Process Owner</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (ประธานกรรมการตรวจรับ)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · งวดที่ 3 (M3-03) · เงื่อนไขเบิกงวด 40%
+  </div>
+</div>
+</body>
+</html>

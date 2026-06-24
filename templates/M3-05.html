@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M3-05 รายงานการกระทบยอดการโอนย้ายข้อมูล (Data Migration Reconciliation Report)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m3">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M3-04.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M3-06.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M3-05 · งวดที่ 3</span>
+    <h1>รายงานการกระทบยอดการโอนย้ายข้อมูล</h1>
+    <div class="en">Data Migration Reconciliation Report</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-MIG-REC-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">Data Engineer</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2027</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">System Analyst</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> Data Migration · เป้าหมาย 100% Reconciliation</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: หลังทำ Migration แต่ละรอบ — ก่อนตัดสิน Go-Live</span>
+      <span class="chip who">เจ้าของ: Data Engineer</span>
+      <span class="chip iso">ISO 29110: SI Data Migration</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> รายงานผลการกระทบยอด (Reconciliation) ข้อมูลที่โอนย้ายจากระบบเดิม (HAIT Plus / ระบบ HIS เดิม) เข้าสู่ระบบ DIS โดยเปรียบเทียบจำนวนเรคคอร์ดต้นทาง–ปลายทางรายตาราง ตรวจสอบความถูกต้องด้วยการสุ่ม (Sampling) บันทึกรายการตกหล่นและการแก้ไข เพื่อยืนยันความพร้อมก่อน Go-Live · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2027</td><td>Data Engineer</td><td>ร่างฉบับแรก (รอบ Rehearsal)</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 ขอบเขต/รอบที่ทำ -->
+    <h2 class="sec"><span class="n">1</span>ขอบเขตและรอบการโอนย้ายข้อมูล</h2>
+    <p><strong>1.1 ระบบต้นทาง–ปลายทาง</strong></p>
+    <ul>
+      <li>ต้นทาง (Source): <span class="fill">HAIT Plus (HIS เดิม)</span> · ฐานข้อมูล <span class="fill">__________</span></li>
+      <li>ปลายทาง (Target): ระบบ DIS · ฐานข้อมูล <span class="fill">__________</span></li>
+      <li>เครื่องมือ ETL/Script: <span class="fill">__________</span></li>
+    </ul>
+    <p><strong>1.2 รอบการทำ Migration (Migration Run)</strong></p>
+    <table>
+      <thead><tr><th style="width:22%">รอบ</th><th style="width:18%">วันที่</th><th style="width:18%">ผู้ดำเนินการ</th><th>หมายเหตุ / Cut-off</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>ซ้อม (Rehearsal) ครั้งที่ 1</td><td>__/__/2027</td><td>Data Engineer</td><td>ทดสอบสคริปต์ + จับเวลา</td></tr>
+        <tr class="fillrow"><td>ซ้อม (Rehearsal) ครั้งที่ 2</td><td>__/__/2027</td><td>Data Engineer</td><td>แก้ไขรายการตกหล่นจากรอบแรก</td></tr>
+        <tr class="fillrow"><td>จริง (Final / Cut-over)</td><td>__/__/2027</td><td>Data Engineer</td><td>ก่อน Go-Live · กำหนด cut-off เวลา ____ น.</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>รอบที่รายงานฉบับนี้:</b> <span class="fill">☐ Rehearsal &nbsp;&nbsp; ☐ Final / Cut-over</span> &nbsp;|&nbsp; วันที่ทำ: <span class="fill">__/__/2027</span></div>
+
+    <!-- 2 ตารางกระทบยอด record รายตาราง -->
+    <h2 class="sec"><span class="n">2</span>ตารางกระทบยอดเรคคอร์ดรายตาราง (Record Reconciliation)</h2>
+    <p class="small muted">เกณฑ์ผ่าน: จำนวนเรคคอร์ดปลายทาง = ต้นทาง (ตกหล่น = 0) หรือมีคำอธิบายที่ยอมรับได้สำหรับเรคคอร์ดที่คัดออกอย่างตั้งใจ</p>
+    <table>
+      <thead><tr><th>ตาราง / ชุดข้อมูล</th><th style="width:13%">เดิม (Source)</th><th style="width:13%">ย้ายได้ (Target)</th><th style="width:12%">ตกหล่น</th><th style="width:12%">ผล</th></tr></thead>
+      <tbody>
+        <tr><td>patient (ทะเบียนผู้ป่วย)</td><td>48,250</td><td>48,250</td><td>0</td><td><span class="badge b-fit">ผ่าน</span></td></tr>
+        <tr><td>visit (การมารับบริการ)</td><td>312,940</td><td>312,933</td><td>7</td><td><span class="badge b-par">ตรวจซ้ำ</span></td></tr>
+        <tr><td>treatment (รายการรักษา/Dental chart)</td><td>198,400</td><td>197,910</td><td>490</td><td><span class="badge b-gap">ไม่ผ่าน</span></td></tr>
+        <tr class="fillrow"><td>drug_order (สั่งยา)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>lab_order (สั่งแลป)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>xray_order (สั่ง X-ray / PACS)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>billing (รายการเก็บเงิน/ลูกหนี้)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>appointment (นัด/Recall)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+      <tfoot><tr style="font-weight:700;background:#f3f7f7"><td>รวม (Total)</td><td><span class="fill">______</span></td><td><span class="fill">______</span></td><td><span class="fill">__</span></td><td><span class="fill">__%</span></td></tr></tfoot>
+    </table>
+
+    <!-- 3 ผล Sampling ความถูกต้อง -->
+    <h2 class="sec"><span class="n">3</span>ผลการตรวจสอบความถูกต้องด้วยการสุ่ม (Sampling)</h2>
+    <p class="small muted">สุ่มเรคคอร์ดเทียบค่าทีละฟิลด์ (ต้นทาง vs ปลายทาง) เพื่อยืนยันว่าข้อมูลไม่เพียงครบจำนวนแต่ถูกต้องตรงค่า</p>
+    <table>
+      <thead><tr><th>ตาราง</th><th style="width:14%">ขนาดสุ่ม</th><th style="width:14%">ถูกต้อง</th><th style="width:14%">ผิดพลาด</th><th style="width:14%">% ถูกต้อง</th><th style="width:12%">ผล</th></tr></thead>
+      <tbody>
+        <tr><td>patient</td><td>500</td><td>500</td><td>0</td><td>100%</td><td><span class="badge b-fit">ผ่าน</span></td></tr>
+        <tr><td>treatment (Dental chart)</td><td>500</td><td>496</td><td>4</td><td>99.2%</td><td><span class="badge b-par">ตรวจซ้ำ</span></td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <p class="eg">พบความผิดพลาด 4 รายการใน treatment เกิดจากการ map รหัสหัตถการเก่า (legacy code) ที่ไม่มีใน master ใหม่ — แก้โดยเพิ่ม mapping table</p>
+
+    <!-- 4 รายการตกหล่น/การแก้ไข -->
+    <h2 class="sec"><span class="n">4</span>รายการตกหล่นและการแก้ไข (Exceptions &amp; Remediation)</h2>
+    <table>
+      <thead><tr><th style="width:6%">ลำดับ</th><th style="width:16%">ตาราง</th><th>สาเหตุที่ตกหล่น/ผิดพลาด</th><th style="width:24%">การแก้ไข</th><th style="width:12%">สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>visit</td><td>7 เรคคอร์ดมีวันที่ผิดรูปแบบ (null/0000-00-00)</td><td>ทำความสะอาดข้อมูลแล้ว re-load</td><td><span class="badge b-par">ตรวจซ้ำ</span></td></tr>
+        <tr><td>2</td><td>treatment</td><td>490 เรคคอร์ดอ้าง patient_id ที่ไม่มีในต้นทาง (orphan)</td><td>ยืนยันกับเจ้าของงาน / คัดออกอย่างมีหลักฐาน</td><td><span class="badge b-gap">ไม่ผ่าน</span></td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>⚠️ เงื่อนไขปิดงาน:</b> ทุกแถวที่มีสถานะ <span class="badge b-gap">ไม่ผ่าน</span> ต้องได้ข้อสรุปและหลักฐานการตัดสินใจจากเจ้าของงานก่อนรอบ Final / Cut-over</div>
+
+    <!-- 5 สรุปความพร้อม Go-Live -->
+    <h2 class="sec"><span class="n">5</span>สรุปความพร้อมก่อน Go-Live</h2>
+    <ul class="chk">
+      <li>จำนวนเรคคอร์ดรายตารางกระทบยอดครบ (ตกหล่น = 0 หรือมีคำอธิบายที่อนุมัติแล้ว)</li>
+      <li>ผล Sampling ความถูกต้อง ≥ เกณฑ์ที่ตกลง (<span class="fill">__%</span>)</li>
+      <li>รายการ <span class="badge b-gap">ไม่ผ่าน</span> ทุกรายการได้รับการแก้ไข/อนุมัติ</li>
+      <li>มีการทำ Backup ระบบเดิมและ Rollback plan</li>
+      <li>ยืนยัน cut-off และลำดับการ load ข้อมูลจริง</li>
+    </ul>
+    <p><strong>สรุปผลโดยรวม:</strong> <span class="fill">☐ พร้อม Go-Live &nbsp;&nbsp; ☐ พร้อมแบบมีเงื่อนไข &nbsp;&nbsp; ☐ ยังไม่พร้อม</span></p>
+    <p class="muted">ข้อสังเกต/เงื่อนไข: <span class="fill">__________________________________________________</span></p>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">6</span>การรับรองและอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — Data Engineer</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — System Analyst</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · งวด M3 (18/03/2027)
+  </div>
+</div>
+</body>
+</html>

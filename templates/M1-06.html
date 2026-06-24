@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1-06 แผนการทดสอบระบบ (Test / Simulation Plan)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m1">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M1-05.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M1-07.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M1-06 · งวดที่ 1</span>
+    <h1>แผนการทดสอบระบบ (Test / Simulation Plan)</h1>
+    <div class="en">Test Plan</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-TST-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">QA Lead (Software Tester/QA)</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">System Analyst</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">Project Manager</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.1.6 · ISO 29110 (SI.5 Test)</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: วางแผนทดสอบ (งวด M1) — ลงมือทดสอบจริงในงวด M3</span>
+      <span class="chip who">เจ้าของ: QA Lead</span>
+      <span class="chip iso">ISO 29110: SI.5 Software Test</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> กำหนดกลยุทธ์ ระดับ และวิธีการทดสอบระบบ DIS ทุกระดับ (Unit → SIT → UAT → E2E → Performance → Security) พร้อมเกณฑ์เริ่ม/จบ (Entry/Exit), นิยามความรุนแรงของข้อบกพร่อง (Defect Severity) และ SLA การแก้ไข เพื่อให้มั่นใจว่าระบบพร้อมขึ้น Go-Live · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>QA Lead</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 วัตถุประสงค์/ขอบเขต -->
+    <h2 class="sec"><span class="n">1</span>วัตถุประสงค์และขอบเขตการทดสอบ</h2>
+    <p><strong>1.1 วัตถุประสงค์</strong></p>
+    <ul>
+      <li>ยืนยันว่าระบบ DIS ทำงานได้ตรงตามข้อกำหนด (Requirements) และเอกสารออกแบบในงวด M2</li>
+      <li>ตรวจสอบการเชื่อมต่อ (Integration) กับ HAIT Plus, SAP, PACS, LIS/RIS, WU-HRMS ทำงานถูกต้องครบถ้วน</li>
+      <li>ลดความเสี่ยงของข้อบกพร่อง (Defect) ระดับ Critical/High ก่อนขึ้นใช้งานจริง (Go-Live งวด M4)</li>
+    </ul>
+    <p><strong>1.2 ขอบเขต (In-scope)</strong></p>
+    <ul>
+      <li>โมดูล HIS ตามภาคผนวก ก ส่วนที่ 1 (เวชระเบียน, คลินิกทันตกรรม, ห้องยา, LIS, PACS, Dental Lab, นัดหมาย, การเงิน/ลูกหนี้, พัสดุ, Consent)</li>
+      <li>ระบบการเรียนการสอน ตามภาคผนวก ก ส่วนที่ 2</li>
+      <li>Mobile Application 3 ตัว: Patient / Student / Dentist</li>
+      <li>จุดเชื่อมต่อทุก Interface และการ Migrate ข้อมูลจากระบบเดิม</li>
+    </ul>
+    <p><strong>1.3 นอกขอบเขต (Out-of-scope)</strong></p>
+    <ul class="muted"><li><span class="fill">ระบุงานที่ไม่รวมในแผนทดสอบ เช่น โครงสร้างเครือข่ายของหน่วยงาน ฯลฯ</span></li></ul>
+
+    <!-- 2 ระดับการทดสอบ -->
+    <h2 class="sec"><span class="n">2</span>ระดับการทดสอบและเกณฑ์เริ่ม/จบ (Test Levels &amp; Entry/Exit Criteria)</h2>
+    <table>
+      <thead><tr><th style="width:14%">ระดับ</th><th style="width:24%">ขอบเขต/ผู้รับผิดชอบ</th><th style="width:31%">เกณฑ์เริ่ม (Entry)</th><th>เกณฑ์จบ (Exit)</th></tr></thead>
+      <tbody>
+        <tr><td><b>Unit Test</b></td><td>ฟังก์ชันย่อย / Programmer</td><td>โค้ดผ่าน build, มี test case</td><td>ผ่าน ≥ <span class="fill">80%</span> coverage, ไม่มี bug บล็อก</td></tr>
+        <tr><td><b>SIT</b><br>(System Integration)</td><td>การเชื่อมต่อระหว่างโมดูล/ระบบภายนอก / QA + Dev</td><td>Unit ผ่าน, ติดตั้งบน Test env, Interface พร้อม</td><td>ทุก Interface ส่ง-รับข้อมูลถูกต้อง, ไม่มี Critical/High ค้าง</td></tr>
+        <tr><td><b>UAT</b><br>(User Acceptance)</td><td>ผู้ใช้จริงตามกระบวนงาน / Key-user + QA</td><td>SIT ผ่าน, มี UAT script, ข้อมูลทดสอบพร้อม</td><td>ผู้ใช้ลงนามรับรอง, ไม่มี Critical/High ค้าง</td></tr>
+        <tr><td><b>E2E</b><br>(End-to-End)</td><td>กระบวนงานเต็มเส้น (ผู้ป่วยเข้า→รักษา→เบิกจ่าย) / QA</td><td>โมดูลที่เกี่ยวข้องผ่าน SIT</td><td>ทุก business flow หลักผ่านครบ</td></tr>
+        <tr><td><b>Performance</b></td><td>โหลด/ความเร็ว/ความทนทาน / System Engineer + QA</td><td>ระบบเสถียรบน env ใกล้เคียง Production</td><td>ผ่านเกณฑ์ตอบสนอง <span class="fill">≤ 3 วิ</span> ที่ <span class="fill">__</span> users พร้อมกัน</td></tr>
+        <tr><td><b>Security</b></td><td>ช่องโหว่/สิทธิ์เข้าถึง/PDPA / Security + QA</td><td>ระบบติดตั้งครบ, มี checklist OWASP</td><td>ไม่พบช่องโหว่ระดับ High ขึ้นไป</td></tr>
+      </tbody>
+    </table>
+    <p class="eg">SIT จะทดสอบกรณีส่งผลตรวจ LIS กลับเข้าเวชระเบียนทันตกรรมของผู้ป่วยให้แสดงผลถูกต้องภายในเวลาที่กำหนด</p>
+
+    <!-- 3 นิยามความรุนแรง defect -->
+    <h2 class="sec"><span class="n">3</span>นิยามความรุนแรงของข้อบกพร่อง (Defect Severity) และ SLA การแก้ไข</h2>
+    <table>
+      <thead><tr><th style="width:13%">ระดับ</th><th style="width:42%">นิยาม</th><th style="width:22%">SLA แก้ไข (เริ่ม/แก้เสร็จ)</th><th>ผลต่อ Go-Live</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge b-must">Critical</span></td><td>ระบบหยุดทำงาน/ข้อมูลเสียหาย/กระทบความปลอดภัยผู้ป่วย — ไม่มีทางเลี่ยง</td><td>เริ่มทันที / ภายใน <span class="fill">4 ชม.</span></td><td><b>บล็อก</b> ห้ามขึ้นระบบ</td></tr>
+        <tr><td><span class="badge b-should">High</span></td><td>ฟังก์ชันหลักใช้งานไม่ได้ มีทางเลี่ยงยาก</td><td>ภายใน <span class="fill">1 วันทำการ</span></td><td><b>บล็อก</b></td></tr>
+        <tr><td><span class="badge b-could">Medium</span></td><td>ฟังก์ชันรองผิดพลาด มีทางเลี่ยงได้</td><td>ภายใน <span class="fill">3 วันทำการ</span></td><td>ไม่บล็อก (มีแผนแก้)</td></tr>
+        <tr><td><span class="badge" style="background:#6c7a89">Low</span></td><td>ข้อบกพร่องเล็กน้อย/ความสวยงาม/ข้อความ</td><td>ภายใน <span class="fill">งวดถัดไป</span></td><td>ไม่บล็อก</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>⚠️ เกณฑ์ Go-Live:</b> ต้องไม่มี Defect ระดับ Critical และ High ค้างอยู่ จึงจะผ่าน Exit ของ UAT และอนุมัติขึ้นระบบจริง</div>
+
+    <!-- 4 สภาพแวดล้อม + ข้อมูลทดสอบ -->
+    <h2 class="sec"><span class="n">4</span>สภาพแวดล้อมและข้อมูลทดสอบ (Test Environment &amp; Data)</h2>
+    <h3 class="sub">4.1 สภาพแวดล้อม</h3>
+    <table>
+      <thead><tr><th style="width:22%">สภาพแวดล้อม</th><th style="width:30%">วัตถุประสงค์</th><th>หมายเหตุ/สเปก</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>DEV</td><td>พัฒนา + Unit Test</td><td><span class="fill">________</span></td></tr>
+        <tr class="fillrow"><td>SIT / TEST</td><td>ทดสอบเชื่อมต่อ + E2E</td><td><span class="fill">แยกจาก Production, มี mock ระบบภายนอก</span></td></tr>
+        <tr class="fillrow"><td>UAT / Staging</td><td>ผู้ใช้ทดสอบ + Performance</td><td><span class="fill">สเปกใกล้เคียง Production</span></td></tr>
+      </tbody>
+    </table>
+    <h3 class="sub">4.2 ข้อมูลทดสอบ (Test Data)</h3>
+    <ul>
+      <li>ใช้ข้อมูลจำลอง (Synthetic) สำหรับเคสทั่วไป และข้อมูลจริงที่ปกปิด (Masked/De-identified) สำหรับ Migration ตาม PDPA</li>
+      <li>เตรียมชุดข้อมูลผู้ป่วยตัวอย่างครอบคลุมเคสทันตกรรม (ถอนฟัน, อุดฟัน, รักษารากฟัน, จัดฟัน, X-ray)</li>
+      <li>ผู้รับผิดชอบเตรียมข้อมูล: <span class="fill">DB Analyst / DBA</span></li>
+    </ul>
+    <p class="eg">เตรียมผู้ป่วยจำลอง 1 ราย ที่มีประวัติ X-ray (PACS) + ผลตรวจ LIS + ใบสั่งยา เพื่อทดสอบ flow ครบทั้งระบบ</p>
+
+    <!-- 5 เครื่องมือ -->
+    <h2 class="sec"><span class="n">5</span>เครื่องมือที่ใช้ในการทดสอบ (Test Tools)</h2>
+    <table>
+      <thead><tr><th style="width:30%">ประเภท</th><th style="width:35%">เครื่องมือ</th><th>การใช้งาน</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>บริหารกรณีทดสอบ/Defect</td><td><span class="fill">เช่น Jira / Azure DevOps / TestRail</span></td><td>บันทึก Test Case, ติดตาม Defect</td></tr>
+        <tr class="fillrow"><td>ทดสอบอัตโนมัติ (UI/API)</td><td><span class="fill">เช่น Selenium / Postman</span></td><td>Regression, API Interface</td></tr>
+        <tr class="fillrow"><td>ทดสอบโหลด (Performance)</td><td><span class="fill">เช่น JMeter / k6</span></td><td>Load / Stress test</td></tr>
+        <tr class="fillrow"><td>ทดสอบความปลอดภัย</td><td><span class="fill">เช่น OWASP ZAP</span></td><td>สแกนช่องโหว่</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 6 ตารางเวลาทดสอบ -->
+    <h2 class="sec"><span class="n">6</span>ตารางเวลาการทดสอบ (Test Schedule)</h2>
+    <p class="small muted">หมายเหตุ: การทดสอบจริงดำเนินการในงวด <b>M3</b> (ถึง 18/03/2027) — รายละเอียดผลทดสอบจะส่งมอบในเอกสารงวด M3</p>
+    <table>
+      <thead><tr><th>ระดับการทดสอบ</th><th>ช่วงเวลา (โดยประมาณ)</th><th>ผู้รับผิดชอบ</th><th>ผลส่งมอบ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>Unit Test</td><td><span class="fill">ระหว่างพัฒนา (M2–M3)</span></td><td>Programmer</td><td>Unit Test Report</td></tr>
+        <tr class="fillrow"><td>SIT</td><td><span class="fill">งวด M3</span></td><td>QA + Dev</td><td>SIT Report</td></tr>
+        <tr class="fillrow"><td>UAT</td><td><span class="fill">งวด M3</span></td><td>Key-user + QA</td><td>UAT Sign-off</td></tr>
+        <tr class="fillrow"><td>E2E / Performance / Security</td><td><span class="fill">งวด M3</span></td><td>QA + System Engineer</td><td>รายงานผลแต่ละด้าน</td></tr>
+      </tbody>
+    </table>
+    <ul class="chk">
+      <li>กำหนดและทบทวน Test Case ครบทุกโมดูล</li>
+      <li>เตรียมสภาพแวดล้อมและข้อมูลทดสอบพร้อมก่อนเริ่มงวด M3</li>
+      <li>จองคิวทีม HIS เดิมสำหรับทดสอบ Interface ล่วงหน้า</li>
+      <li class="star">ยืนยันไม่มี Critical/High ค้าง ก่อนเสนอ Go-Live</li>
+    </ul>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">7</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — QA Lead</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — System Analyst</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ — Project Manager</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิง TOR ข้อ 6.1.6
+  </div>
+</div>
+</body>
+</html>

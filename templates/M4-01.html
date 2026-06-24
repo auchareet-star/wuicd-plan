@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M4-01 แผนและรายการตรวจสอบการขึ้นระบบจริง (Go-Live / Cutover Plan &amp; Checklist)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m4">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M3-08.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M4-02.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M4-01 · งวดที่ 4</span>
+    <h1>แผนและรายการตรวจสอบการขึ้นระบบจริง</h1>
+    <div class="en">Go-Live / Cutover Plan &amp; Checklist</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-GOLIVE-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">Project Manager + System Engineer</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2027</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">__________</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.4 (Go-Live) · งวด M4</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ก่อน/ระหว่างขึ้นระบบจริง — งวด M4 (Go-Live ภายใน 07/04/2027)</span>
+      <span class="chip who">เจ้าของ: Project Manager + System Engineer</span>
+      <span class="chip iso">ISO 29110: SI.6 Product Delivery</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> วางแผนและกำกับการสับเปลี่ยนจากระบบเดิม (HAIT Plus) มาสู่ระบบ DIS อย่างมีลำดับขั้น ปลอดภัย และย้อนกลับได้ — กำหนด timeline cutover, checklist ละเอียด, เกณฑ์ Go/No-Go, แผนถอย (Rollback) และ Hypercare หลังขึ้นระบบ พร้อมประสานทีม HIS เดิม standby ช่วง cutover · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2027</td><td>PM/SE</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 กลยุทธ์ -->
+    <h2 class="sec"><span class="n">1</span>กลยุทธ์การขึ้นระบบจริง (Go-Live Strategy)</h2>
+    <p><strong>1.1 รูปแบบที่เลือก</strong> — <span class="muted">ระบุรูปแบบการขึ้นระบบและเหตุผล</span></p>
+    <table>
+      <thead><tr><th style="width:24%">รูปแบบ</th><th style="width:14%">เลือก</th><th>คำอธิบาย / ความเหมาะสมกับ DIS</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>Big Bang (สับเปลี่ยนทั้งระบบในคราวเดียว)</td><td>☐ เลือก</td><td>เหมาะกับโรงพยาบาลทันตกรรมขนาดเดียว — ตัด HAIT Plus แล้วเปิด DIS ในหน้าต่างเวลาเดียว ลดภาระ dual-run</td></tr>
+        <tr class="fillrow"><td>Phased (ทยอยตามคลินิก/โมดูล)</td><td>☐ เลือก</td><td>เปิดบางคลินิกก่อน (เช่น OPD ทันตกรรมทั่วไป) แล้วขยาย</td></tr>
+        <tr class="fillrow"><td>Parallel Run (เดินคู่ขนานชั่วคราว)</td><td>☐ เลือก</td><td>บันทึกทั้งสองระบบช่วงสั้น ๆ เพื่อเทียบผล — ใช้ทรัพยากรสูง</td></tr>
+      </tbody>
+    </table>
+    <p><strong>1.2 หน้าต่างเวลา Cutover (Cutover Window)</strong></p>
+    <ul>
+      <li>วัน/เวลาเริ่ม: <span class="fill">__ /__ /2027 เวลา __:__ น.</span> <span class="eg">เลือกคืนวันศุกร์–เสาร์ เพื่อให้มีเวลา reconcile ก่อนเปิดทำการจันทร์</span></li>
+      <li>ระยะเวลาหน้าต่างทั้งหมด: <span class="fill">__ ชั่วโมง</span> · เวลาเปิดให้ผู้ใช้: <span class="fill">__ /__ /2027 เวลา __:__ น.</span></li>
+      <li>ช่วงปิดบริการ/ลดบริการ (Downtime): <span class="fill">__ ชั่วโมง</span> — แจ้งคลินิกล่วงหน้าตามแผนสื่อสาร (ข้อ 7)</li>
+    </ul>
+    <div class="warn"><b>⚠️ จุดวิกฤต:</b> ต้องจอง “ทีม HIS เดิม” standby ตลอดหน้าต่าง cutover ล่วงหน้า และมีจุดตัดสินใจ Go/No-Go ก่อน point-of-no-return (หลัง migrate final) เสมอ</div>
+
+    <!-- 2 Timeline -->
+    <h2 class="sec"><span class="n">2</span>ไทม์ไลน์ Cutover (Cutover Timeline)</h2>
+    <p class="small muted">ลำดับกิจกรรม T-x เรียงตามเวลา (T0 = เริ่มหน้าต่าง cutover) · ปรับเวลาจริงในคอลัมน์สุดท้าย</p>
+    <table>
+      <thead><tr><th style="width:9%">ลำดับ</th><th style="width:14%">เวลา (รวม)</th><th>กิจกรรม</th><th style="width:20%">ผู้รับผิดชอบ</th><th style="width:13%">เวลาจริง</th></tr></thead>
+      <tbody>
+        <tr><td>T-1</td><td>T0 − 1 ชม.</td><td>ประชุม Go/No-Go #1 — ยืนยันความพร้อมทีม/ระบบ</td><td>PM</td><td class="fillrow">&nbsp;</td></tr>
+        <tr><td>T-2</td><td>T0</td><td>ประกาศ Freeze ระบบเดิม + ปิดรับ transaction ใหม่</td><td>ทีม HIS เดิม</td><td class="fillrow">&nbsp;</td></tr>
+        <tr><td>T-3</td><td>T0 + 0:30</td><td>Full backup ฐานข้อมูลและไฟล์ระบบเดิม</td><td>System Engineer</td><td class="fillrow">&nbsp;</td></tr>
+        <tr><td>T-4</td><td>T0 + 1:30</td><td>Migration ข้อมูลรอบสุดท้าย (delta final)</td><td>Dev / Data Lead</td><td class="fillrow">&nbsp;</td></tr>
+        <tr><td>T-5</td><td>T0 + 3:30</td><td>Reconciliation เทียบยอด (ผู้ป่วย/คิว/การเงิน/ฟิล์ม)</td><td>QA + เจ้าของงาน</td><td class="fillrow">&nbsp;</td></tr>
+        <tr><td>T-6</td><td>T0 + 4:30</td><td>Smoke test ระบบ DIS + Integration (HAIT/SAP/PACS/LIS-RIS)</td><td>QA / SE</td><td class="fillrow">&nbsp;</td></tr>
+        <tr><td>T-7</td><td>T0 + 5:30</td><td>ประชุม Go/No-Go #2 (จุดตัดสินใจหลัก)</td><td>คณะกรรมการ Go-Live</td><td class="fillrow">&nbsp;</td></tr>
+        <tr><td>T-8</td><td>T0 + 6:00</td><td>เปิดให้ผู้ใช้เข้าใช้งานระบบจริง + ประกาศ Go-Live</td><td>PM / SE</td><td class="fillrow">&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 3 Checklist -->
+    <h2 class="sec"><span class="n">3</span>รายการตรวจสอบ Cutover (Cutover Checklist)</h2>
+    <h3 class="sub">3.1 ก่อน Cutover (Pre-Cutover)</h3>
+    <ul class="chk">
+      <li>ยืนยันสภาพแวดล้อม Production พร้อม (server, network, certificate, license)</li>
+      <li>ยืนยันแผน Rollback และทดสอบขั้นตอนถอยแล้ว (ข้อ 5)</li>
+      <li>แจ้งผู้ใช้/คลินิกเรื่อง downtime และช่วง cutover แล้ว (ข้อ 7)</li>
+      <li>ทีม HIS เดิม ยืนยัน standby ตลอดหน้าต่างเวลา + ช่องทางติดต่อ</li>
+      <li class="star">ตรวจ Go/No-Go criteria ครบทุกข้อ (ข้อ 4)</li>
+    </ul>
+    <h3 class="sub">3.2 ระหว่าง Cutover</h3>
+    <ul class="chk">
+      <li><b>Backup</b> — Full backup ฐานข้อมูล + ไฟล์ระบบเดิม สำเร็จและตรวจสอบ restore ได้</li>
+      <li><b>Freeze</b> — ปิดรับ transaction ใหม่ในระบบเดิม + แจ้งหน่วยงานยุติการบันทึก</li>
+      <li><b>Migrate final</b> — Migration delta รอบสุดท้ายเสร็จ ไม่มี error ค้าง</li>
+      <li><b>Reconciliation</b> — เทียบยอดข้อมูลครบ 100% (จำนวนผู้ป่วย, นัดหมาย, การเงิน, ฟิล์ม PACS, ผล LIS)</li>
+      <li><b>Smoke test</b> — ทดสอบ flow หลักผ่าน (ลงทะเบียน, จ่ายยา, ออกใบเสร็จ, เรียกฟิล์ม, ส่ง LIS)</li>
+      <li><b>Integration</b> — เชื่อม HAIT Plus / SAP / PACS / LIS-RIS ทำงานถูกต้อง (ทดสอบ end-to-end)</li>
+      <li class="star"><b>เปิดให้ผู้ใช้</b> — ปลดล็อกระบบ DIS + ประกาศ Go-Live + แจ้งช่องทาง Hypercare</li>
+    </ul>
+    <h3 class="sub">3.3 หลังเปิดใช้งานวันแรก</h3>
+    <ul class="chk">
+      <li>ตรวจ log/error วันแรก ไม่มี Critical/High ค้าง</li>
+      <li>ยืนยันธุรกรรมการเงินวันแรกตรงกับยอดจริง</li>
+      <li>สรุปประเด็นเข้า Hypercare (ข้อ 6) + ปิดประเด็นเร่งด่วน</li>
+    </ul>
+
+    <!-- 4 Go/No-Go -->
+    <h2 class="sec"><span class="n">4</span>เกณฑ์ Go / No-Go และผู้ตัดสินใจ</h2>
+    <table>
+      <thead><tr><th>เกณฑ์ (ต้องผ่านทุกข้อจึง Go)</th><th style="width:12%">ผ่าน</th><th style="width:12%">ไม่ผ่าน</th><th style="width:22%">หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>Migration final เสร็จและ reconciliation = 100%</td><td>☐</td><td>☐</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>Smoke test flow หลักผ่านครบ ไม่มี Critical/High</td><td>☐</td><td>☐</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>Integration ทุกระบบทำงานถูกต้อง</td><td>☐</td><td>☐</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>Backup สำเร็จ + แผน Rollback พร้อมใช้</td><td>☐</td><td>☐</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>ทีม Hypercare + ทีม HIS เดิม standby พร้อม</td><td>☐</td><td>☐</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>ผู้มีอำนาจตัดสินใจ Go/No-Go:</b> คณะกรรมการ Go-Live ประกอบด้วย PM (ผู้รับจ้าง), System Engineer, ผู้แทนเจ้าของงาน (IT รพ.), และหัวหน้าทีม HIS เดิม — มติเป็นเอกฉันท์/เสียงข้างมากตามที่ตกลง บันทึกในช่องลงนามข้อ 4.1</div>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้ตัดสินใจ — Project Manager</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้ตัดสินใจ — System Engineer</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้ตัดสินใจ — เจ้าของงาน (IT รพ.)</span></div>
+    </div>
+
+    <!-- 5 Rollback -->
+    <h2 class="sec"><span class="n">5</span>แผนถอยกลับ (Rollback Plan)</h2>
+    <p><strong>5.1 เงื่อนไขที่ต้องถอย (Rollback Trigger)</strong></p>
+    <ul>
+      <li>Reconciliation ไม่ครบ/ข้อมูลคลาดเคลื่อนแก้ไม่ได้ในเวลา</li>
+      <li>พบ defect ระดับ Critical ที่กระทบบริการผู้ป่วย</li>
+      <li>Integration หลัก (เช่น HAIT Plus / การเงิน SAP) ใช้งานไม่ได้</li>
+    </ul>
+    <p><strong>5.2 เวลาตัดสินใจถอย (Point of No Return)</strong> — ต้องตัดสินใจถอยภายใน <span class="fill">__ ชั่วโมง</span> หลัง migrate final และ <b>ก่อน</b> T-8 เปิดให้ผู้ใช้ · เวลาดำเนินการถอยให้เสร็จ (RTO) ภายใน <span class="fill">__ ชั่วโมง</span></p>
+    <ul class="chk">
+      <li>ยุติการใช้งาน DIS + แจ้งทุกหน่วยงาน</li>
+      <li>กู้คืนระบบเดิมจาก backup (T-3) และตรวจ restore ครบ</li>
+      <li>ปลด Freeze ระบบเดิม + เปิดให้บันทึกต่อ</li>
+      <li>บันทึกสาเหตุ + วางแผน cutover รอบใหม่</li>
+    </ul>
+
+    <!-- 6 Hypercare -->
+    <h2 class="sec"><span class="n">6</span>การดูแลใกล้ชิดหลังขึ้นระบบ (Hypercare)</h2>
+    <ul>
+      <li>ระยะ Hypercare: <span class="fill">__ วัน</span> หลัง Go-Live <span class="eg">มักกำหนด 14–30 วัน</span></li>
+      <li>ทีมประจำหน้างาน (on-site): <span class="fill">SE __ คน, Dev __ คน, QA __ คน</span> ครอบคลุมเวลาทำการคลินิก</li>
+      <li><b>ทีม HIS เดิม standby:</b> ช่วยเหลือกรณีปัญหา Integration/ข้อมูลระบบเดิม ตลอดช่วง cutover และต้น Hypercare ตามที่จองคิวไว้</li>
+      <li>ช่องทางแจ้งปัญหา + SLA ตอบสนอง: <span class="fill">__________</span> (Critical ตอบใน __ นาที)</li>
+    </ul>
+    <table>
+      <thead><tr><th>ระดับปัญหา</th><th style="width:24%">SLA ตอบสนอง</th><th style="width:24%">SLA แก้ไข</th><th>ผู้ดูแล</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>Critical (หยุดบริการ)</td><td>__ นาที</td><td>__ ชม.</td><td>SE + ทีม HIS เดิม</td></tr>
+        <tr class="fillrow"><td>High</td><td>__ ชม.</td><td>__ ชม.</td><td>Dev Lead</td></tr>
+        <tr class="fillrow"><td>Medium/Low</td><td>__ วัน</td><td>ตามแผน</td><td>Support</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 7 การสื่อสาร -->
+    <h2 class="sec"><span class="n">7</span>แผนการสื่อสารช่วง Go-Live (Communication)</h2>
+    <table>
+      <thead><tr><th>ช่วงเวลา</th><th>สาร / ข้อความ</th><th style="width:20%">กลุ่มเป้าหมาย</th><th style="width:18%">ช่องทาง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>ก่อน 7 วัน</td><td>แจ้งกำหนด Go-Live + downtime + การเตรียมตัว</td><td>ทุกคลินิก/ผู้ใช้</td><td>หนังสือเวียน/Line/อีเมล</td></tr>
+        <tr class="fillrow"><td>ก่อน 1 วัน</td><td>ย้ำกำหนดการ + ช่องทาง Hypercare</td><td>ผู้ใช้ + ผู้บริหาร</td><td>Line/ป้ายประกาศ</td></tr>
+        <tr class="fillrow"><td>เปิดใช้ (T-8)</td><td>ประกาศ Go-Live สำเร็จ + วิธีขอความช่วยเหลือ</td><td>ทั้งองค์กร</td><td>Line/ประกาศหน้างาน</td></tr>
+        <tr class="fillrow"><td>กรณี No-Go/Rollback</td><td>แจ้งเลื่อน + แผนถัดไป</td><td>ทุกฝ่าย</td><td>ตามแผน escalation</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">8</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — Project Manager / System Engineer</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · งวด M4 Go-Live ภายใน 07/04/2027
+  </div>
+</div>
+</body>
+</html>

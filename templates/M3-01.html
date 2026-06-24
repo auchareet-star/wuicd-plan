@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M3-01 กรณีทดสอบและสคริปต์ทดสอบ (Test Cases / Test Scripts)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m3">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M2-13.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M3-02.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M3-01 · งวดที่ 3</span>
+    <h1>กรณีทดสอบและสคริปต์ทดสอบ (Test Cases / Test Scripts)</h1>
+    <div class="en">Test Cases / Test Scripts</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-TC-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">QA Lead</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2027</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">__________</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.3 (การทดสอบระบบ) · มาตรฐาน HA</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: เริ่มงวด M3 — ก่อนทดสอบ SIT/UAT</span>
+      <span class="chip who">เจ้าของ: QA</span>
+      <span class="chip iso">ISO 29110: SI.6 Test</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> รวบรวมกรณีทดสอบ (Test Case) และสคริปต์ทดสอบ (Test Script) ของทุกโมดูล DIS โดยแต่ละเคสอ้างกลับไปยังความต้องการ (FR-ID) เพื่อให้ครอบคลุมและตรวจสอบย้อนกลับได้ (Traceability) ใช้เป็นฐานในการทดสอบ SIT (M3-02) และ UAT (M3-03) · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2027</td><td>QA</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 วัตถุประสงค์ / รูปแบบ -->
+    <h2 class="sec"><span class="n">1</span>วัตถุประสงค์และรูปแบบกรณีทดสอบ</h2>
+    <p><strong>1.1 วัตถุประสงค์</strong> — ตรวจสอบว่าระบบ DIS ทำงานได้ถูกต้องครบถ้วนตามข้อกำหนดหน้าที่ (Functional Requirement) ของแต่ละโมดูล และเชื่อมต่อกับระบบภายนอก (HAIT Plus, SAP, PACS, LIS/RIS) ได้ถูกต้อง</p>
+    <p><strong>1.2 องค์ประกอบของ Test Case</strong></p>
+    <table>
+      <thead><tr><th style="width:22%">ฟิลด์</th><th>คำอธิบาย</th></tr></thead>
+      <tbody>
+        <tr><td>TC-ID</td><td>รหัสกรณีทดสอบ รูปแบบ <span class="fill">TC-[โมดูล]-[ลำดับ]</span> เช่น TC-PHA-001</td></tr>
+        <tr><td>อ้าง FR-ID</td><td>เลขข้อความต้องการที่เคสนี้ตรวจสอบ (อ้างถึง M2 เอกสารวิเคราะห์ความต้องการ)</td></tr>
+        <tr><td>Pre-condition</td><td>เงื่อนไข/ข้อมูลตั้งต้นที่ต้องมีก่อนเริ่มทดสอบ</td></tr>
+        <tr><td>ขั้นตอน (Steps)</td><td>ลำดับการกระทำที่ผู้ทดสอบทำ</td></tr>
+        <tr><td>ผลคาดหวัง</td><td>ผลลัพธ์ที่ระบบควรแสดง</td></tr>
+        <tr><td>ผลจริง / สถานะ</td><td>ผลที่ได้จริง พร้อมสถานะ <span class="badge b-fit">Pass/ผ่าน</span> <span class="badge b-gap">Fail/ไม่ผ่าน</span> <span class="badge b-par">ตรวจซ้ำ</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 2 ตาราง Test Case รายโมดูล -->
+    <h2 class="sec"><span class="n">2</span>ตารางกรณีทดสอบรายโมดูล (Test Case Matrix)</h2>
+
+    <h3 class="sub">2.1 โมดูลห้องยา — การเตือนแพ้ยา (Drug Allergy Alert)</h3>
+    <table>
+      <thead><tr><th style="width:10%">TC-ID</th><th style="width:8%">FR-ID</th><th style="width:16%">Pre-condition</th><th>ขั้นตอน</th><th style="width:16%">ผลคาดหวัง</th><th style="width:9%">ผลจริง</th><th style="width:8%">สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td>TC-PHA-001</td><td>FR-PHA-05</td><td>ผู้ป่วยมีประวัติแพ้ยา Amoxicillin บันทึกในเวชระเบียน</td><td>1) เปิดเวชระเบียนผู้ป่วย 2) สั่งจ่ายยา Amoxicillin</td><td>ระบบแสดง Pop-up เตือนแพ้ยาสีแดง และบล็อกการสั่งจ่ายจนกว่าจะยืนยัน</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอทดสอบ</span></td></tr>
+        <tr><td>TC-PHA-002</td><td>FR-PHA-06</td><td>ผู้ป่วยมีประวัติแพ้ยากลุ่ม Penicillin</td><td>1) สั่งจ่ายยา Ampicillin (กลุ่มเดียวกัน)</td><td>ระบบเตือนแพ้ยาข้ามกลุ่ม (cross-allergy)</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอทดสอบ</span></td></tr>
+        <tr><td>TC-PHA-003</td><td>FR-PHA-07</td><td>ผู้ป่วยไม่มีประวัติแพ้ยา</td><td>1) สั่งจ่ายยาตามปกติ</td><td>ระบบไม่แสดงการเตือน บันทึกสำเร็จ</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอทดสอบ</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.2 โมดูลนัดหมาย / Recall (Appointment &amp; Recall)</h3>
+    <table>
+      <thead><tr><th style="width:10%">TC-ID</th><th style="width:8%">FR-ID</th><th style="width:16%">Pre-condition</th><th>ขั้นตอน</th><th style="width:16%">ผลคาดหวัง</th><th style="width:9%">ผลจริง</th><th style="width:8%">สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td>TC-APT-001</td><td>FR-APT-02</td><td>มีคลินิก/ทันตแพทย์/ห้องตรวจในระบบ มีช่องว่างคิว</td><td>1) เลือกผู้ป่วย 2) เลือกคลินิก+ทันตแพทย์+วันเวลา 3) บันทึกนัด</td><td>ระบบจองนัดสำเร็จ ตัดคิวที่ว่าง ส่ง SMS/แจ้งเตือนผู้ป่วย</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอทดสอบ</span></td></tr>
+        <tr><td>TC-APT-002</td><td>FR-APT-03</td><td>คิวทันตแพทย์เต็มในช่วงเวลานั้น</td><td>1) จองนัดซ้อนเวลาเดิม</td><td>ระบบปฏิเสธการจองซ้อน และเสนอช่วงเวลาว่างถัดไป</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอทดสอบ</span></td></tr>
+        <tr><td>TC-APT-003</td><td>FR-APT-08</td><td>ผู้ป่วยถึงรอบ Recall (เช่น ขูดหินปูนทุก 6 เดือน)</td><td>1) รันงาน Recall ประจำวัน</td><td>ระบบสร้างรายการ Recall และแจ้งเตือนนัดผู้ป่วยอัตโนมัติ</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอทดสอบ</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.3 โมดูลเวชระเบียน — บันทึก Dental Chart</h3>
+    <table>
+      <thead><tr><th style="width:10%">TC-ID</th><th style="width:8%">FR-ID</th><th style="width:16%">Pre-condition</th><th>ขั้นตอน</th><th style="width:16%">ผลคาดหวัง</th><th style="width:9%">ผลจริง</th><th style="width:8%">สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td>TC-DEN-001</td><td>FR-DEN-04</td><td>เปิด visit ผู้ป่วยที่คลินิก</td><td>1) เปิด Dental chart 2) เลือกซี่ฟัน #16 3) ระบุหัตถการ "อุดฟัน" + พื้นผิว 4) บันทึก</td><td>ระบบลงรหัสหัตถการทันตกรรมที่ซี่ #16 แสดงสีบนแผนภาพฟัน บันทึกถูกต้อง</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอทดสอบ</span></td></tr>
+        <tr><td>TC-DEN-002</td><td>FR-DEN-05</td><td>มีการบันทึกหัตถการในวันก่อนหน้า</td><td>1) เปิดประวัติ Dental chart ย้อนหลัง</td><td>ระบบแสดงประวัติหัตถการรายซี่ตามลำดับเวลา</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอทดสอบ</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.4 โมดูลเก็บเงิน (Billing / Cashier)</h3>
+    <table>
+      <thead><tr><th style="width:10%">TC-ID</th><th style="width:8%">FR-ID</th><th style="width:16%">Pre-condition</th><th>ขั้นตอน</th><th style="width:16%">ผลคาดหวัง</th><th style="width:9%">ผลจริง</th><th style="width:8%">สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td>TC-BIL-001</td><td>FR-BIL-03</td><td>มีรายการหัตถการ+ค่าบริการรอเรียกเก็บ ผู้ป่วยสิทธิเงินสด</td><td>1) เปิดบิลผู้ป่วย 2) ตรวจรายการ 3) รับชำระเงินสด 4) ออกใบเสร็จ</td><td>ระบบคำนวณยอดถูกตามตารางค่าบริการ ออกใบเสร็จ ตัดยอดลูกหนี้</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอทดสอบ</span></td></tr>
+        <tr><td>TC-BIL-002</td><td>FR-BIL-04</td><td>ผู้ป่วยสิทธิประกันสังคม/เบิกได้</td><td>1) เลือกสิทธิการรักษา 2) คำนวณส่วนเบิก/ส่วนเกิน</td><td>ระบบแยกส่วนสิทธิและส่วนที่ผู้ป่วยจ่ายเองถูกต้อง ส่งข้อมูลไป SAP</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอทดสอบ</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.5 การเชื่อมต่อ HAIT Plus (Integration)</h3>
+    <table>
+      <thead><tr><th style="width:10%">TC-ID</th><th style="width:8%">FR-ID</th><th style="width:16%">Pre-condition</th><th>ขั้นตอน</th><th style="width:16%">ผลคาดหวัง</th><th style="width:9%">ผลจริง</th><th style="width:8%">สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td>TC-INT-001</td><td>FR-INT-01</td><td>มี HN ผู้ป่วยอยู่ใน HAIT Plus เชื่อม API พร้อม</td><td>1) ค้นหาผู้ป่วยด้วย HN ใน DIS</td><td>DIS ดึงข้อมูลผู้ป่วย (ชื่อ, สิทธิ, ประวัติแพ้ยา) จาก HAIT Plus มาแสดงถูกต้อง</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอทดสอบ</span></td></tr>
+        <tr><td>TC-INT-002</td><td>FR-INT-02</td><td>มี visit ที่ปิดบิลใน DIS</td><td>1) ส่งข้อมูลรายการรักษากลับ HAIT Plus</td><td>HAIT Plus รับข้อมูลครบ ไม่มี record ตกหล่น (reconciliation 100%)</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอทดสอบ</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 3 ตัวอย่าง Test Script ละเอียด -->
+    <h2 class="sec"><span class="n">3</span>ตัวอย่างสคริปต์ทดสอบละเอียด (Detailed Test Script)</h2>
+    <p class="small muted">ตัวอย่างขยายของ TC-PHA-001 (การเตือนแพ้ยา) — ใช้เป็นแม่แบบบันทึกผลทุกขั้นตอน</p>
+    <div class="ascii">┌─────────────────────────────────────────────────────────────────────┐
+│  TEST SCRIPT : TC-PHA-001  การเตือนแพ้ยา (Drug Allergy Alert)          │
+├─────────────────────────────────────────────────────────────────────┤
+│  อ้าง FR-ID   : FR-PHA-05            โมดูล : ห้องยา                     │
+│  ผู้ทดสอบ      : ____________________  วันที่ : ___/___/2027            │
+│  Pre-condition: ผู้ป่วย HN 6600123 มีประวัติแพ้ Amoxicillin (severe)   │
+├──────┬──────────────────────────────────┬───────────────────┬────────┤
+│ Step │ การกระทำ                          │ ผลคาดหวัง          │ ผล     │
+├──────┼──────────────────────────────────┼───────────────────┼────────┤
+│  1   │ Login ระบบด้วยสิทธิ "เภสัชกร"     │ เข้าหน้าจอห้องยา   │ ☐ P ☐ F│
+│  2   │ ค้นหา HN 6600123                  │ พบผู้ป่วย แสดงป้าย │ ☐ P ☐ F│
+│      │                                  │ ALLERGY สีแดง     │        │
+│  3   │ เปิดหน้าสั่งจ่ายยา                 │ แสดงฟอร์มสั่งยา    │ ☐ P ☐ F│
+│  4   │ พิมพ์ "Amoxicillin 500mg"         │ ระบบ pop-up เตือน  │ ☐ P ☐ F│
+│      │                                  │ "แพ้ยา!" + บล็อก  │        │
+│  5   │ กดยืนยัน/ยกเลิกการสั่ง            │ ต้องระบุเหตุผลก่อน │ ☐ P ☐ F│
+│      │                                  │ จึงดำเนินต่อได้    │        │
+├──────┴──────────────────────────────────┴───────────────────┴────────┤
+│  ผลรวม :  ☐ Pass ทั้งหมด    ☐ มี Fail (ระบุ Defect ID: __________)     │
+│  หมายเหตุ : ___________________________________________________________│
+│  ลงนามผู้ทดสอบ : ________________   ผู้ตรวจทาน QA : ________________    │
+└─────────────────────────────────────────────────────────────────────┘</div>
+
+    <!-- 4 สรุปจำนวน test case -->
+    <h2 class="sec"><span class="n">4</span>สรุปจำนวนกรณีทดสอบต่อโมดูล (Coverage Summary)</h2>
+    <table>
+      <thead><tr><th>โมดูล</th><th style="width:14%">จำนวน TC</th><th style="width:14%">วางแผน</th><th style="width:14%">Pass</th><th style="width:14%">Fail</th></tr></thead>
+      <tbody>
+        <tr><td>ห้องยา (เตือนแพ้ยา)</td><td>3</td><td>3</td><td class="fill">&nbsp;</td><td class="fill">&nbsp;</td></tr>
+        <tr><td>นัดหมาย / Recall</td><td>3</td><td>3</td><td class="fill">&nbsp;</td><td class="fill">&nbsp;</td></tr>
+        <tr><td>เวชระเบียน (Dental chart)</td><td>2</td><td>2</td><td class="fill">&nbsp;</td><td class="fill">&nbsp;</td></tr>
+        <tr><td>เก็บเงิน (Billing)</td><td>2</td><td>2</td><td class="fill">&nbsp;</td><td class="fill">&nbsp;</td></tr>
+        <tr><td>เชื่อมต่อ HAIT Plus</td><td>2</td><td>2</td><td class="fill">&nbsp;</td><td class="fill">&nbsp;</td></tr>
+        <tr class="fillrow"><td>Consent / Dental Lab / LIS / PACS (เพิ่มเติม)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td><strong>รวม (ตัวอย่าง)</strong></td><td><strong>12</strong></td><td><strong>12</strong></td><td class="fill">&nbsp;</td><td class="fill">&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <div class="tip"><b>หมายเหตุ:</b> ตัวเลขข้างต้นเป็นตัวอย่าง — เมื่อใช้งานจริงให้เพิ่ม Test Case ของโมดูล Consent, Dental Lab, LIS และ PACS ให้ครบทุก FR-ID และอัปเดตสรุปนี้</div>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">5</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — QA Lead</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — Project Manager</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · งวดที่ 3 (M3-01)
+  </div>
+</div>
+</body>
+</html>

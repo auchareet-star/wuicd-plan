@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-08 ข้อกำหนดส่วนเชื่อมต่อระบบ (API Specification)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m2">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M2-07.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M2-09.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M2-08 · งวดที่ 2</span>
+    <h1>ข้อกำหนดส่วนเชื่อมต่อระบบ</h1>
+    <div class="en">API Specification</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-API-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">System Engineer</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">SA / ทีม HIS เดิม</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.2 · ภาคผนวก ข (Real-time Fully Integrated)</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ออกแบบ/พัฒนาส่วนเชื่อมต่อระบบภายนอก (Integration)</span>
+      <span class="chip who">เจ้าของ: System Engineer + ทีม HIS เดิม</span>
+      <span class="chip iso">ISO 29110: SI Interface Design</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> กำหนดสเปกส่วนเชื่อมต่อ (API) ระหว่าง DIS กับระบบภายนอกทั้งหมด (HAIT Plus, SAP, PACS, LIS/RIS, WU-HRMS) ให้ทั้งสองฝ่ายเข้าใจตรงกัน — รายการ interface, มาตรฐานการรับส่ง, รายละเอียดราย endpoint, ความปลอดภัย และวิธีทำ Mock/Stub ระหว่างรอทีม HIS เดิม · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>System Engineer</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 ภาพรวมการเชื่อมต่อ -->
+    <h2 class="sec"><span class="n">1</span>ภาพรวมการเชื่อมต่อ (Integration Overview)</h2>
+    <p>DIS เชื่อมต่อกับระบบภายนอกแบบ <strong>Real-time Fully Integrated</strong> ผ่าน REST API เป็นหลัก (และรองรับ HL7/DICOM สำหรับระบบเฉพาะทาง) ตารางด้านล่างสรุปรายการ interface ทั้งหมดในโครงการ</p>
+    <table>
+      <thead><tr><th style="width:22%">ระบบปลายทาง</th><th>หน้าที่/ข้อมูลที่แลกเปลี่ยน</th><th style="width:14%">ทิศทาง</th><th style="width:14%">รูปแบบ</th><th style="width:14%">ความถี่</th></tr></thead>
+      <tbody>
+        <tr><td>HAIT Plus (HIS เดิม)</td><td>ข้อมูลผู้ป่วย, เวชระเบียน, สิทธิการรักษา</td><td>DIS ◂ HIS (รับ)</td><td>REST/JSON</td><td>Real-time (on-demand)</td></tr>
+        <tr><td>SAP (AR/AP/FM)</td><td>รายการเรียกเก็บเงิน, ลูกหนี้, ใบสำคัญ</td><td>DIS ▸ SAP (ส่ง)</td><td>REST/JSON (OData)</td><td>Real-time / Batch รายวัน</td></tr>
+        <tr><td>SAP (IM/PU)</td><td>เบิก-จ่ายพัสดุ, ใบขอซื้อ</td><td>สองทาง</td><td>REST/JSON</td><td>Real-time</td></tr>
+        <tr><td>LIS/RIS</td><td>สั่งตรวจ / รับผลแลป-ผลรังสี</td><td>สองทาง</td><td>REST/JSON, HL7</td><td>Real-time</td></tr>
+        <tr><td>PACS</td><td>ดึงภาพถ่ายรังสี (X-ray/CBCT)</td><td>DIS ◂ PACS (รับ)</td><td>DICOM / WADO</td><td>On-demand</td></tr>
+        <tr><td>WU-HRMS</td><td>ข้อมูลบุคลากร, ทันตแพทย์, นักศึกษา</td><td>DIS ◂ HRMS (รับ)</td><td>REST/JSON</td><td>Batch รายวัน / Sync</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>⚠️ ข้อจำกัด:</b> ไม่มีผู้เชี่ยวชาญ HIS เดิมในทีมผู้รับจ้าง — สเปก endpoint ฝั่ง HAIT Plus / SAP ต้อง sync และยืนยันกับทีมเดิมก่อนล็อก ระหว่างรอใช้ Mock/Stub ตามข้อ 5</div>
+
+    <!-- 2 มาตรฐานทั่วไป -->
+    <h2 class="sec"><span class="n">2</span>มาตรฐานทั่วไป (General Standards)</h2>
+    <h3 class="sub">2.1 การยืนยันตัวตน (Authentication)</h3>
+    <ul>
+      <li><strong>OAuth 2.0</strong> (Client Credentials Grant) สำหรับ service-to-service · ส่ง Access Token แบบ Bearer ใน header</li>
+      <li>Token หมดอายุ <span class="fill">3600</span> วินาที · ขอ token ใหม่ผ่าน <code>/oauth/token</code> ของ Authorization Server</li>
+      <li>ทุกการเรียกต้องผ่าน HTTPS (TLS 1.2 ขึ้นไป) เท่านั้น</li>
+    </ul>
+    <h3 class="sub">2.2 รูปแบบข้อมูล (Data Format)</h3>
+    <ul>
+      <li>Request/Response เป็น <strong>JSON</strong> (UTF-8) · <code>Content-Type: application/json</code></li>
+      <li>วันที่-เวลาใช้ <strong>ISO 8601</strong> (เช่น <code>2026-06-24T09:30:00+07:00</code>) — ภายในเก็บเป็น ค.ศ. แปลงเป็น พ.ศ. เฉพาะตอนแสดงผล</li>
+      <li>รหัสอ้างอิงผู้ป่วยใช้ HN; เลขบัตรประชาชน 13 หลักเป็น string</li>
+    </ul>
+    <h3 class="sub">2.3 การกำหนดเวอร์ชัน (Versioning)</h3>
+    <p>ใช้ versioning แบบ URI prefix: <code>/api/v1/...</code> · เปลี่ยน major version เมื่อมี breaking change และคงเวอร์ชันเดิมไว้ระยะ deprecate ≥ 6 เดือน</p>
+    <h3 class="sub">2.4 รูปแบบข้อผิดพลาด (Error Format)</h3>
+    <div class="ascii">{
+  "error": {
+    "code": "PATIENT_NOT_FOUND",
+    "message": "ไม่พบข้อมูลผู้ป่วยตาม HN ที่ระบุ",
+    "timestamp": "2026-06-24T09:30:00+07:00",
+    "traceId": "a1b2c3d4-5678-90ef-1234-567890abcdef"
+  }
+}</div>
+
+    <!-- 3 รายละเอียดราย Endpoint -->
+    <h2 class="sec"><span class="n">3</span>รายละเอียดราย Endpoint (Endpoint Detail)</h2>
+
+    <h3 class="sub">3.1 GET — ข้อมูลผู้ป่วยจาก HAIT Plus</h3>
+    <div class="ascii">GET  /api/v1/his/patients/{hn}
+Host: gateway.dis.wu.ac.th
+
+── Header ──────────────────────────────────────
+Authorization: Bearer {access_token}
+Accept: application/json
+X-Request-Id: {uuid}
+
+── Response 200 OK ─────────────────────────────
+{
+  "hn": "00123456",
+  "citizenId": "1801700XXXXXX",
+  "titleTh": "นาย",
+  "firstNameTh": "สมชาย",
+  "lastNameTh": "ใจดี",
+  "sex": "M",
+  "birthDate": "1990-05-12",
+  "phone": "0812345678",
+  "allergy": ["Penicillin"],
+  "insurance": { "scheme": "UC", "right": "ท.74" },
+  "updatedAt": "2026-06-20T14:02:11+07:00"
+}
+
+── Error Codes ─────────────────────────────────
+401 UNAUTHORIZED      token ไม่ถูกต้อง/หมดอายุ
+404 PATIENT_NOT_FOUND ไม่พบ HN
+502 HIS_UNAVAILABLE   ต่อ HAIT Plus ไม่ได้ (fallback → mock)
+
+── SLA ─────────────────────────────────────────
+p95 latency ≤ 800 ms · availability ≥ 99.5%</div>
+
+    <h3 class="sub">3.2 POST — ส่งรายการเรียกเก็บเงินไป SAP (AR)</h3>
+    <div class="ascii">POST /api/v1/sap/ar/invoices
+Host: gateway.dis.wu.ac.th
+
+── Header ──────────────────────────────────────
+Authorization: Bearer {access_token}
+Content-Type: application/json
+Idempotency-Key: {uuid}   // กันส่งซ้ำ
+
+── Request Body ────────────────────────────────
+{
+  "hn": "00123456",
+  "visitId": "V20260624-0098",
+  "customer": "C-OPD-UC",
+  "documentDate": "2026-06-24",
+  "currency": "THB",
+  "items": [
+    { "serviceCode": "D2150", "desc": "อุดฟันอมัลกัม 2 ด้าน",
+      "qty": 1, "unitPrice": 450.00, "glAccount": "4100100" },
+    { "serviceCode": "D1110", "desc": "ขูดหินปูนทั้งปาก",
+      "qty": 1, "unitPrice": 600.00, "glAccount": "4100100" }
+  ]
+}
+
+── Response 201 Created ────────────────────────
+{
+  "sapDocNo": "1800000456",
+  "status": "POSTED",
+  "totalAmount": 1050.00,
+  "postedAt": "2026-06-24T09:31:05+07:00"
+}
+
+── Error Codes ─────────────────────────────────
+400 INVALID_GL_ACCOUNT  ผังบัญชีไม่ถูกต้อง
+409 DUPLICATE_INVOICE    Idempotency-Key ซ้ำ
+422 CUSTOMER_NOT_FOUND   ไม่พบรหัสลูกหนี้ใน SAP
+
+── SLA ─────────────────────────────────────────
+p95 latency ≤ 1500 ms · ต้อง idempotent</div>
+
+    <h3 class="sub">3.3 GET — ผลแลปจาก LIS</h3>
+    <div class="ascii">GET  /api/v1/lis/results?visitId={visitId}&status=final
+Host: gateway.dis.wu.ac.th
+
+── Header ──────────────────────────────────────
+Authorization: Bearer {access_token}
+Accept: application/json
+
+── Response 200 OK ─────────────────────────────
+{
+  "visitId": "V20260624-0098",
+  "results": [
+    {
+      "orderNo": "LAB-20260624-001",
+      "testCode": "CBC",
+      "testName": "Complete Blood Count",
+      "status": "final",
+      "reportedAt": "2026-06-24T08:50:00+07:00",
+      "analytes": [
+        { "code": "HGB", "value": 13.5, "unit": "g/dL",
+          "ref": "12-16", "flag": "N" },
+        { "code": "WBC", "value": 11.2, "unit": "10^3/uL",
+          "ref": "4-10", "flag": "H" }
+      ]
+    }
+  ]
+}
+
+── Error Codes ─────────────────────────────────
+404 VISIT_NOT_FOUND   ไม่พบ visit
+204 NO_RESULT_YET     ยังไม่มีผล (ผลรอ)
+
+── SLA ─────────────────────────────────────────
+p95 latency ≤ 1000 ms</div>
+
+    <p class="small muted">หมายเหตุ: เพิ่ม endpoint อื่น (PACS WADO, HRMS sync ฯลฯ) ในรูปแบบเดียวกัน — method+URL, header, request, response, error codes, SLA</p>
+
+    <!-- 4 ความปลอดภัย API -->
+    <h2 class="sec"><span class="n">4</span>ความปลอดภัย API (API Security)</h2>
+    <table>
+      <thead><tr><th style="width:26%">ด้าน</th><th>มาตรการ</th></tr></thead>
+      <tbody>
+        <tr><td>การเข้ารหัสระหว่างทาง</td><td>TLS 1.2+ บังคับทุก endpoint · ปิด cipher ที่อ่อนแอ</td></tr>
+        <tr><td>Authentication/Authorization</td><td>OAuth 2.0 + Scope ต่อ API · หลักการ Least Privilege (Zero Trust)</td></tr>
+        <tr><td>API Gateway</td><td>Rate limiting, IP allow-list, WAF กรอง OWASP Top 10</td></tr>
+        <tr><td>การกันส่งซ้ำ</td><td>Idempotency-Key สำหรับ POST/PUT ที่ทำธุรกรรม</td></tr>
+        <tr><td>ข้อมูลอ่อนไหว (PII)</td><td>Mask เลขบัตร ปชช./เบอร์ใน log · ไม่ log payload เต็มที่มี PII</td></tr>
+        <tr><td>Audit Log</td><td>บันทึกทุกการเรียก (who/when/what/result) เก็บ ≥ ตามนโยบาย</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 5 Mock/Stub -->
+    <h2 class="sec"><span class="n">5</span>การทำ Mock/Stub ระหว่างรอทีม HIS เดิม</h2>
+    <p>เนื่องจากทีมผู้รับจ้างไม่มีผู้เชี่ยวชาญ HIS เดิม และต้องจองคิวทีมเดิมล่วงหน้า การพัฒนา DIS จึงเดินคู่ขนานโดยใช้ <strong>Mock API</strong> ที่ทำตาม contract เดียวกับสเปกในข้อ 3 จนกว่าจะ sync และทดสอบกับระบบจริง</p>
+    <table>
+      <thead><tr><th style="width:26%">ขั้นตอน</th><th>รายละเอียด</th></tr></thead>
+      <tbody>
+        <tr><td>1. ตกลง Contract</td><td>ยืนยัน schema request/response กับทีม HIS เดิม → ใช้เป็น single source of truth</td></tr>
+        <tr><td>2. ทำ Mock Server</td><td>Mock จาก OpenAPI spec (เช่น Prism/WireMock) คืนค่าตัวอย่างตามข้อ 3</td></tr>
+        <tr><td>3. พัฒนาคู่ขนาน</td><td>Dev เรียก mock ผ่าน config flag <code>USE_MOCK=true</code> ไม่ต้องรอระบบจริง</td></tr>
+        <tr><td>4. Contract Test</td><td>ทดสอบสัญญา (consumer-driven) กันสเปกเพี้ยนเมื่อสลับไป endpoint จริง</td></tr>
+        <tr><td>5. สลับเป็นจริง</td><td>เมื่อจองคิวทีมเดิมได้ ทำ Integration Test แล้วปิด flag mock</td></tr>
+      </tbody>
+    </table>
+    <div class="ascii"># config ตัวอย่าง (สลับ mock/จริง)
+his.base-url      = ${USE_MOCK:false} ? http://mock:4010 : https://hait.wu.ac.th
+his.timeout-ms    = 3000
+his.fallback-mock = true   # ถ้า HIS ล่ม → ใช้ mock ชั่วคราว + แจ้งเตือน</div>
+    <div class="tip"><b>แนวทาง:</b> เก็บ OpenAPI/Swagger spec ไว้ใน repo กลาง ใช้ทั้ง generate mock, generate client และเป็นเอกสารอ้างอิงร่วมกับทีม HIS เดิม</div>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">6</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — System Engineer</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — ทีม HIS เดิม</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิง TOR ข้อ 6.2 · ภาคผนวก ข
+  </div>
+</div>
+</body>
+</html>

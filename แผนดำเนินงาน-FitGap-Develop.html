@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แผนดำเนินงาน Fit/Gap + Develop — Dental Information System</title>
+<style>
+  :root{
+    --primary:#0d6e6e; --primary-dark:#0a5252; --accent:#e8743b;
+    --bg:#f4f6f8; --card:#ffffff; --line:#dfe4e8; --ink:#1f2d3d; --muted:#5b6b7b;
+    --warn-bg:#fff4e5; --warn-bd:#f0a14b; --note-bg:#eef7f7; --note-bd:#0d6e6e;
+  }
+  *{box-sizing:border-box}
+  body{
+    font-family:"Sarabun","Segoe UI Thai","Leelawadee UI","Tahoma",sans-serif;
+    margin:0; background:var(--bg); color:var(--ink); line-height:1.7; font-size:15px;
+  }
+  .wrap{max-width:1000px; margin:0 auto; padding:32px 20px 80px}
+  header.cover{
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff; border-radius:16px; padding:36px 34px; margin-bottom:28px;
+    box-shadow:0 10px 30px rgba(13,110,110,.25);
+  }
+  header.cover h1{margin:0 0 6px; font-size:26px; line-height:1.35}
+  header.cover .sub{font-size:16px; opacity:.95; font-weight:600}
+  header.cover .org{font-size:14px; opacity:.85; margin-top:8px}
+  .pills{margin-top:18px; display:flex; flex-wrap:wrap; gap:8px}
+  .pill{background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.3);
+    padding:5px 12px; border-radius:999px; font-size:13px; font-weight:600}
+  section{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:22px 26px; margin-bottom:20px; box-shadow:0 2px 8px rgba(31,45,61,.04)}
+  h2{color:var(--primary-dark); font-size:20px; margin:4px 0 14px;
+    padding-bottom:8px; border-bottom:2px solid var(--line)}
+  h2 .num{display:inline-block; background:var(--primary); color:#fff; border-radius:8px;
+    min-width:30px; text-align:center; padding:2px 8px; margin-right:10px; font-size:16px}
+  h3{color:var(--primary-dark); font-size:16px; margin:18px 0 8px}
+  table{width:100%; border-collapse:collapse; margin:12px 0; font-size:14px}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top}
+  th{background:var(--primary); color:#fff; font-weight:600}
+  tbody tr:nth-child(even){background:#f7fafa}
+  ul,ol{margin:8px 0 8px; padding-left:22px}
+  li{margin:4px 0}
+  strong{color:var(--primary-dark)}
+  .note,.warn{border-radius:10px; padding:12px 16px; margin:14px 0; font-size:14px}
+  .note{background:var(--note-bg); border-left:4px solid var(--note-bd)}
+  .warn{background:var(--warn-bg); border-left:4px solid var(--warn-bd)}
+  .warn b{color:#b4651b}
+  .ascii{background:#0f1f24; color:#d7e6e6; border-radius:10px; padding:16px;
+    font-family:"Cascadia Code","Consolas",monospace; font-size:12.5px; overflow-x:auto; white-space:pre; line-height:1.5}
+  .timeline{display:flex; gap:10px; margin:16px 0; flex-wrap:wrap}
+  .ms{flex:1; min-width:150px; background:#f7fafa; border:1px solid var(--line);
+    border-top:4px solid var(--primary); border-radius:10px; padding:12px 14px}
+  .ms .tag{font-weight:700; color:var(--primary-dark); font-size:15px}
+  .ms .date{font-size:13px; color:var(--accent); font-weight:700; margin:3px 0}
+  .ms .pct{display:inline-block; background:var(--accent); color:#fff; border-radius:6px;
+    padding:1px 8px; font-size:12px; font-weight:700; margin-top:4px}
+  .ms .desc{font-size:12.5px; color:var(--muted); margin-top:6px}
+  .ms.warnms{border-top-color:var(--warn-bd)}
+  .chk{list-style:none; padding-left:4px}
+  .chk li{padding-left:28px; position:relative; margin:6px 0}
+  .chk li::before{content:"☐"; position:absolute; left:0; color:var(--primary); font-size:16px}
+  .chk li.star::before{content:"★"; color:var(--accent)}
+  .badge{display:inline-block; padding:1px 7px; border-radius:5px; font-size:12px; font-weight:700; color:#fff}
+  .b-fit{background:#2e9e5b}.b-cfg{background:#3b82c4}.b-par{background:#e0a800}.b-gap{background:#d6453d}
+  footer{text-align:center; color:var(--muted); font-size:13px; margin-top:24px; padding:16px}
+  .toc{columns:2; font-size:14px}
+  .toc a{color:var(--primary-dark); text-decoration:none}
+  .toc a:hover{text-decoration:underline}
+  /* ---------- Gantt ---------- */
+  .gantt{position:relative; border:1px solid var(--line); border-radius:10px; overflow:hidden; font-size:12px; margin:10px 0}
+  .grow{display:grid; grid-template-columns:240px 1fr; align-items:stretch}
+  .grow:nth-child(even of .body-row){background:#f7fafa}
+  .glabel{padding:6px 11px; border-right:1px solid var(--line); border-bottom:1px solid #eef1f3; line-height:1.3}
+  .glabel small{color:var(--muted)}
+  .gtrack{position:relative; min-height:34px; border-bottom:1px solid #eef1f3}
+  .ghead{height:46px}
+  .gantt .grid{position:absolute; left:240px; right:0; top:46px; bottom:0; pointer-events:none}
+  .gantt .grid i{position:absolute; top:0; bottom:0; width:1px; background:#e3e9ec}
+  .gantt .grid i.ms{background:var(--accent); width:2px; opacity:.4}
+  .mlabelrow{height:30px}
+  .gtrack .mlabel{position:absolute; top:3px; transform:translateX(-50%); font-size:11px; color:var(--muted); white-space:nowrap}
+  .gtrack .mtick{position:absolute; top:24px; transform:translateX(-50%); width:1px; height:8px; background:var(--muted)}
+  .bar{position:absolute; top:6px; height:22px; border-radius:5px; color:#fff; font-size:12px;
+    line-height:22px; padding:0 9px; white-space:nowrap; overflow:visible; box-shadow:0 1px 3px rgba(0,0,0,.18)}
+  .bar.phase{height:26px; top:4px; font-weight:700; font-size:12.5px; line-height:26px}
+  .bar .lab{position:absolute; top:50%; transform:translateY(-50%); font-size:11px; color:#46586a;
+    white-space:nowrap; font-weight:600; pointer-events:none; letter-spacing:0}
+  .bar.lr .lab{left:calc(100% + 7px)}
+  .bar.ll .lab{right:calc(100% + 7px)}
+  .b-p0{background:#6b7b8c}.b-p1{background:#0d6e6e}.b-p2{background:#2a9d8f}
+  .b-p3{background:#3b82c4}.b-p4{background:#c79500}.b-p5{background:#d6453d}
+  .b-sub{background:#9bb0c2}.b-his{background:#e8743b}
+  .bar.lbl-out{color:var(--ink); padding-left:0}
+  .bar.lbl-out span{position:absolute; left:calc(100% + 5px); color:var(--ink); font-size:10.5px}
+  .mdiamond{position:absolute; top:2px; transform:translateX(-50%); width:13px; height:13px;
+    background:var(--accent); border:2px solid #fff; transform-origin:center; rotate:45deg; box-shadow:0 0 0 1px var(--accent)}
+  .mmark{position:absolute; top:2px; transform:translateX(-50%); text-align:center; white-space:nowrap}
+  .mmark .d{width:12px; height:12px; background:var(--accent); border:2px solid #fff; box-shadow:0 0 0 1px var(--accent); transform:rotate(45deg); margin:0 auto 3px}
+  .mmark b{font-size:10px; color:var(--primary-dark); display:block}
+  .grow.sechead .glabel{background:#eef7f7; font-weight:700; color:var(--primary-dark); border-bottom:1px solid var(--line)}
+  .grow.sechead .gtrack{background:#eef7f7; border-bottom:1px solid var(--line)}
+  .gantt-legend{display:flex; flex-wrap:wrap; gap:12px; font-size:12px; margin:8px 2px 0}
+  .gantt-legend span{display:inline-flex; align-items:center; gap:5px}
+  .gantt-legend i{width:14px; height:11px; border-radius:3px; display:inline-block}
+  .gantt-legend i.dia{width:11px;height:11px;rotate:45deg;border-radius:2px;background:var(--accent)}
+  .gantt-legend i.buf{background:repeating-linear-gradient(45deg,#b3bcc4,#b3bcc4 3px,#dde3e7 3px,#dde3e7 6px)}
+  .gantt-legend i.holi{background:#d6453d}
+  /* holiday + buffer */
+  .grid i.hol{background:#d6453d; width:1px; opacity:.35}
+  .bar.buf{background:repeating-linear-gradient(45deg,#b3bcc4,#b3bcc4 4px,#dde3e7 4px,#dde3e7 8px); border:1px solid #9fb0bd}
+  .holtick{position:absolute; top:2px; height:19px; border-left:2px dotted #d6453d; transform:translateX(-50%)}
+  .holtick::after{content:"⚑"; position:absolute; top:-2px; left:-5px; font-size:9px; color:#d6453d}
+  /* resource loading */
+  .rl{display:flex; align-items:flex-end; gap:7px; height:150px; padding:0 4px 0 8px;
+     border-left:1px solid var(--line); border-bottom:2px solid var(--line); position:relative}
+  .rl .gl{position:absolute; left:8px; right:0; border-top:1px dashed #eef1f3; font-size:9px; color:#aab4bc}
+  .rl .col{flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%; z-index:1}
+  .rl .bar2{width:74%; background:linear-gradient(var(--primary),#149191); border-radius:4px 4px 0 0; position:relative; min-height:3px}
+  .rl .bar2.peak{background:linear-gradient(#d6453d,#e8743b)}
+  .rl .bar2 .v{position:absolute; top:-15px; left:50%; transform:translateX(-50%); font-size:10px; color:var(--muted); font-weight:700}
+  .rl .mn{font-size:11px; color:var(--muted); margin-top:4px; text-align:center}
+  /* ---------- Resource Loading v2 ---------- */
+  .rlc{display:flex; gap:8px; margin:8px 0 0}
+  .rlc .yax{flex:0 0 30px; position:relative; height:240px; font-size:10px; color:#9aa6ad}
+  .rlc .yax span{position:absolute; right:2px; transform:translateY(-50%)}
+  .rlc .plot{flex:1; position:relative; height:240px; border-left:1px solid #c8d0d6}
+  .rlc .plot .grid{position:absolute; left:0; right:0; border-top:1px dashed #e9edf0}
+  .rlc .plot .danger{position:absolute; left:0; right:0; top:0; bottom:78.26%;
+    background:repeating-linear-gradient(45deg,rgba(214,69,61,.05),rgba(214,69,61,.05) 6px,rgba(214,69,61,.11) 6px,rgba(214,69,61,.11) 12px);
+    border-bottom:1.5px dashed #d6453d}
+  .rlc .plot .danger b{position:absolute; right:5px; top:3px; font-size:10px; color:#c0392f; font-weight:800; background:rgba(255,255,255,.85); padding:0 4px; border-radius:4px}
+  .rlc .plot .peak{position:absolute; top:0; bottom:0; background:rgba(214,69,61,.07);
+    border-left:1px dashed rgba(214,69,61,.45); border-right:1px dashed rgba(214,69,61,.45)}
+  .rlc .bars{position:absolute; inset:0; display:grid; grid-template-columns:repeat(11,1fr); align-items:end}
+  .rlc .bars .b{margin:0 7px; border-radius:6px 6px 0 0; position:relative; min-height:4px; box-shadow:0 1px 3px rgba(0,0,0,.14)}
+  .rlc .bars .b .v{position:absolute; top:-17px; left:50%; transform:translateX(-50%); font-size:11.5px; font-weight:800; color:#46586a}
+  .rl-peaks{display:flex; gap:8px; margin-bottom:3px}
+  .rl-peaks .xsp{flex:0 0 30px}
+  .rl-peaks .pgrid{flex:1; display:grid; grid-template-columns:repeat(11,1fr)}
+  .rl-peaks .pk{background:#d6453d; color:#fff; font-size:11px; font-weight:800; text-align:center;
+    border-radius:6px; padding:3px 0; margin:0 3px; box-shadow:0 1px 3px rgba(214,69,61,.4)}
+  .rlcause{display:flex; gap:8px; margin-top:4px}
+  .rlcause .xsp{flex:0 0 30px}
+  .rlcause .cgrid{flex:1; display:grid; grid-template-columns:repeat(11,1fr)}
+  .rlcause .cz{background:#fdecea; border:1px solid #f1b0a8; border-radius:8px; margin:7px 3px 0; padding:5px 5px;
+    text-align:center; font-size:10.5px; color:#b3372e; font-weight:700; line-height:1.3; position:relative}
+  .rlcause .cz::before{content:"▲"; position:absolute; top:-9px; left:50%; transform:translateX(-50%); color:#e8897f; font-size:11px}
+  .bz-lo{background:linear-gradient(#2e9e5b,#46b86f)}
+  .bz-mid{background:linear-gradient(#0d6e6e,#1aa0a0)}
+  .bz-hi{background:linear-gradient(#d98c00,#f0bb3e)}
+  .bz-pk{background:linear-gradient(#c0392f,#ef6b54)}
+  .rlx{display:flex; gap:8px; margin-top:5px}
+  .rlx .xsp{flex:0 0 30px}
+  .rlx .xlabels{flex:1; display:grid; grid-template-columns:repeat(11,1fr)}
+  .rlx .xl{text-align:center; font-size:10.5px; color:var(--muted); padding:0 2px}
+  .rlx .xl b{display:block; color:var(--ink); font-size:11px}
+  .rlx .xl .ph{display:block; margin-top:3px; font-size:8.5px; color:#fff; border-radius:3px; padding:1px 1px; line-height:1.25}
+  .rl-legend{display:flex; flex-wrap:wrap; gap:14px; font-size:12px; color:var(--muted); margin-top:10px; align-items:center}
+  .rl-legend i{width:13px; height:11px; border-radius:3px; display:inline-block; vertical-align:-1px; margin-right:4px}
+  .rl-legend .dl{width:18px; border-top:1.5px dashed #d6453d; height:0; display:inline-block; vertical-align:3px; margin-right:4px}
+  /* ---------- fullwide breakout (กว้างกว่ากรอบปกติ) ---------- */
+  .fullwide{max-width:min(1340px,95vw); width:min(1340px,95vw); margin-left:50%; transform:translateX(-50%)}
+  /* ---------- Phase Flow ---------- */
+  .flow{display:flex; flex-wrap:wrap; align-items:stretch; gap:9px; margin:18px 0 8px}
+  .fcard{flex:1 1 152px; min-width:146px; background:#fff; border:1px solid var(--line);
+    border-top:4px solid var(--primary); border-radius:12px; padding:13px 15px; box-shadow:0 3px 11px rgba(31,45,61,.07)}
+  .fcard .ph{font-size:10.5px; font-weight:800; color:var(--muted); letter-spacing:1px}
+  .fcard h4{margin:2px 0 5px; font-size:15px}
+  .fcard .dt{font-size:12px; color:var(--accent); font-weight:700}
+  .fcard .ds{font-size:11.5px; color:var(--muted); margin-top:5px; line-height:1.45}
+  .fcard .ic{float:right; font-size:20px; margin:-2px -2px 0 0}
+  .t-p0{border-top-color:#6b7b8c}.t-p1{border-top-color:#0d6e6e}.t-p2{border-top-color:#2a9d8f}
+  .t-p3{border-top-color:#3b82c4}.t-p4{border-top-color:#c79500}.t-p5{border-top-color:#d6453d}.t-p6{border-top-color:#7a5bb5}
+  .fstack{flex:1 1 172px; min-width:164px; display:flex; flex-direction:column; gap:7px}
+  .fstack .fcard{flex:1}
+  .fstack .par{font-size:10.5px; text-align:center; color:#b07d12; font-weight:800; background:#fff7e6;
+    border:1px dashed #e6c478; border-radius:7px; padding:2px 0}
+  .fgate{display:flex; flex-direction:column; align-items:center; justify-content:center; min-width:60px; flex:0 0 auto}
+  .fgate .dmd{width:36px; height:36px; background:linear-gradient(135deg,#ef8a4f,#d6453d); rotate:45deg;
+    border-radius:8px; display:flex; align-items:center; justify-content:center; box-shadow:0 3px 9px rgba(214,69,61,.35)}
+  .fgate .dmd b{rotate:-45deg; color:#fff; font-size:12.5px}
+  .fgate .gl{font-size:10.5px; color:var(--muted); margin-top:8px; text-align:center; font-weight:700; line-height:1.3}
+  @media(max-width:680px){
+    .flow{flex-direction:column}
+    .fgate{flex-direction:row; gap:10px; min-width:0; justify-content:flex-start; padding-left:6px}
+    .fgate .dmd{width:28px; height:28px} .fgate .gl{margin-top:0}
+    .fullwide{width:100%; max-width:100%; margin-left:0; transform:none}
+  }
+  @media print{
+    .gantt{break-inside:avoid}
+    .fullwide{width:100%; max-width:100%; margin-left:0; transform:none}
+    .bar,.grow.sechead .glabel,.grow.sechead .gtrack,.gantt .grid i.ms,.mdiamond,
+    .fcard,.fgate .dmd,.fstack .par,.rl .bar2,.holtick::after{ -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+  @media print{
+    body{background:#fff; font-size:12px}
+    .wrap{max-width:100%; padding:0}
+    section,header.cover{box-shadow:none; break-inside:avoid}
+    header.cover{background:var(--primary-dark)!important; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+    th{ -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+  @media(max-width:640px){.toc{columns:1} header.cover h1{font-size:21px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<p style="margin:0 0 12px"><a href="index.html" style="color:var(--primary-dark);font-weight:700;text-decoration:none">🏠 หน้ารวมเอกสาร</a> &nbsp;·&nbsp; <a href="เอกสารส่งมอบรายงวด.html" style="color:var(--primary-dark);text-decoration:none">📋 เอกสารส่งมอบรายงวด</a></p>
+
+<header class="cover">
+  <h1>แผนดำเนินงานพัฒนา “ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม”<br>(Dental Information System)</h1>
+  <div class="sub">Fit/Gap Analysis + Development + ขั้นตอนที่จำเป็นตามแนวทาง TOR</div>
+  <div class="org">มหาวิทยาลัยวลัยลักษณ์ — คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม</div>
+  <div class="pills">
+    <span class="pill">💰 9,600,000 บาท</span>
+    <span class="pill">📅 300 วัน</span>
+    <span class="pill">🖊️ เซ็น 11/06/2026</span>
+    <span class="pill">🏁 ส่งมอบ 07/04/2027</span>
+    <span class="pill">🛡️ รับประกัน 2 ปี</span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="num">0</span>สรุปสาระสำคัญจาก TOR</h2>
+  <table>
+    <tbody>
+      <tr><th style="width:30%">หัวข้อ</th><th>สาระสำคัญ</th></tr>
+      <tr><td>ชื่องาน</td><td>ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม จำนวน 1 ระบบ (Dental Information System)</td></tr>
+      <tr><td>วงเงิน</td><td>9,600,000 บาท</td></tr>
+      <tr><td>ระยะเวลา</td><td><strong>ต้องแล้วเสร็จภายใน 300 วัน</strong> นับจากวันลงนาม/แจ้งเริ่มงาน (NTP)</td></tr>
+      <tr><td>วันเซ็นสัญญา (NTP)</td><td><strong>11/06/2026</strong> (พฤหัสบดี) → ครบ 300 วัน = <strong>07/04/2027</strong></td></tr>
+      <tr><td>การรับประกัน</td><td><strong>2 ปี</strong> หลังส่งมอบ + ผูก SLA</td></tr>
+      <tr><td>มาตรฐานบังคับ</td><td>ISO 29110 (กระบวนการพัฒนาซอฟต์แวร์), HA (Healthcare Accreditation), Made in Thailand, แต้มต่อ SME — <a href="เอกสารส่งมอบรายงวด.html#std" style="color:var(--accent);font-weight:700">ดูคำอธิบาย + เอกสารส่งมอบรายงวด ▸</a></td></tr>
+      <tr><td>รูปแบบระบบ</td><td>Web Application + Mobile App (Patient / Student / Dentist) ทำงาน Real-time, Fully Integrated</td></tr>
+      <tr><td>ระบบเดิมที่ต้องเชื่อมต่อ</td><td><strong>HAIT Plus (HIS เดิม)</strong>, WU-HRMS, SAP (IM/PU/GL/AP/AR/AA/CO/FM), PACS, LIS/RIS</td></tr>
+    </tbody>
+  </table>
+  <div class="note"><strong>บริบทของเรา:</strong> เรามี Software HIS ของเราอยู่แล้ว จึงต้องทำ <strong>Fit/Gap ก่อน</strong> เพื่อดูว่าของเดิมตอบ TOR ได้แค่ไหน ส่วนไหนต้อง Config ส่วนไหนต้อง Develop ใหม่ — และประเด็นสำคัญที่สุด <strong>เราไม่มีผู้เชี่ยวชาญ HIS เดิมในทีมตัวเอง ต้องยืมคนจากทีม HIS เดิมมาเป็นช่วง ๆ และต้อง Sync/Consult กับทีมเดิมตลอด</strong> → แผนนี้จึงออกแบบโดยถือ “เวลาของทีม HIS เดิม” เป็นทรัพยากรคอขวดบนเส้นทางวิกฤต (critical path)</div>
+
+  <h3>กรอบเวลา (คำนวณจริงจากวันเซ็น 11/06/2026)</h3>
+  <div class="timeline">
+    <div class="ms"><div class="tag">NTP</div><div class="date">11/06/2026</div><div class="desc">เริ่มนับเวลา (Day 0)</div></div>
+    <div class="ms warnms"><div class="tag">M1</div><div class="date">11/07/2026 ⚠️</div><span class="pct">20%</span><div class="desc">แผนบริหารโครงการ 9 ฉบับ + ทีม</div></div>
+    <div class="ms warnms"><div class="tag">M2</div><div class="date">08/11/2026 ⚠️</div><span class="pct">20%</span><div class="desc">Fit/Gap + ออกแบบทั้งหมด</div></div>
+    <div class="ms"><div class="tag">M3</div><div class="date">18/03/2027</div><span class="pct">40%</span><div class="desc">ติดตั้ง, UAT, อบรม, Migrate</div></div>
+    <div class="ms"><div class="tag">M4</div><div class="date">07/04/2027</div><span class="pct">20%</span><div class="desc">Go-Live + ส่งมอบ</div></div>
+  </div>
+  <div class="warn"><b>⚠️ M1 (11/07/2026) ตรงวันเสาร์ และ M2 (08/11/2026) ตรงวันอาทิตย์</b> → ในทางปฏิบัติควรส่งมอบให้เสร็จภายใน “วันทำการก่อนหน้า” (M1 ภายในศุกร์ 10/07/2026, M2 ภายในศุกร์ 06/11/2026) และเช็ควันหยุดราชการประกอบ<br>หมุดเวลาภายในที่สำคัญ: <b>จบ Fit/Gap Workshop ~09/10/2026 (Day 120)</b> · <b>จบ Build/SIT ~16/02/2027 (Day 250)</b></div>
+</section>
+
+<section>
+  <h2><span class="num">1</span>หลักการวางแผน (ออกแบบรอบข้อจำกัด “ทีม HIS เดิม”)</h2>
+  <ol>
+    <li><strong>Front-load การใช้ทีม HIS เดิม</strong> — งานที่พึ่งความรู้ HIS เดิม (Fit/Gap, Interface, Data Migration mapping) ต้องดันมาทำให้เร็วและจองคิวทีมเดิมไว้ล่วงหน้าทั้งก้อน</li>
+    <li><strong>Batch + จองเป็น “Consult Sprint”</strong> — รวบคำถาม/ประเด็นเป็นชุด ใช้เวลาทีมเดิมแบบเข้มข้นเป็นช่วง ๆ แทนการถามกระจัดกระจาย</li>
+    <li><strong>Capture ความรู้ทุกครั้ง</strong> — ทุก session ต้องบันทึก (อัดวิดีโอ/บันทึกการประชุม) + ทำเอกสารทันที เพื่อสร้างความรู้ในทีมเราเอง ลดการพึ่งพารอบถัดไป</li>
+    <li><strong>Async-first</strong> — สิ่งที่ทำเองได้ก่อน (อ่านโค้ด/DB/เอกสารเดิม, ตั้งคำถาม) ทำให้เสร็จก่อนเข้าพบทีมเดิม เพื่อให้เวลาที่มีจำกัดคุ้มที่สุด</li>
+    <li><strong>ทำสัญญาระดับบริการกับทีม HIS เดิม (MOU/Back-to-back SLA)</strong> — ระบุจำนวนวัน/คน, lead time การจอง, ช่องทาง escalation ให้ชัดตั้งแต่ต้น</li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="num">2</span>โครงสร้างเฟสงาน (ภาพรวม)</h2>
+  <p style="color:var(--muted);font-size:13.5px;margin:2px 0 4px">ไหลจากซ้าย→ขวา · หมุด ◆ = ประตูส่งมอบ/งวดเงิน · กล่องซ้อน = เฟสที่ทำคู่ขนาน</p>
+  <div class="flow">
+    <div class="fcard t-p0"><span class="ic">🚀</span><div class="ph">PHASE 0</div><h4>Setup &amp; Mobilization</h4><div class="dt">11/06 – 11/07/26</div><div class="ds">Kick-off · แผน 9 ฉบับ · จองทีม HIS เดิม</div></div>
+
+    <div class="fgate"><div class="dmd"><b>M1</b></div><div class="gl">งวด 20%<br>11/07/26</div></div>
+
+    <div class="fstack">
+      <div class="par">⇅ ทำคู่ขนาน</div>
+      <div class="fcard t-p1"><div class="ph">PHASE 1</div><h4>Discovery + Fit/Gap</h4><div class="dt">11/07 – 09/10/26</div></div>
+      <div class="fcard t-p2"><div class="ph">PHASE 2</div><h4>Design (เอกสาร M2)</h4><div class="dt">10/09 – 08/11/26</div></div>
+    </div>
+
+    <div class="fgate"><div class="dmd"><b>M2</b></div><div class="gl">งวด 20%<br>08/11/26</div></div>
+
+    <div class="fstack">
+      <div class="par">⇅ ทำคู่ขนาน</div>
+      <div class="fcard t-p3"><div class="ph">PHASE 3</div><h4>Build (Config+Develop)</h4><div class="dt">08/11/26 – 16/02/27</div></div>
+      <div class="fcard t-p4"><div class="ph">PHASE 4</div><h4>Test · Train · Migrate</h4><div class="dt">27/01 – 18/03/27</div></div>
+    </div>
+
+    <div class="fgate"><div class="dmd"><b>M3</b></div><div class="gl">งวด 40%<br>18/03/27</div></div>
+
+    <div class="fcard t-p5"><span class="ic">🎯</span><div class="ph">PHASE 5</div><h4>Go-Live + Hypercare</h4><div class="dt">18/03 – 07/04/27</div></div>
+
+    <div class="fgate"><div class="dmd"><b>M4</b></div><div class="gl">งวด 20%<br>07/04/27</div></div>
+
+    <div class="fcard t-p6"><span class="ic">🛡️</span><div class="ph">PHASE 6</div><h4>Warranty &amp; Support</h4><div class="dt">08/04/27 – 07/04/29</div><div class="ds">รับประกัน 2 ปี · ผูก SLA</div></div>
+  </div>
+</section>
+
+<section class="fullwide">
+  <h2><span class="num">2.1</span>แผนภูมิ Gantt (ตามวันจริง 11/06/2026 → 07/04/2027)</h2>
+  <p style="color:var(--muted);font-size:13.5px;margin:2px 0 6px">แกนเวลาแบ่งตามเดือนจริง · แถบเฟสหลัก + กิจกรรมย่อย + ช่วงที่ต้องใช้ทีม HIS เดิม · หมุด ◆ = Milestone/งวดเงิน · เส้นประส้ม = เส้น Milestone</p>
+
+  <div class="gantt">
+    <!-- gridlines + milestone lines (overlay across all rows) -->
+    <div class="grid">
+      <i style="left:6.7%"></i><i style="left:17.0%"></i><i style="left:27.3%"></i><i style="left:37.3%"></i>
+      <i style="left:47.7%"></i><i style="left:57.7%"></i><i style="left:68.0%"></i><i style="left:78.3%"></i>
+      <i style="left:87.7%"></i><i style="left:98.0%"></i>
+      <i class="ms" style="left:10%"></i><i class="ms" style="left:50%"></i><i class="ms" style="left:93.33%"></i><i class="ms" style="left:100%"></i>
+      <i class="hol" style="left:15.67%"></i><i class="hol" style="left:20.67%"></i><i class="hol" style="left:41.33%"></i><i class="hol" style="left:44.67%"></i><i class="hol" style="left:59%"></i><i class="hol" style="left:60.67%"></i><i class="hol" style="left:68%"></i>
+    </div>
+
+    <!-- header: เดือน -->
+    <div class="grow">
+      <div class="glabel" style="font-weight:700;color:var(--primary-dark)">กิจกรรม / ช่วงเวลา</div>
+      <div class="gtrack ghead">
+        <div class="mlabel" style="left:0%">มิ.ย.</div>
+        <div class="mlabel" style="left:6.7%">ก.ค.</div><span class="mtick" style="left:6.7%"></span>
+        <div class="mlabel" style="left:17.0%">ส.ค.</div><span class="mtick" style="left:17.0%"></span>
+        <div class="mlabel" style="left:27.3%">ก.ย.</div><span class="mtick" style="left:27.3%"></span>
+        <div class="mlabel" style="left:37.3%">ต.ค.</div><span class="mtick" style="left:37.3%"></span>
+        <div class="mlabel" style="left:47.7%">พ.ย.</div><span class="mtick" style="left:47.7%"></span>
+        <div class="mlabel" style="left:57.7%">ธ.ค.</div><span class="mtick" style="left:57.7%"></span>
+        <div class="mlabel" style="left:68.0%">ม.ค.</div><span class="mtick" style="left:68.0%"></span>
+        <div class="mlabel" style="left:78.3%">ก.พ.</div><span class="mtick" style="left:78.3%"></span>
+        <div class="mlabel" style="left:87.7%">มี.ค.</div><span class="mtick" style="left:87.7%"></span>
+        <div class="mlabel" style="left:98.0%">เม.ย.</div><span class="mtick" style="left:98.0%"></span>
+      </div>
+    </div>
+
+    <!-- milestone row -->
+    <div class="grow body-row">
+      <div class="glabel">📍 <b>Milestone / งวดเงิน</b></div>
+      <div class="gtrack mlabelrow">
+        <div class="mmark" style="left:10%"><span class="d"></span><b>M1·20%</b></div>
+        <div class="mmark" style="left:50%"><span class="d"></span><b>M2·20%</b></div>
+        <div class="mmark" style="left:93.33%"><span class="d"></span><b>M3·40%</b></div>
+        <div class="mmark" style="left:98%"><span class="d"></span><b>M4·20%</b></div>
+      </div>
+    </div>
+
+    <!-- วันหยุด + buffer -->
+    <div class="grow body-row"><div class="glabel">⚑ วันหยุด / โซน Buffer (แนะนำ)</div><div class="gtrack">
+      <div class="holtick" style="left:15.67%" title="28 ก.ค. วันเฉลิมฯ ร.10"></div>
+      <div class="holtick" style="left:20.67%" title="12 ส.ค. วันแม่"></div>
+      <div class="holtick" style="left:41.33%" title="13 ต.ค. วันคล้ายวันสวรรคต ร.9"></div>
+      <div class="holtick" style="left:44.67%" title="23 ต.ค. วันปิยมหาราช"></div>
+      <div class="holtick" style="left:59%" title="5 ธ.ค. วันชาติ/วันพ่อ"></div>
+      <div class="holtick" style="left:60.67%" title="10 ธ.ค. วันรัฐธรรมนูญ"></div>
+      <div class="holtick" style="left:68%" title="31 ธ.ค.–1 ม.ค. สิ้นปี/ปีใหม่"></div>
+      <div class="bar buf" style="left:46.67%;width:3.33%" title="Buffer ก่อน M2 (แนะนำ ~10 วัน)"></div>
+      <div class="bar buf" style="left:90.67%;width:2.66%" title="Buffer ก่อน Go-Live (แนะนำ ~8 วัน)"></div>
+    </div></div>
+
+    <!-- เฟสหลัก -->
+    <div class="grow sechead"><div class="glabel">เฟสหลัก (Phases)</div><div class="gtrack"></div></div>
+    <div class="grow body-row"><div class="glabel">Phase 0 · เตรียมพร้อม</div><div class="gtrack"><div class="bar phase b-p0" style="left:0%;width:10%">Setup</div></div></div>
+    <div class="grow body-row"><div class="glabel">Phase 1 · Discovery + Fit/Gap</div><div class="gtrack"><div class="bar phase b-p1" style="left:10%;width:30%">Discovery + Fit/Gap</div></div></div>
+    <div class="grow body-row"><div class="glabel">Phase 2 · ออกแบบ (เอกสาร M2)</div><div class="gtrack"><div class="bar phase b-p2" style="left:30%;width:20%">Design</div></div></div>
+    <div class="grow body-row"><div class="glabel">Phase 3 · Build (Config+Develop)</div><div class="gtrack"><div class="bar phase b-p3" style="left:50%;width:33.33%">Build</div></div></div>
+    <div class="grow body-row"><div class="glabel">Phase 4 · ทดสอบ+อบรม+Migrate</div><div class="gtrack"><div class="bar phase b-p4" style="left:76.67%;width:16.66%">Test/Train</div></div></div>
+    <div class="grow body-row"><div class="glabel">Phase 5 · Go-Live</div><div class="gtrack"><div class="bar phase b-p5" style="left:93.33%;width:6.67%">Go-Live</div></div></div>
+
+    <!-- รายละเอียด Phase 1-2 -->
+    <div class="grow sechead"><div class="glabel">รายละเอียด: วิเคราะห์/ออกแบบ</div><div class="gtrack"></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> RTM จากภาคผนวก ก/ข/ค</div><div class="gtrack"><div class="bar b-sub lr" style="left:10%;width:10%"><span class="lab">RTM (30 ว.)</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Inventory HIS เดิม</div><div class="gtrack"><div class="bar b-sub lr" style="left:11.67%;width:10%"><span class="lab">Inventory HIS เดิม</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Fit/Gap Workshop รายโมดูล</div><div class="gtrack"><div class="bar b-sub lr" style="left:15%;width:21.67%"><span class="lab">Fit/Gap Workshop (65 ว.)</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Integration &amp; Data Fit/Gap</div><div class="gtrack"><div class="bar b-sub lr" style="left:20%;width:20%"><span class="lab">Integration / Data Fit-Gap</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Gap Backlog + ประเมิน effort</div><div class="gtrack"><div class="bar b-sub lr" style="left:33.33%;width:6.67%"><span class="lab">Gap Backlog</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> ออกแบบ + เอกสารส่งมอบ M2</div><div class="gtrack"><div class="bar b-p2 lr" style="left:30%;width:20%"><span class="lab">ออกแบบ + เอกสาร M2 (60 ว.)</span></div></div></div>
+
+    <!-- รายละเอียด Phase 3 -->
+    <div class="grow sechead"><div class="glabel">รายละเอียด: Build</div><div class="gtrack"></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Configure (Fit/Config)</div><div class="gtrack"><div class="bar b-sub ll" style="left:50%;width:15%"><span class="lab">Configure (Fit/Config)</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Develop Gap รายโมดูล</div><div class="gtrack"><div class="bar b-p3 ll" style="left:51.67%;width:28.33%"><span class="lab">Develop Gap (85 ว.)</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Integration build (HAIT/SAP/PACS/LIS)</div><div class="gtrack"><div class="bar b-p3 ll" style="left:55%;width:26.67%"><span class="lab">Integration build</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Mobile App 3 ตัว</div><div class="gtrack"><div class="bar b-sub ll" style="left:56.67%;width:25%"><span class="lab">Mobile App 3 ตัว</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> ETL + Dry-run</div><div class="gtrack"><div class="bar b-sub ll" style="left:65%;width:20%"><span class="lab">ETL + Dry-run</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Unit + SIT</div><div class="gtrack"><div class="bar b-sub ll" style="left:68.33%;width:16.67%"><span class="lab">Unit + SIT</span></div></div></div>
+
+    <!-- รายละเอียด Phase 4-5 -->
+    <div class="grow sechead"><div class="glabel">รายละเอียด: Test / Go-Live</div><div class="gtrack"></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Master Data Setup</div><div class="gtrack"><div class="bar b-sub ll" style="left:76.67%;width:6%"><span class="lab">Master Data</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Migration rehearsal → final</div><div class="gtrack"><div class="bar b-sub ll" style="left:83.33%;width:10%"><span class="lab">Migration rehearsal→final</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> UAT (Process Owner)</div><div class="gtrack"><div class="bar b-p4 ll" style="left:82.67%;width:8%"><span class="lab">UAT</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> ฝึกอบรม 4 กลุ่ม</div><div class="gtrack"><div class="bar b-sub ll" style="left:85%;width:7.67%"><span class="lab">ฝึกอบรม 4 กลุ่ม</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> E2E Test</div><div class="gtrack"><div class="bar b-sub ll" style="left:87.33%;width:5.33%"><span class="lab">E2E</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Cutover / Go-Live</div><div class="gtrack"><div class="bar b-p5 ll" style="left:93.33%;width:4%"><span class="lab">Cutover</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Hypercare</div><div class="gtrack"><div class="bar b-p5 ll" style="left:96.67%;width:3.33%"><span class="lab">Hypercare</span></div></div></div>
+
+    <!-- ทีม HIS เดิม -->
+    <div class="grow sechead"><div class="glabel">★ ทีม HIS เดิม (Consult Sprint)</div><div class="gtrack"></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Sprint A · สถาปัตยกรรม/ข้อมูล</div><div class="gtrack"><div class="bar b-his lr" style="left:11.67%;width:5%"><span class="lab">Sprint A</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Sprint B · Interface/Migration map</div><div class="gtrack"><div class="bar b-his lr" style="left:20%;width:6.67%"><span class="lab">Sprint B</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Sprint C · review Fit/Gap</div><div class="gtrack"><div class="bar b-his lr" style="left:33.33%;width:5%"><span class="lab">Sprint C</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Sprint D · Integration build</div><div class="gtrack"><div class="bar b-his ll" style="left:55%;width:13.33%"><span class="lab">Sprint D</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Migration sync</div><div class="gtrack"><div class="bar b-his ll" style="left:81.67%;width:6.67%"><span class="lab">Migration sync</span></div></div></div>
+    <div class="grow body-row"><div class="glabel"><small>›</small> Cutover standby</div><div class="gtrack"><div class="bar b-his ll" style="left:93.33%;width:5.33%"><span class="lab">Cutover standby</span></div></div></div>
+  </div>
+
+  <div class="gantt-legend">
+    <span><i class="b-p0"></i>Setup</span><span><i class="b-p1"></i>Fit/Gap</span><span><i class="b-p2"></i>Design</span>
+    <span><i class="b-p3"></i>Build</span><span><i class="b-p4"></i>Test/Train</span><span><i class="b-p5"></i>Go-Live</span>
+    <span><i class="b-sub"></i>กิจกรรมย่อย</span><span><i class="b-his"></i>ทีม HIS เดิม</span><span><i class="dia"></i>Milestone</span>
+    <span><i class="buf"></i>Buffer แนะนำ</span><span><i class="holi"></i>วันหยุด ⚑</span>
+  </div>
+
+  <div class="warn" style="margin-top:14px"><b>⚠️ สิ่งที่ Gantt เผยให้เห็น (ควรเพิ่ม/ระวัง):</b>
+    <ul style="margin:6px 0 0">
+      <li><b>เส้นทางวิกฤตซ้อนกันแน่น</b> — Phase 1 (Fit/Gap) กับ Phase 2 (Design) ทับกันช่วง ก.ย.–ต.ค. และ Phase 3/4 ทับกันช่วง ก.พ.–มี.ค. → ต้องมีกำลังคนพอทำคู่ขนาน</li>
+      <li><b>ไม่มี buffer</b> — แผนเดิมแตะ deadline ทุกงวดพอดี ควรเพิ่ม <b>buffer 5–10 วัน</b> ก่อน M2 และก่อน Go-Live</li>
+      <li><b>วันหยุดคาบเกี่ยว</b> — ปีใหม่ (1 ม.ค. 2027) ตกกลางเฟส Build, และ 13/23 ต.ค. ตกปลาย Fit/Gap → เผื่อกำลังคนช่วงนี้</li>
+      <li><b>ทีม HIS เดิม 6 ช่วง</b> — ต้องล็อกปฏิทิน Sprint A–D + Migration sync + Cutover standby ใน MOU ตั้งแต่ Day 0</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">2.2</span>Resource Loading — ภาระงานทีมรายเดือน</h2>
+  <p style="color:var(--muted);font-size:13.5px;margin:2px 0 8px">ประมาณการ % การใช้กำลังคนเทียบกับขีดสูงสุดของทีม · <b style="color:#d6453d">เดือนสีแดง = ช่วงงานทับซ้อน (เกือบเต็มกำลัง)</b> — จุดที่ต้องเฝ้าระวังเรื่องคนมากที่สุด</p>
+  <div class="rl-peaks">
+    <div class="xsp"></div>
+    <div class="pgrid">
+      <div class="pk" style="grid-column:4 / span 2">🔴 PEAK 1</div>
+      <div class="pk" style="grid-column:9 / span 2">🔴 PEAK 2</div>
+    </div>
+  </div>
+  <div class="rlc">
+    <div class="yax">
+      <span style="bottom:86.96%">100%</span><span style="bottom:78.26%">90%</span>
+      <span style="bottom:65.22%">75%</span><span style="bottom:43.48%">50%</span>
+      <span style="bottom:21.74%">25%</span><span style="bottom:0%">0</span>
+    </div>
+    <div class="plot">
+      <div class="grid" style="bottom:21.74%"></div>
+      <div class="grid" style="bottom:43.48%"></div>
+      <div class="grid" style="bottom:65.22%"></div>
+      <div class="danger"><b>≥ 90% เกินกำลัง ⚠️</b></div>
+      <div class="peak" style="left:27.27%;width:18.18%"></div>
+      <div class="peak" style="left:72.73%;width:18.18%"></div>
+      <div class="bars">
+        <div class="b bz-lo"  style="height:26.09%"><span class="v">30</span></div>
+        <div class="b bz-lo"  style="height:52.17%"><span class="v">60</span></div>
+        <div class="b bz-mid" style="height:65.22%"><span class="v">75</span></div>
+        <div class="b bz-pk"  style="height:82.61%"><span class="v">95</span></div>
+        <div class="b bz-pk"  style="height:86.96%"><span class="v">100</span></div>
+        <div class="b bz-hi"  style="height:73.91%"><span class="v">85</span></div>
+        <div class="b bz-mid" style="height:69.57%"><span class="v">80</span></div>
+        <div class="b bz-hi"  style="height:73.91%"><span class="v">85</span></div>
+        <div class="b bz-pk"  style="height:86.96%"><span class="v">100</span></div>
+        <div class="b bz-pk"  style="height:82.61%"><span class="v">95</span></div>
+        <div class="b bz-lo"  style="height:52.17%"><span class="v">60</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="rlx">
+    <div class="xsp"></div>
+    <div class="xlabels">
+      <div class="xl"><b>มิ.ย.</b><span class="ph" style="background:#6b7b8c">Setup</span></div>
+      <div class="xl"><b>ก.ค.</b><span class="ph" style="background:#0d6e6e">Fit/Gap</span></div>
+      <div class="xl"><b>ส.ค.</b><span class="ph" style="background:#0d6e6e">Fit/Gap</span></div>
+      <div class="xl"><b>ก.ย.</b><span class="ph" style="background:#2a9d8f">FG+Design</span></div>
+      <div class="xl"><b>ต.ค.</b><span class="ph" style="background:#2a9d8f">FG+Design</span></div>
+      <div class="xl"><b>พ.ย.</b><span class="ph" style="background:#3b82c4">Build</span></div>
+      <div class="xl"><b>ธ.ค.</b><span class="ph" style="background:#3b82c4">Build</span></div>
+      <div class="xl"><b>ม.ค.</b><span class="ph" style="background:#3b82c4">Build</span></div>
+      <div class="xl"><b>ก.พ.</b><span class="ph" style="background:#c79500">Build+Test</span></div>
+      <div class="xl"><b>มี.ค.</b><span class="ph" style="background:#c79500">Test+GoLive</span></div>
+      <div class="xl"><b>เม.ย.</b><span class="ph" style="background:#d6453d">Hypercare</span></div>
+    </div>
+  </div>
+  <div class="rlcause">
+    <div class="xsp"></div>
+    <div class="cgrid">
+      <div class="cz" style="grid-column:4 / span 2">ทำไม peak? → <b>Fit/Gap (P1) ⊕ Design (P2) ทับกัน</b></div>
+      <div class="cz" style="grid-column:9 / span 2">ทำไม peak? → <b>Build (P3) ⊕ Test/Train (P4) ทับกัน</b></div>
+    </div>
+  </div>
+  <div class="rl-legend">
+    <span><i class="bz-lo"></i>ต่ำ (≤65%)</span>
+    <span><i class="bz-mid"></i>ปานกลาง (66–84%)</span>
+    <span><i class="bz-hi"></i>สูง (85–94%)</span>
+    <span><i class="bz-pk"></i>เต็มกำลัง (≥95%)</span>
+    <span><i class="dl"></i>เส้นเกินกำลัง 90%</span>
+    <span>🔴 โซน Peak = งานทับซ้อน</span>
+  </div>
+  <div class="note" style="margin-top:14px"><b>อ่านกราฟ:</b> มี 2 ยอด (peak) ที่ทีมเกือบเต็มกำลัง —
+    <ul style="margin:6px 0 0">
+      <li><b>ก.ย.–ต.ค. 2026</b> เพราะ Fit/Gap (Phase 1) ทับ Design (Phase 2) → ต้องมี System Analyst/Designer พอทำคู่ขนาน + ทีม HIS เดิมพร้อม (Sprint C)</li>
+      <li><b>ก.พ.–มี.ค. 2027</b> เพราะ Build (Phase 3) ทับ Test/Train (Phase 4) → Developer ยังปิดงานขณะ QA/Trainer เริ่มแล้ว</li>
+      <li><b>ข้อเสนอ:</b> วางแผนกำลังคนสำรอง/OT เฉพาะ 2 ช่วงนี้, หลีกเลี่ยงลาพักร้อนทีมหลัก, และดึงงานที่ทำได้ล่วงหน้า (เช่น เขียน Test Case ตั้งแต่มี SRS) มาเกลี่ยโหลด</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">3</span>Phase 0 — Setup &amp; Mobilization <small style="color:var(--muted);font-weight:400">(11/06–11/07/2026 · Day 0–30 → M1, 20%)</small></h2>
+  <p><strong>เป้าหมาย:</strong> ตั้งโครงการให้พร้อม + ส่งมอบแผนบริหารโครงการครบตาม TOR ข้อ 6.1</p>
+  <ul>
+    <li><strong>3.1 Project Kick-off &amp; Governance</strong>
+      <ul><li>ตั้งคณะทำงาน, RACI, ช่องทางสื่อสาร, ปฏิทินโครงการ (อิง deadline 30/150/280/300)</li>
+      <li>จัดตั้งทีมตามที่ TOR กำหนด (PM, System Analyst, System Engineer, Senior/Programmer x3, DBA, DB Analyst/Designer, Sr. Data Engineer, Tester/QA, Project Coordinator, UI/UX)</li></ul></li>
+    <li><strong>3.2 จัดทำแผนบริหารโครงการ 9 ฉบับ (ส่งมอบงวด M1)</strong><br>
+      1) แผนดำเนินงานภาพรวม 2) แผนสำรวจ/ออกแบบ 3) แผน Database Migration 4) แผนติดตั้ง 5) แผน Implementation 6) แผนทดสอบ (Simulation) 7) แผนฝึกอบรม/ถ่ายทอด 8) แผนกู้คืนระบบ + คู่มือ 9) <strong>แผนบริหารการเปลี่ยนแปลง (Change Management)</strong></li>
+    <li><strong>3.3 ★ ตั้ง “HIS-Team Engagement Model”</strong> (งานเพิ่มที่ TOR ไม่ได้สั่ง แต่จำเป็นกับบริบทเรา)
+      <ul><li>ทำ MOU/SLA กับทีม HIS เดิม: โควตาวัน-คน, lead time จองล่วงหน้า, ผู้ประสานงานหลัก (SPOC), ตารางช่วงเวลาที่ขอคนได้</li>
+      <li>จองคิว <strong>Consult Sprint ก้อนใหญ่ของ Fit/Gap ไว้ล่วงหน้าทั้งหมด</strong> (เพราะอยู่บน critical path)</li></ul></li>
+    <li><strong>3.4 เตรียม Environment &amp; Access</strong> — ขอสิทธิ์เข้าถึงเอกสาร/Schema/Source ของ HIS เดิม (HAIT Plus), ตั้ง Dev/Test environment, repo, เครื่องมือ ALM/issue tracker</li>
+  </ul>
+  <div class="note"><strong>Exit M1:</strong> แผน 9 ฉบับผ่านการอนุมัติ + ทีม + Engagement Model + คิวทีมเดิมถูกจองแล้ว</div>
+</section>
+
+<section>
+  <h2><span class="num">4</span>Phase 1 — Discovery + Fit/Gap Analysis <small style="color:var(--muted);font-weight:400">(11/07–09/10/2026 · Day 30–120, อยู่ใน M2)</small></h2>
+  <div class="note">หัวใจของโครงการ และเป็นจุดที่ต้องใช้ทีม HIS เดิมเข้มข้นที่สุด</div>
+  <ul>
+    <li><strong>4.1 แตกความต้องการเป็น Requirement Traceability Matrix (RTM)</strong> — แปลงทุกข้อใน <strong>ภาคผนวก ก</strong> (HIS ข้อ 1.x + การเรียนการสอน ข้อ 2.x), <strong>ภาคผนวก ข</strong> (เทคนิค), <strong>ภาคผนวก ค</strong> (ครุภัณฑ์) เป็น requirement ละบรรทัด มีรหัสอ้างอิง</li>
+    <li><strong>4.2 Inventory ระบบเดิมของเรา</strong> — ทำบัญชีความสามารถ HIS ปัจจุบัน (ฟังก์ชัน, โครงสร้างข้อมูล, API, รายงาน) — <em>ต้องการทีม HIS เดิม</em></li>
+    <li><strong>4.3 Fit/Gap Workshop ราย Module</strong> — จับคู่ requirement ↔ ความสามารถเดิม แล้วจัดประเภท:</li>
+  </ul>
+  <table>
+    <tbody>
+      <tr><th>ผล</th><th>ความหมาย</th><th>การดำเนินการ</th></tr>
+      <tr><td><span class="badge b-fit">Fit</span></td><td>ระบบเดิมรองรับอยู่แล้ว</td><td>ทดสอบยืนยัน</td></tr>
+      <tr><td><span class="badge b-cfg">Config</span></td><td>รองรับได้ด้วยการตั้งค่า</td><td>ปรับ Configuration Table</td></tr>
+      <tr><td><span class="badge b-par">Partial</span></td><td>รองรับบางส่วน</td><td>ปรับ/ต่อยอด</td></tr>
+      <tr><td><span class="badge b-gap">Gap</span></td><td>ไม่มี ต้องพัฒนาใหม่</td><td>เข้า Backlog พัฒนา</td></tr>
+    </tbody>
+  </table>
+  <ul>
+    <li><strong>4.4 Fit/Gap ด้าน Integration &amp; ข้อมูล</strong> (พึ่งทีมเดิมสูง) — Interface กับ <strong>HAIT Plus</strong>, SAP, PACS, LIS/RIS, WU-HRMS → ทำ <strong>API Spec / Data Interface mapping</strong> + <strong>Data Migration Mapping</strong> + Data Dictionary</li>
+    <li><strong>4.5 จัดลำดับ Gap Backlog + ประเมิน effort</strong> → ตัดสินใจ Build vs Config, ระบุงานที่เป็นความเสี่ยง</li>
+  </ul>
+  <h3>การใช้ทีม HIS เดิมในเฟสนี้ (จัดเป็น Consult Sprint)</h3>
+  <ul>
+    <li><strong>Sprint A</strong> — ความเข้าใจสถาปัตยกรรม/ข้อมูล HIS เดิม</li>
+    <li><strong>Sprint B</strong> — ยืนยัน Interface/API + Data Migration mapping</li>
+    <li><strong>Sprint C</strong> — review ผล Fit/Gap + ข้อสรุปการเชื่อมต่อ</li>
+    <li>ทุก Sprint: เตรียมคำถามล่วงหน้า → ประชุมเข้ม → บันทึก/ถอดความรู้ทันที</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="num">5</span>Phase 2 — Design <small style="color:var(--muted);font-weight:400">(10/09–08/11/2026 · Day 90–150, ปิดท้าย M2 → งวด 20%)</small></h2>
+  <p>ออกแบบรายละเอียดของส่วนที่ต้องพัฒนา/ปรับ และจัดทำ <strong>เอกสารส่งมอบ M2 ทั้งหมดตาม TOR ข้อ 8</strong>:</p>
+  <ul>
+    <li>Workflow Diagram (As-is/To-be), System Requirement Specification, BPM</li>
+    <li>Data Mapping, <strong>User Authorization Matrix</strong>, API Spec, Migration Data Mapping</li>
+    <li>Technical Specification, Data Dictionary, <strong>System Architecture</strong>, Database Schema Design</li>
+    <li>ออกแบบ UX/UI + ออกแบบความปลอดภัย (OWASP, Zero Trust, TLS, Audit Log)</li>
+  </ul>
+  <div class="note"><strong>Exit M2 (08/11/2026, Day 150):</strong> เอกสารวิเคราะห์/ออกแบบครบ + Fit/Gap result + Backlog ที่อนุมัติแล้ว → เบิกงวด 20%</div>
+</section>
+
+<section>
+  <h2><span class="num">6</span>Phase 3 — Build (Config + Develop) <small style="color:var(--muted);font-weight:400">(08/11/2026–16/02/2027 · Day 150–250, อยู่ใน M3)</small></h2>
+  <ul>
+    <li><strong>6.1 Configure ส่วนที่เป็น Fit/Config</strong> ตาม Configuration Table</li>
+    <li><strong>6.2 พัฒนา Gap</strong> ราย module (เวชระเบียน, Patient bank, ห้องยา/เภสัช, คลินิก, แลป LIS, รังสี/PACS, Dental Lab, นัดหมาย, บัญชีลูกหนี้/เบิกจ่าย, พัสดุคงคลัง, เอกสาร, Consent, ขออนุมัติ, นำเข้า-ส่งออกข้อมูล ฯลฯ)</li>
+    <li><strong>6.3 พัฒนา Integration/Interface</strong> กับ HAIT Plus, SAP, PACS, LIS/RIS — <em>ยังต้อง Sync ทีมเดิมเป็นช่วง ๆ (Consult Sprint D)</em></li>
+    <li><strong>6.4 พัฒนา Mobile App</strong> 3 ตัว: Patient / Student / Dentist (เตรียม deploy ขึ้น App Store / Google Play)</li>
+    <li><strong>6.5 สร้างชุด Data Migration</strong> (ETL) + Dry-run รอบแรก</li>
+    <li><strong>6.6 ทดสอบ Unit + System Integration Test (SIT)</strong></li>
+  </ul>
+  <div class="warn"><b>กลยุทธ์ลดการพึ่งทีมเดิม:</b> จุด Integration ที่ต้องอาศัยทีมเดิม ให้รวบทำใน Sprint เดียว + ทำ mock/stub ของ HAIT Plus ไว้ก่อน เพื่อให้ทีมเราพัฒนาต่อได้แม้ทีมเดิมยังไม่ว่าง</div>
+</section>
+
+<section>
+  <h2><span class="num">7</span>Phase 4 — Test, Train &amp; Migrate <small style="color:var(--muted);font-weight:400">(27/01–18/03/2027 · Day 230–280, ปิด M3 → งวด 40%)</small></h2>
+  <p>ตาม TOR ข้อ 8 (งวด 3) และข้อ 7 (อบรม):</p>
+  <ul>
+    <li>ติดตั้งระบบ + <strong>Set up Master Data</strong></li>
+    <li><strong>UAT โดย Process Owner</strong> (Business Process Owner ทดสอบยอมรับ)</li>
+    <li><strong>E2E Test</strong> ครบ flow</li>
+    <li><strong>Data Migration จริง (rehearsal → final)</strong> + ตรวจสอบความถูกต้อง</li>
+    <li><strong>ฝึกอบรม 4 กลุ่ม</strong> ตาม TOR ข้อ 7.6: ผู้บริหาร, Key-user, <strong>End-user (≥20 คน)</strong>, Business Process Owner + ส่งมอบคู่มือ</li>
+  </ul>
+  <div class="note"><strong>Exit M3 (18/03/2027, Day 280):</strong> UAT ผ่าน + อบรมครบ + Migration พร้อม → เบิกงวด 40%</div>
+</section>
+
+<section>
+  <h2><span class="num">8</span>Phase 5 — Deploy &amp; Go-Live <small style="color:var(--muted);font-weight:400">(18/03–07/04/2027 · Day 280–300 → M4, 20%)</small></h2>
+  <ul>
+    <li>Cutover ขึ้น Production, Migrate ข้อมูลรอบสุดท้าย</li>
+    <li>Go-Live + <strong>Hypercare</strong> (เฝ้าระวังใกล้ชิด, ทีมเดิม standby ช่วง cutover — จองล่วงหน้า)</li>
+    <li>ส่งมอบ Source Code, เอกสารทั้งหมด, คู่มือ, ปิดโครงการ</li>
+  </ul>
+  <div class="note"><strong>Exit M4 (07/04/2027, Day 300):</strong> ระบบใช้งานจริงครบถ้วน → เบิกงวดสุดท้าย 20%</div>
+</section>
+
+<section>
+  <h2><span class="num">9</span>Phase 6 — Warranty &amp; Support <small style="color:var(--muted);font-weight:400">(08/04/2027 → 07/04/2029 · 2 ปีหลังส่งมอบ)</small></h2>
+  <p>ผูกตาม <strong>SLA ใน TOR</strong>:</p>
+  <table>
+    <tbody>
+      <tr><th>ระดับปัญหา</th><th>ตอบรับภายใน</th><th>แก้ไขภายใน</th><th>ช่องทาง</th></tr>
+      <tr><td>ทั่วไป (General/Minor)</td><td>30 นาที</td><td>1 วัน</td><td>Onsite/Online/Telephone</td></tr>
+      <tr><td>รุนแรง (Severe/Major)</td><td>1 ชม.</td><td>24 ชม.</td><td>Onsite/Online/Telephone</td></tr>
+    </tbody>
+  </table>
+  <ul>
+    <li>รวม Update patch, ดูแลระบบ, การจัดสิทธิ์ในสัญญาบำรุงรักษา 2 ปี</li>
+    <li><strong>ต้องเจรจาต่อสัญญา/โควตาทีม HIS เดิมให้ครอบคลุมช่วง warranty ด้วย</strong> (กันปัญหา Integration กับ HAIT Plus ในอนาคต)</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="num">10</span>การบริหารทีม HIS เดิม (ประเด็นที่เราเน้น)</h2>
+  <table>
+    <tbody>
+      <tr><th style="width:24%">หัวข้อ</th><th>แนวทาง</th></tr>
+      <tr><td>รูปแบบความสัมพันธ์</td><td>MOU/Back-to-back SLA: โควตาวัน-คนต่อเดือน, lead time จองล่วงหน้า (เช่น ≥2 สัปดาห์), SPOC สองฝั่ง</td></tr>
+      <tr><td>จังหวะที่ต้องใช้มากสุด</td><td>(1) <strong>Fit/Gap 11/07–09/10/2026</strong> (2) <strong>Integration/Migration build 08/11/2026–16/02/2027</strong> (3) <strong>Cutover 18/03–07/04/2027</strong> → จองคิวทีมเดิม 3 ช่วงนี้ล่วงหน้าตั้งแต่ Day 0</td></tr>
+      <tr><td>วิธีใช้เวลาให้คุ้ม</td><td>Consult Sprint เป็นชุด + เตรียมคำถามล่วงหน้า + ใช้ mock/stub ระหว่างรอ</td></tr>
+      <tr><td>ลดการพึ่งพา</td><td>บันทึก/ถอดความรู้ทุก session, Shadow-and-document, สร้าง knowledge base ภายในทีมเรา</td></tr>
+      <tr><td>ความเสี่ยงหลัก</td><td>ทีมเดิมไม่ว่างตรงจังหวะ critical path → ดันงาน front-load + มี buffer + escalation path ใน MOU</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2><span class="num">11</span>Risk Register (ย่อ — เน้นความเสี่ยงเฉพาะบริบท)</h2>
+  <table>
+    <tbody>
+      <tr><th>ความเสี่ยง</th><th>ผลกระทบ</th><th>การรับมือ</th></tr>
+      <tr><td>ทีม HIS เดิมว่างไม่ตรงจังหวะ</td><td>งานสะดุดทั้งสาย</td><td>จองคิวล่วงหน้า, batch sprint, mock/stub, buffer, MOU+escalation</td></tr>
+      <tr><td>Timeline 300 วันตึง (Fit/Gap ต้องจบใน 150)</td><td>ส่งมอบช้า/ค่าปรับ</td><td>Front-load Fit/Gap, ทำ Design คู่ขนาน, ล็อก scope</td></tr>
+      <tr><td>Interface HAIT Plus เปลี่ยน/ไม่นิ่ง</td><td>Integration พัง</td><td>ตกลง API contract เป็นลายลักษณ์ + versioning</td></tr>
+      <tr><td>Data Migration ข้อมูลเดิมคุณภาพต่ำ</td><td>ข้อมูลเพี้ยน</td><td>Data profiling เร็ว, dry-run หลายรอบ, reconciliation</td></tr>
+      <tr><td>Scope creep จาก requirement กว้าง</td><td>งบ/เวลาบาน</td><td>RTM + Change Request ตาม TOR ข้อ 6.3.7</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2><span class="num">12</span>Checklist ขั้นตอนที่ “จำเป็นต้องมี”</h2>
+  <ul class="chk">
+    <li>Project Setup + Governance + แผน 9 ฉบับ (M1)</li>
+    <li class="star">MOU/SLA + จองคิวทีม HIS เดิม</li>
+    <li>RTM จากภาคผนวก ก/ข/ค</li>
+    <li><strong>Fit/Gap Analysis</strong> (Functional + Integration + Data) → Gap Backlog</li>
+    <li>เอกสารออกแบบครบ M2 (Workflow, SysReq, BPM, Data/Migration Mapping, API Spec, Auth Matrix, Tech Spec, Data Dictionary, Architecture, DB Schema)</li>
+    <li>Build: Config + Develop Gap + Integration + Mobile (3 apps)</li>
+    <li>Data Migration (ETL + dry-run + reconciliation)</li>
+    <li>SIT → UAT (Process Owner) → E2E</li>
+    <li>อบรม 4 กลุ่ม + คู่มือ</li>
+    <li>Go-Live + Hypercare + ส่งมอบ Source Code/เอกสาร</li>
+    <li>Warranty 2 ปี ตาม SLA + ต่อโควตาทีมเดิม</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="num">A</span>ภาคผนวก — รายการโมดูลจาก TOR (ใช้ตั้งต้น RTM/Fit-Gap)</h2>
+  <h3>ภาคผนวก ก — คุณลักษณะโปรแกรมประยุกต์</h3>
+  <ul>
+    <li><strong>ส่วนที่ 1 ระบบสารสนเทศโรงพยาบาล (HIS):</strong> เวชระเบียน (1.1), Patient bank/คิดตามการรักษา (1.2), ห้องจ่ายยา/เภสัช-ผู้ป่วยนอก (1.3–1.4), คลินิก, แลป (LIS), รังสีวิทยา/PACS (1.7), Dental Lab, นัดหมาย (1.11), บัญชีลูกหนี้/เบิกจ่ายค่ารักษา (1.18), พัสดุคงคลัง (Inventory), บริหารเอกสาร, ค่าตอบแทนการรักษา, ขออนุมัติ (Request-Approve), Consent (1.28), งานเอกสาร (1.29), นำเข้า-ส่งออกข้อมูล (1.30), บริหารผู้ใช้งาน/สิทธิ์ (1.31) + ข้อกำหนดความปลอดภัย (OWASP, Zero Trust, TLS, Audit Log)</li>
+    <li><strong>ส่วนที่ 2 ระบบสารสนเทศการเรียนการสอน:</strong> เวชระเบียน (2.1), คลินิกทั่วไป (2.2), คลินิกผู้ป่วย (2.3) ฯลฯ</li>
+    <li><strong>Mobile App 3 ตัว:</strong> Patient / Student / Dentist</li>
+  </ul>
+  <h3>ภาคผนวก ข — คุณลักษณะทางเทคนิค</h3>
+  <p>OS (Linux/Windows Server 2019), DB (Oracle/Informix/DB2/SQL Server/MySQL/PostgreSQL), Real-time Fully Integrated, Barcode/Smart card, Paperless, Mobile (Tablet/Smartphone), Crystal Report, Backup/Restore (DMS), DR Site</p>
+  <h3>ภาคผนวก ค — คุณลักษณะครุภัณฑ์</h3>
+  <p>Server และฮาร์ดแวร์ที่เกี่ยวข้อง, TV 3 ชุด (32–65") ฯลฯ</p>
+</section>
+
+<footer>
+  หมายเหตุ: TOR เป็นไฟล์สแกน (ภาพ) จึงถอดความด้วย OCR — ก่อนยื่นจริงควรทานรายการ requirement กับต้นฉบับอีกครั้งเพื่อความถูกต้องของรหัสอ้างอิงข้อย่อย
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M4-04 เอกสารระบบตามที่ติดตั้งจริง (As-built / System Documentation)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m4">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M4-03.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M4-05.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M4-04 · งวดที่ 4</span>
+    <h1>เอกสารระบบตามที่ติดตั้งจริง</h1>
+    <div class="en">As-built / System Documentation</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-ASBUILT-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">System Engineer</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2027</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">__________</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.4 · งวด M4</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: หลังติดตั้งจริง — บันทึกระบบตามสภาพที่ใช้งาน (งวด M4)</span>
+      <span class="chip who">เจ้าของ: System Engineer</span>
+      <span class="chip iso">ISO 29110: SI.6 / Maintenance</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> บันทึกสถานะระบบ DIS <b>ตามที่ติดตั้งจริง</b> (As-built) เพื่อใช้อ้างอิงในการดูแลบำรุงรักษาและส่งต่อ — ภาพรวมระบบ, สถาปัตยกรรมจริง, รายการ server/IP/config จริง, integration endpoint จริง, แนวทางบำรุงรักษา และผู้ติดต่อ · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอกค่าจริงหลังติดตั้ง</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2027</td><td>SE</td><td>ร่างฉบับแรก (บันทึกหลัง Go-Live)</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 ภาพรวม -->
+    <h2 class="sec"><span class="n">1</span>ภาพรวมระบบตามที่ติดตั้งจริง</h2>
+    <p><span class="muted">สรุประบบ DIS ตามสภาพที่ใช้งานจริง: โมดูลที่เปิดใช้, ผู้ใช้, ระบบที่เชื่อมต่อ</span></p>
+    <table>
+      <thead><tr><th style="width:30%">รายการ</th><th>ค่าจริง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>เวอร์ชันระบบที่ใช้งาน</td><td><span class="fill">__</span></td></tr>
+        <tr class="fillrow"><td>โมดูลที่เปิดใช้</td><td><span class="fill">เวชระเบียน, นัดหมาย, ห้องยา, การเงิน, PACS, LIS …</span></td></tr>
+        <tr class="fillrow"><td>Mobile ที่เผยแพร่</td><td><span class="fill">Patient / Student / Dentist (เวอร์ชัน __)</span></td></tr>
+        <tr class="fillrow"><td>วันที่ Go-Live</td><td><span class="fill">__ /__ /2027</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 2 สถาปัตยกรรม As-built -->
+    <h2 class="sec"><span class="n">2</span>สถาปัตยกรรมตามที่ติดตั้งจริง (As-built Architecture)</h2>
+    <div class="ascii">                  ┌─────────────────────────┐
+   ผู้ใช้ Web ───▶ │   DIS Web (Frontend)    │
+ Mobile 3 แอป ──▶ │  Patient/Student/Dentist│
+                  └────────────┬────────────┘
+                               │ HTTPS
+                  ┌────────────▼────────────┐
+                  │   DIS Backend / API     │
+                  │  (App Server: ________) │
+                  └──┬──────┬──────┬────┬───┘
+                     │      │      │    │
+        ┌────────────▼┐ ┌───▼───┐ ┌▼──┐ ┌▼───────┐
+        │ DB (______) │ │Storage│ │PACS│ │Integ. GW│
+        └─────────────┘ └───────┘ └────┘ └──┬──────┘
+                                  ┌──────────┼──────────┐
+                              HAIT Plus     SAP      LIS/RIS
+                              (HIS เดิม)  (การเงิน)  (แลป/รังสี)</div>
+    <p class="small muted">ปรับผังให้ตรงกับการติดตั้งจริง (จำนวน node, load balancer, network zone)</p>
+
+    <!-- 3 Server/IP/Config -->
+    <h2 class="sec"><span class="n">3</span>รายการ Server / IP / Config จริง</h2>
+    <table>
+      <thead><tr><th style="width:20%">เครื่อง/บริการ</th><th style="width:18%">IP / Hostname</th><th style="width:16%">OS/เวอร์ชัน</th><th>หมายเหตุ (port/path/cert)</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>App Server</td><td><span class="fill">__</span></td><td><span class="fill">__</span></td><td><span class="fill">__</span></td></tr>
+        <tr class="fillrow"><td>Database</td><td><span class="fill">__</span></td><td><span class="fill">__</span></td><td><span class="fill">__</span></td></tr>
+        <tr class="fillrow"><td>File/Storage</td><td><span class="fill">__</span></td><td><span class="fill">__</span></td><td><span class="fill">__</span></td></tr>
+        <tr class="fillrow"><td>Integration Gateway</td><td><span class="fill">__</span></td><td><span class="fill">__</span></td><td><span class="fill">__</span></td></tr>
+        <tr class="fillrow"><td>จอ TV (3 ชุด)</td><td><span class="fill">__</span></td><td>&nbsp;</td><td>ภาคผนวก ค</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 4 Integration As-built -->
+    <h2 class="sec"><span class="n">4</span>Integration ตามที่ติดตั้งจริง (Endpoint จริง)</h2>
+    <table>
+      <thead><tr><th style="width:18%">ระบบปลายทาง</th><th>Endpoint / Path จริง</th><th style="width:18%">โปรโตคอล</th><th style="width:14%">สถานะ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>HAIT Plus (HIS เดิม)</td><td><span class="fill">__</span></td><td><span class="fill">REST/HL7/__</span></td><td>☐ ใช้งาน</td></tr>
+        <tr class="fillrow"><td>SAP (การเงิน/พัสดุ)</td><td><span class="fill">__</span></td><td><span class="fill">__</span></td><td>☐ ใช้งาน</td></tr>
+        <tr class="fillrow"><td>PACS (ภาพรังสี)</td><td><span class="fill">__</span></td><td><span class="fill">DICOM/__</span></td><td>☐ ใช้งาน</td></tr>
+        <tr class="fillrow"><td>LIS/RIS (แลป/รังสี)</td><td><span class="fill">__</span></td><td><span class="fill">HL7/__</span></td><td>☐ ใช้งาน</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 5 บำรุงรักษา -->
+    <h2 class="sec"><span class="n">5</span>แนวทางบำรุงรักษา (Maintenance)</h2>
+    <ul class="chk">
+      <li>ตารางสำรองข้อมูล (Backup): ความถี่ <span class="fill">__</span> · ที่เก็บ <span class="fill">__</span> · ระยะเก็บ <span class="fill">__</span></li>
+      <li>การติดตามระบบ (Monitoring/Log): เครื่องมือ <span class="fill">__</span> · alert ไปที่ <span class="fill">__</span></li>
+      <li>หน้าต่างปรับปรุง (Maintenance window): <span class="fill">__</span></li>
+      <li>ขั้นตอนต่ออายุ Certificate/License: <span class="fill">__</span></li>
+      <li>ขั้นตอนกู้คืน (Restore/DR) + รอบทดสอบ: <span class="fill">__</span></li>
+    </ul>
+    <div class="warn"><b>⚠️ ข้อควรระวัง:</b> การเปลี่ยนแปลงค่า config/endpoint Integration ต้องประสานทีม HIS เดิมและบันทึกใน Revision History ทุกครั้ง</div>
+
+    <!-- 6 ผู้ติดต่อ -->
+    <h2 class="sec"><span class="n">6</span>ผู้ติดต่อ (Contact)</h2>
+    <table>
+      <thead><tr><th style="width:26%">บทบาท</th><th style="width:26%">ชื่อ</th><th style="width:24%">เบอร์/อีเมล</th><th>หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>System Engineer (ผู้รับจ้าง)</td><td><span class="fill">__</span></td><td><span class="fill">__</span></td><td>ดูแลระบบหลัก</td></tr>
+        <tr class="fillrow"><td>Dev Lead (ผู้รับจ้าง)</td><td><span class="fill">__</span></td><td><span class="fill">__</span></td><td>แก้ไขโค้ด</td></tr>
+        <tr class="fillrow"><td>IT โรงพยาบาลทันตกรรม</td><td><span class="fill">__</span></td><td><span class="fill">__</span></td><td>เจ้าของระบบ</td></tr>
+        <tr class="fillrow"><td>ทีม HIS เดิม</td><td><span class="fill">__</span></td><td><span class="fill">__</span></td><td>เชื่อม HAIT Plus</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">7</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — System Engineer</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · งวด M4 As-built
+  </div>
+</div>
+</body>
+</html>

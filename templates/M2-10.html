@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-10 ข้อกำหนดทางเทคนิค (Technical Specification)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m2">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M2-09.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M2-11.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M2-10 · งวดที่ 2</span>
+    <h1>ข้อกำหนดทางเทคนิค</h1>
+    <div class="en">Technical Specification</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-TECH-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">System Engineer</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">SA</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง:</b> ภาคผนวก ข (เทคนิค) · ภาคผนวก ค (ครุภัณฑ์)</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ออกแบบ/ติดตั้งโครงสร้างเทคนิคและส่งมอบครุภัณฑ์</span>
+      <span class="chip who">เจ้าของ: System Engineer</span>
+      <span class="chip iso">อ้างอิง: ภาคผนวก ข / ค</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> ระบุข้อกำหนดทางเทคนิคของระบบ DIS ให้สอดคล้องภาคผนวก ข และ ค — สถาปัตยกรรม, OS/DB ที่รองรับ, ภาษา/Framework, ความปลอดภัย (OWASP/Zero Trust/TLS/Audit), Performance/Availability, Reporting, Backup/DR และครุภัณฑ์ที่ส่งมอบ · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>System Engineer</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 สถาปัตยกรรม -->
+    <h2 class="sec"><span class="n">1</span>สถาปัตยกรรมเทคนิคโดยรวม (Architecture Overview)</h2>
+    <p>ระบบออกแบบเป็นสถาปัตยกรรมแบบหลายชั้น (Multi-tier) แยก Presentation / Application / Data และเชื่อมระบบภายนอกผ่าน API Gateway แบบ Real-time Fully Integrated</p>
+    <div class="ascii">                ┌──────────────────────────────────────────┐
+   Web (SPA) ───┤  Presentation: Web + Mobile 3 แอป         │
+ Mobile x3  ───┤  (Patient / Student / Dentist)           │
+                └───────────────┬──────────────────────────┘
+                                │ HTTPS / TLS 1.2+
+                ┌───────────────▼──────────────────────────┐
+                │  API Gateway (Auth, Rate-limit, WAF)     │
+                └───────────────┬──────────────────────────┘
+                ┌───────────────▼──────────────────────────┐
+                │  Application Layer (Services / Business)  │
+                └──────┬──────────────────────┬─────────────┘
+                       │                      │
+              ┌────────▼───────┐     ┌────────▼────────────┐
+              │  Database      │     │  Integration:        │
+              │  (RDBMS)       │     │  HAIT Plus / SAP /   │
+              │                │     │  PACS / LIS-RIS /    │
+              └────────────────┘     │  WU-HRMS             │
+                                     └─────────────────────┘
+      Backup/Restore (DMS) ── DR Site (สำรองข้อมูล/กู้คืน)</div>
+
+    <!-- 2 OS/DB -->
+    <h2 class="sec"><span class="n">2</span>ระบบปฏิบัติการและฐานข้อมูลที่รองรับ (OS / DB)</h2>
+    <table>
+      <thead><tr><th style="width:30%">องค์ประกอบ</th><th>รายการที่รองรับ (ภาคผนวก ข)</th></tr></thead>
+      <tbody>
+        <tr><td>ระบบปฏิบัติการ (OS)</td><td>Linux (เช่น RHEL/Ubuntu Server) และ Windows Server 2019</td></tr>
+        <tr><td>ฐานข้อมูล (RDBMS)</td><td>Oracle, Informix, IBM DB2, Microsoft SQL Server, MySQL, PostgreSQL</td></tr>
+        <tr><td>รูปแบบการเชื่อมต่อ</td><td>Real-time Fully Integrated (REST/HL7/DICOM)</td></tr>
+        <tr><td>เทคโนโลยีระบุตัวตน/ป้อนข้อมูล</td><td>Barcode, Smart card</td></tr>
+        <tr><td>การจัดเก็บเอกสาร</td><td>Paperless (จัดเก็บ/อนุมัติแบบไร้กระดาษ)</td></tr>
+        <tr class="fillrow"><td>DB ที่เลือกใช้จริง</td><td><span class="fill">ระบุ DBMS + เวอร์ชันที่ติดตั้งจริง</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 3 ภาษา/Framework -->
+    <h2 class="sec"><span class="n">3</span>ภาษา / Framework / Web + Mobile</h2>
+    <table>
+      <thead><tr><th style="width:24%">ส่วน</th><th>เทคโนโลยี</th><th style="width:24%">หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr><td>Backend</td><td><span class="fill">เช่น Java/Spring Boot · .NET · Node.js</span></td><td>REST API</td></tr>
+        <tr><td>Frontend (Web)</td><td><span class="fill">เช่น React / Angular / Vue (SPA)</span></td><td>Responsive</td></tr>
+        <tr><td>Mobile</td><td><span class="fill">เช่น Flutter / React Native</span></td><td>3 แอป: Patient / Student / Dentist</td></tr>
+        <tr><td>API / Integration</td><td>OpenAPI 3.x, OAuth 2.0, HL7, DICOM</td><td>ดู M2-08</td></tr>
+        <tr><td>Reporting</td><td>Crystal Report</td><td>ดูข้อ 6</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 4 ความปลอดภัย -->
+    <h2 class="sec"><span class="n">4</span>ความปลอดภัย (Security)</h2>
+    <table>
+      <thead><tr><th style="width:26%">ด้าน</th><th>มาตรการ (ภาคผนวก ข)</th></tr></thead>
+      <tbody>
+        <tr><td>Application Security</td><td>ป้องกันตาม <strong>OWASP Top 10</strong> (Injection, XSS, Broken Auth, ฯลฯ) + SAST/DAST ก่อนส่งมอบ</td></tr>
+        <tr><td>Architecture</td><td><strong>Zero Trust</strong> — verify ทุก request, least privilege, micro-segmentation</td></tr>
+        <tr><td>การเข้ารหัสระหว่างทาง</td><td><strong>TLS 1.x</strong> (1.2 ขึ้นไป) บังคับทุกช่องทาง · ปิด cipher อ่อนแอ</td></tr>
+        <tr><td>การเข้ารหัสข้อมูลพัก (at rest)</td><td>เข้ารหัสฐานข้อมูล/ไฟล์อ่อนไหว (PII)</td></tr>
+        <tr><td>การยืนยันตัวตน/สิทธิ์</td><td>RBAC, OAuth 2.0, Smart card, รองรับ MFA</td></tr>
+        <tr><td><strong>Audit Log</strong></td><td>บันทึกทุกการเข้าถึง/แก้ไขข้อมูลสำคัญ (who/when/what) เก็บตามนโยบาย, ป้องกันการแก้ไขย้อนหลัง</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 5 Performance/Availability -->
+    <h2 class="sec"><span class="n">5</span>สมรรถนะและความพร้อมใช้งาน (Performance / Availability)</h2>
+    <table>
+      <thead><tr><th style="width:40%">ตัวชี้วัด</th><th>เป้าหมาย</th></tr></thead>
+      <tbody>
+        <tr><td>เวลาตอบสนองหน้าจอทั่วไป</td><td><span class="fill">≤ 2-3 วินาที</span> (p95)</td></tr>
+        <tr><td>เวลาตอบสนอง API ภายใน</td><td><span class="fill">p95 ≤ 1 วินาที</span></td></tr>
+        <tr><td>ผู้ใช้พร้อมกัน (concurrent)</td><td><span class="fill">รองรับ __ ผู้ใช้</span></td></tr>
+        <tr><td>ความพร้อมใช้งาน (Availability)</td><td><span class="fill">≥ 99.5%</span> ในเวลาทำการ</td></tr>
+        <tr><td>การขยายระบบ (Scalability)</td><td>รองรับ scale-out / load balancing</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 6 Reporting -->
+    <h2 class="sec"><span class="n">6</span>การออกรายงาน (Reporting — Crystal Report)</h2>
+    <ul>
+      <li>ใช้ <strong>Crystal Report</strong> เป็นเครื่องมือหลักในการออกแบบและพิมพ์รายงาน/เอกสารตามแบบฟอร์มราชการ</li>
+      <li>รองรับ export: PDF, Excel, Word และพิมพ์โดยตรง</li>
+      <li>รองรับการแสดงผลภาษาไทย, การแปลง ค.ศ.→พ.ศ. ตอนพิมพ์, Barcode บนเอกสาร</li>
+      <li>ตัวอย่างรายงาน: ใบสรุปการรักษา, ใบเรียกเก็บเงิน, รายงานสถิติผู้ป่วยรายคลินิก ฯลฯ</li>
+    </ul>
+
+    <!-- 7 Backup/DR -->
+    <h2 class="sec"><span class="n">7</span>การสำรองและกู้คืนระบบ (Backup / DR — DMS)</h2>
+    <table>
+      <thead><tr><th style="width:30%">รายการ</th><th>ข้อกำหนด</th></tr></thead>
+      <tbody>
+        <tr><td>Backup / Restore</td><td>ผ่านระบบ <strong>DMS (Data Management System)</strong> — สำรอง full + incremental ตามรอบ</td></tr>
+        <tr><td>รอบการสำรอง (Schedule)</td><td><span class="fill">Full รายสัปดาห์ + Incremental รายวัน</span></td></tr>
+        <tr><td>การทดสอบกู้คืน</td><td>ทดสอบ Restore เป็นระยะเพื่อยืนยันใช้งานได้จริง</td></tr>
+        <tr><td><strong>DR Site</strong></td><td>มีศูนย์สำรอง (DR) แยกที่ตั้ง · ทำ replication ข้อมูลไป DR</td></tr>
+        <tr><td>RPO / RTO</td><td><span class="fill">RPO ≤ __ ชม. · RTO ≤ __ ชม.</span></td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 8 ครุภัณฑ์ -->
+    <h2 class="sec"><span class="n">8</span>ครุภัณฑ์ที่ส่งมอบ (ภาคผนวก ค)</h2>
+    <table>
+      <thead><tr><th style="width:8%">ลำดับ</th><th>รายการครุภัณฑ์</th><th style="width:14%">จำนวน</th><th>คุณลักษณะโดยย่อ</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Server (เครื่องแม่ข่าย)</td><td><span class="fill">__ ชุด</span></td><td><span class="fill">CPU/RAM/Storage ตามภาคผนวก ค · รองรับ OS/DB ข้อ 2</span></td></tr>
+        <tr><td>2</td><td>โทรทัศน์ (TV) ขนาด 32–65"</td><td><strong>3 ชุด</strong></td><td>จอแสดงผลคิว/ข้อมูลในจุดบริการ ตามภาคผนวก ค</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td><span class="fill">รายการครุภัณฑ์อื่นตามภาคผนวก ค</span></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>⚠️ หมายเหตุ:</b> รายละเอียดคุณลักษณะ (spec) ของครุภัณฑ์ทุกรายการต้องเป็นไปตามที่ระบุใน <strong>ภาคผนวก ค</strong> ของ TOR ห้ามต่ำกว่าเกณฑ์ — ตรวจรับเทียบ spec ก่อนส่งมอบ</div>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">9</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — System Engineer</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — System Analyst</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิงภาคผนวก ข (เทคนิค) และ ค (ครุภัณฑ์)
+  </div>
+</div>
+</body>
+</html>

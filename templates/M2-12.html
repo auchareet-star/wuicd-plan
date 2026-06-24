@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-12 สถาปัตยกรรมระบบ (System Architecture)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m2">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M2-11.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M2-13.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M2-12 · งวดที่ 2</span>
+    <h1>สถาปัตยกรรมระบบ (System Architecture)</h1>
+    <div class="en">System Architecture</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-ARC-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">System Engineer / Architect</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">SA / Security</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.2 · TOGAF / ISO/IEC 42010</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ออกแบบระบบ — เป็นพิมพ์เขียวสำหรับติดตั้งและขยายระบบ</span>
+      <span class="chip who">เจ้าของ: System Engineer / Architect</span>
+      <span class="chip iso">ISO/IEC 42010 (Architecture Description)</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> อธิบายภาพรวมสถาปัตยกรรมของระบบ DIS ทั้งด้านองค์ประกอบ (components), การติดตั้ง (deployment), การเชื่อมต่อ (integration), ความปลอดภัย (security zone), การขยายระบบ (scalability/HA) และการกู้คืนภัยพิบัติ (DR) เพื่อให้ทุกฝ่ายเข้าใจโครงสร้างระบบตรงกันก่อนพัฒนาและติดตั้ง · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>System Architect</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 ภาพรวมสถาปัตยกรรม -->
+    <h2 class="sec"><span class="n">1</span>ภาพรวมสถาปัตยกรรม (Architecture Overview)</h2>
+    <p>ระบบ DIS ออกแบบเป็นสถาปัตยกรรมแบบหลายชั้น (Multi-tier / N-tier) แยกชั้นการนำเสนอ (Presentation), ชั้นแอปพลิเคชัน (Application/API), ชั้นข้อมูล (Data) และชั้นการเชื่อมต่อ (Integration) ออกจากกัน เพื่อรองรับการขยายและการบำรุงรักษา</p>
+    <div class="ascii">
+                         ┌──────────────── CLIENT TIER ─────────────────┐
+                         │  Web App      Mobile: Patient  Student  Dentist│
+                         │  (Browser)      (iOS/Android — 3 แอป)          │
+                         └───────────────────────┬──────────────────────┘
+                                                 │ HTTPS / TLS 1.3
+                                          ┌──────▼───────┐
+                                          │ Load Balancer │  (WAF + Reverse Proxy)
+                                          └──────┬───────┘
+                         ┌───────────────────────▼──────────────────────┐
+                         │              APPLICATION TIER                  │
+                         │  API Gateway → App Server (x N instances)       │
+                         │  ┌─────────┬─────────┬─────────┬────────────┐  │
+                         │  │ เวชระเบียน│ หัตถการ │ นัดหมาย │ การเงิน/ยา │  │
+                         │  └─────────┴─────────┴─────────┴────────────┘  │
+                         │  Auth/SSO · Cache (Redis) · Message Queue       │
+                         └──────┬─────────────────────────┬──────────────┘
+                                │                         │
+                       ┌────────▼────────┐       ┌────────▼─────────────┐
+                       │   DATA TIER      │       │  INTEGRATION TIER     │
+                       │ DB (PostgreSQL / │       │  ESB / API Adapter    │
+                       │ SQL Server /     │◄─────►│  ┌──────┬──────┬────┐ │
+                       │ Oracle)          │       │  │HAIT+ │ SAP  │PACS│ │
+                       │ + Object Storage │       │  ├──────┼──────┴────┤ │
+                       │ (PACS images)    │       │  │LIS/RIS│  HL7/FHIR │ │
+                       └──────────────────┘       │  └──────┴───────────┘ │
+                                                  └───────────────────────┘
+    </div>
+    <p class="small muted">รูปแบบการเชื่อมต่อ: HL7 v2 / FHIR สำหรับข้อมูลคลินิก, DICOM สำหรับภาพรังสี (PACS), Web Service/API สำหรับ SAP และ LIS/RIS</p>
+
+    <!-- 2 องค์ประกอบ -->
+    <h2 class="sec"><span class="n">2</span>องค์ประกอบของระบบ (Components)</h2>
+    <table>
+      <thead><tr><th style="width:22%">องค์ประกอบ</th><th style="width:26%">เทคโนโลยี (ตัวอย่าง)</th><th>หน้าที่</th></tr></thead>
+      <tbody>
+        <tr><td>Web Frontend</td><td>SPA (React/Angular/Vue)</td><td>ส่วนติดต่อผู้ใช้สำหรับเจ้าหน้าที่/ทันตแพทย์ ผ่าน Browser</td></tr>
+        <tr><td>Mobile Apps (3)</td><td>Native / Cross-platform</td><td>แอป Patient / Student / Dentist</td></tr>
+        <tr><td>Load Balancer / WAF</td><td><span class="fill">HAProxy/Nginx/F5</span></td><td>กระจายโหลด, ป้องกัน Web Attack, จุดยุติ TLS</td></tr>
+        <tr><td>API Gateway</td><td><span class="fill">Kong/APISIX</span></td><td>Routing, Rate limit, Authentication, Logging</td></tr>
+        <tr><td>Application Server</td><td><span class="fill">Java/.NET/Node</span></td><td>Business logic, REST API, แยกตามโดเมน</td></tr>
+        <tr><td>Cache</td><td>Redis</td><td>Session, ข้อมูลที่อ่านบ่อย (master/lookup)</td></tr>
+        <tr><td>Message Queue</td><td><span class="fill">RabbitMQ/Kafka</span></td><td>งานเบื้องหลัง, แจ้งเตือน, event ระหว่างระบบ</td></tr>
+        <tr><td>Database</td><td>PostgreSQL / SQL Server / Oracle</td><td>จัดเก็บข้อมูลเชิงสัมพันธ์ (รองรับหลายชนิด)</td></tr>
+        <tr><td>Object Storage</td><td><span class="fill">MinIO/S3-compatible</span></td><td>ไฟล์เอกสาร, ภาพรังสี (อ้างอิงจาก PACS)</td></tr>
+        <tr><td>Integration / ESB</td><td><span class="fill">Mirth/WSO2</span></td><td>เชื่อมต่อ HAIT Plus, SAP, PACS, LIS/RIS</td></tr>
+        <tr><td>Identity/SSO</td><td><span class="fill">Keycloak/OIDC</span></td><td>ยืนยันตัวตน, จัดการสิทธิ์ (RBAC)</td></tr>
+        <tr><td>Monitoring/Log</td><td><span class="fill">Prometheus/ELK</span></td><td>ติดตามสุขภาพระบบ, รวบรวม log, แจ้งเตือน</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 3 Deployment Topology -->
+    <h2 class="sec"><span class="n">3</span>โครงสร้างการติดตั้ง (Deployment Topology)</h2>
+    <table>
+      <thead><tr><th style="width:16%">สภาพแวดล้อม</th><th style="width:26%">วัตถุประสงค์</th><th>ข้อกำหนด (ตัวอย่าง)</th></tr></thead>
+      <tbody>
+        <tr><td>Development (Dev)</td><td>พัฒนา/ทดสอบเบื้องต้น</td><td>1 App + 1 DB, ข้อมูลจำลอง</td></tr>
+        <tr><td>Test / UAT</td><td>ทดสอบระบบ + UAT ผู้ใช้</td><td>สเปกใกล้ Prod, ข้อมูลที่ปกปิด (masked)</td></tr>
+        <tr><td>Production (Prod)</td><td>ใช้งานจริง</td><td>App x N (HA), DB Primary+Replica, LB คู่</td></tr>
+        <tr><td>DR Site</td><td>สำรองภัยพิบัติ</td><td>สถานที่แยก, Replica แบบ async, พร้อม Failover</td></tr>
+      </tbody>
+    </table>
+    <div class="ascii">
+   ┌─ DATA CENTER (Site A — Production) ─┐      ┌─ DR SITE (Site B) ─┐
+   │  LB(2) → App(N) → DB Primary        │  ──► │  LB → App(standby) │
+   │             │         │             │ repl │     DB Replica     │
+   │          Redis    Object Storage    │      │   Object Storage   │
+   └─────────────────────────────────────┘      └────────────────────┘
+            ▲  Dev / Test / UAT (สภาพแวดล้อมแยกออกจาก Prod)
+    </div>
+
+    <!-- 4 Integration Architecture -->
+    <h2 class="sec"><span class="n">4</span>สถาปัตยกรรมการเชื่อมต่อ (Integration Architecture)</h2>
+    <table>
+      <thead><tr><th style="width:18%">ระบบปลายทาง</th><th style="width:20%">โพรโทคอล/มาตรฐาน</th><th style="width:14%">ทิศทาง</th><th>ข้อมูลที่แลกเปลี่ยน</th></tr></thead>
+      <tbody>
+        <tr><td>HAIT Plus (HIS เดิม)</td><td>HL7 v2 / FHIR / API</td><td>สองทาง</td><td>ผู้ป่วย (HN), visit, สิทธิ์การรักษา, วินิจฉัย</td></tr>
+        <tr><td>SAP</td><td>Web Service / IDoc / API</td><td>สองทาง</td><td>การเงิน, พัสดุ/คงคลังยา, บัญชี</td></tr>
+        <tr><td>PACS</td><td>DICOM / WADO</td><td>สองทาง</td><td>ภาพรังสีทันตกรรม (X-ray/CBCT)</td></tr>
+        <tr><td>LIS / RIS</td><td>HL7 v2 / API</td><td>สองทาง</td><td>คำสั่งตรวจ, ผลแลป, ผลรังสี</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>หลักการเชื่อมต่อ:</b> ใช้ Integration Layer (ESB/Adapter) เป็นตัวกลาง — ระบบ DIS ไม่เรียกฐานข้อมูลระบบอื่นโดยตรง · มี Message Queue กันงานหลุดเมื่อปลายทางล่ม · บันทึก Audit ทุกการแลกเปลี่ยนข้อมูล</div>
+
+    <!-- 5 โซนความปลอดภัย -->
+    <h2 class="sec"><span class="n">5</span>โซนความปลอดภัย (Security Zones)</h2>
+    <p>ออกแบบตามหลัก <strong>Defense in Depth</strong> และ <strong>Zero Trust</strong> — ไม่เชื่อถือทราฟฟิกใดโดยปริยาย ตรวจสอบสิทธิ์ทุกชั้น แบ่งเครือข่ายเป็นโซน</p>
+    <div class="ascii">
+   INTERNET ──► [ WAF / DMZ Zone ]──► [ App Zone ]──► [ Data Zone ]
+                 LB, Reverse Proxy     API, App Server   DB, Storage
+                 (public-facing)       (no public IP)    (no internet)
+                       │                    │                 │
+                  Firewall(1)          Firewall(2)        Firewall(3)
+       Zero Trust: ทุกคำขอผ่าน Auth/SSO + RBAC + mTLS ระหว่างบริการ
+    </div>
+    <table>
+      <thead><tr><th style="width:22%">โซน</th><th>มาตรการ</th></tr></thead>
+      <tbody>
+        <tr><td>DMZ (Public)</td><td>WAF, DDoS protection, TLS termination, เปิดเฉพาะ 443</td></tr>
+        <tr><td>App Zone</td><td>ไม่มี Public IP, mTLS ระหว่างบริการ, API Gateway บังคับ Auth</td></tr>
+        <tr><td>Data Zone</td><td>เข้าถึงจาก App Zone เท่านั้น, เข้ารหัสข้อมูล (at-rest), แยก network</td></tr>
+        <tr><td>Management</td><td>เข้าถึงผ่าน Bastion/VPN + MFA, แยก network จัดการ</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 6 Scalability & HA -->
+    <h2 class="sec"><span class="n">6</span>การขยายระบบและความพร้อมใช้สูง (Scalability &amp; High Availability)</h2>
+    <ul>
+      <li><strong>Horizontal Scaling</strong> — App Server แบบ stateless เพิ่ม instance หลัง Load Balancer ได้ตามโหลด</li>
+      <li><strong>Database HA</strong> — Primary + Replica (อย่างน้อย 1), Automatic Failover, อ่านแยกไป Replica (read scaling)</li>
+      <li><strong>Caching</strong> — Redis ลดภาระ DB สำหรับข้อมูล master/lookup</li>
+      <li><strong>No Single Point of Failure</strong> — LB คู่, App หลาย instance, ลิงก์เครือข่ายสำรอง</li>
+      <li><strong>เป้าหมายความพร้อมใช้ (SLA):</strong> <span class="fill">99.5% ต่อปี</span> (เวลาหยุดทำงานสะสมไม่เกิน <span class="fill">__</span> ชม./เดือน)</li>
+    </ul>
+
+    <!-- 7 DR -->
+    <h2 class="sec"><span class="n">7</span>แผนกู้คืนภัยพิบัติ (Disaster Recovery)</h2>
+    <table>
+      <thead><tr><th style="width:24%">รายการ</th><th>รายละเอียด</th></tr></thead>
+      <tbody>
+        <tr><td>RPO (Recovery Point Objective)</td><td><span class="fill">≤ 15 นาที</span> — ข้อมูลที่ยอมสูญเสียได้สูงสุด</td></tr>
+        <tr><td>RTO (Recovery Time Objective)</td><td><span class="fill">≤ 4 ชั่วโมง</span> — เวลากู้คืนระบบให้กลับมาใช้งาน</td></tr>
+        <tr><td>การจำลองข้อมูล</td><td>DB Replication ไป DR Site แบบ async + Object Storage sync</td></tr>
+        <tr><td>การสำรองข้อมูล</td><td>Full backup รายวัน + Incremental, เก็บนอกสถานที่ (offsite)</td></tr>
+        <tr><td>การทดสอบ DR</td><td>ซ้อม Failover อย่างน้อย <span class="fill">ปีละ 1 ครั้ง</span> พร้อมบันทึกผล</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>⚠️ ข้อควรระวัง:</b> ข้อมูลผู้ป่วย (PII/ข้อมูลสุขภาพ) ต้องเข้ารหัสทั้ง at-rest และ in-transit ในทุกสภาพแวดล้อมรวมถึง DR Site และสื่อสำรองข้อมูล (สอดคล้อง PDPA)</div>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">8</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — System Engineer/Architect</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — SA/Security</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิง TOR ข้อ 6.2
+  </div>
+</div>
+</body>
+</html>

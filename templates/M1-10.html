@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1-10 โครงสร้างทีมงานโครงการ (Project Team Organization)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m1">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M1-09.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M2-01.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M1-10 · งวดที่ 1</span>
+    <h1>โครงสร้างทีมงานโครงการ</h1>
+    <div class="en">Project Team Organization</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-ORG-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">Project Manager</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">System Analyst</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">เจ้าของงาน</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6 (ทีมงานโครงการ)</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: เริ่มโครงการ — ยืนยันทีมและความรับผิดชอบ</span>
+      <span class="chip who">เจ้าของ: Project Manager</span>
+      <span class="chip iso">TOR ข้อ 6: คุณสมบัติบุคลากร</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> แสดงผังองค์กรโครงการ ตำแหน่งตาม TOR ครบทุกตำแหน่งพร้อมคุณสมบัติ/ประสบการณ์ขั้นต่ำและผู้รับผิดชอบ บทบาทหน้าที่ การจัดสรรอัตรากำลังตามเฟส และรูปแบบการประสานงานกับทีม HIS เดิม (ระบบเดิม HAIT Plus) · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>PM</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 ผังองค์กร -->
+    <h2 class="sec"><span class="n">1</span>ผังองค์กรโครงการ (Organization Chart)</h2>
+    <div class="ascii">
+                  ┌────────────────────────────┐
+                  │   คณะกรรมการกำกับโครงการ      │
+                  │   (Steering Committee)      │
+                  └─────────────┬──────────────┘
+                                │
+                  ┌─────────────┴──────────────┐
+                  │     Project Manager (PM)    │
+                  └──┬──────────┬──────────┬────┘
+                     │          │          │
+        ┌────────────┴──┐  ┌────┴─────┐  ┌─┴─────────────────┐
+        │ System Analyst│  │ Project  │  │  Software Tester  │
+        │      (SA)     │  │Coordinat.│  │     / QA Lead     │
+        └───┬───────┬───┘  └──────────┘  └───────────────────┘
+            │       │
+   ┌────────┴──┐ ┌──┴───────────┐
+   │  Dev Team │ │  Data Team   │            ┌──────────────────┐
+   ├───────────┤ ├──────────────┤   ─ ─ ─ ─ ▶│  ทีม HIS เดิม      │
+   │Sr Program.│ │ DB Analyst/  │  (ประสาน)  │ (HAIT Plus,      │
+   │Programmer │ │  Designer    │            │  external/ยืมตัว) │
+   │   x3      │ │ DBA          │            │  ผ่าน SPOC        │
+   │Sys Engineer│ │ Sr Data Eng. │           └──────────────────┘
+   └───────────┘ └──────────────┘
+        │
+   ┌────┴──────────────────┐
+   │  Design (UI/UX) Team   │
+   │ Graphic UI Designer    │
+   │ UX Designer            │
+   └────────────────────────┘
+    </div>
+
+    <!-- 2 ตารางตำแหน่งตาม TOR -->
+    <h2 class="sec"><span class="n">2</span>ตำแหน่งตาม TOR และคุณสมบัติขั้นต่ำ</h2>
+    <table>
+      <thead><tr><th style="width:24%">ตำแหน่ง</th><th style="width:8%">จำนวน</th><th style="width:40%">คุณสมบัติ / ประสบการณ์ขั้นต่ำ</th><th>ผู้รับผิดชอบ</th></tr></thead>
+      <tbody>
+        <tr><td>Project Manager (PM)</td><td>1</td><td>ประสบการณ์บริหารโครงการ IT ≥ <b>5 ปี</b>, เคยบริหารโครงการ HIS/โรงพยาบาล</td><td><span class="fill">________</span></td></tr>
+        <tr><td>System Analyst (SA)</td><td>1</td><td>วิเคราะห์ระบบ ≥ <b>5 ปี</b></td><td><span class="fill">________</span></td></tr>
+        <tr><td>System Engineer</td><td>1</td><td>งานระบบ/โครงสร้างพื้นฐาน ≥ <b>3 ปี</b></td><td><span class="fill">________</span></td></tr>
+        <tr><td>Senior Programmer</td><td>1</td><td>พัฒนาโปรแกรม ≥ <b>5 ปี</b></td><td><span class="fill">________</span></td></tr>
+        <tr><td>Programmer</td><td>3</td><td>พัฒนาโปรแกรม ≥ <b>3 ปี</b> (ต่อคน)</td><td><span class="fill">________</span></td></tr>
+        <tr><td>DB Analyst / Designer</td><td>1</td><td>ออกแบบฐานข้อมูล ≥ <b>5 ปี</b></td><td><span class="fill">________</span></td></tr>
+        <tr><td>DBA (Database Admin)</td><td>1</td><td>บริหารฐานข้อมูล ≥ <b>5 ปี</b></td><td><span class="fill">________</span></td></tr>
+        <tr><td>Senior Data Engineer</td><td>1</td><td>วิศวกรรมข้อมูล/Migration ≥ <b>5 ปี</b></td><td><span class="fill">________</span></td></tr>
+        <tr><td>Software Tester / QA</td><td>1</td><td>ทดสอบซอฟต์แวร์/ประกันคุณภาพ ≥ <b>3 ปี</b></td><td><span class="fill">________</span></td></tr>
+        <tr><td>Project Coordinator</td><td>1</td><td>ประสานงานโครงการ ≥ <b>3 ปี</b></td><td><span class="fill">________</span></td></tr>
+        <tr><td>Graphic UI Designer</td><td>1</td><td>ออกแบบ UI/กราฟิก ≥ <b>3 ปี</b></td><td><span class="fill">________</span></td></tr>
+        <tr><td>UX Designer</td><td>1</td><td>ออกแบบประสบการณ์ผู้ใช้ ≥ <b>3 ปี</b></td><td><span class="fill">________</span></td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">หมายเหตุ: คุณสมบัติข้างต้นเป็นเกณฑ์ขั้นต่ำตาม TOR ข้อ 6 — แนบประวัติ (CV) และหลักฐานประสบการณ์ของบุคลากรแต่ละตำแหน่งประกอบ</p>
+
+    <!-- 3 บทบาทและความรับผิดชอบ -->
+    <h2 class="sec"><span class="n">3</span>บทบาทและความรับผิดชอบโดยย่อ (Roles &amp; Responsibilities)</h2>
+    <table>
+      <thead><tr><th style="width:26%">ตำแหน่ง</th><th>ความรับผิดชอบหลัก</th></tr></thead>
+      <tbody>
+        <tr><td>Project Manager</td><td>บริหารภาพรวม, แผน/งบ/ความเสี่ยง, สื่อสารกับเจ้าของงาน, อนุมัติส่งมอบ</td></tr>
+        <tr><td>System Analyst</td><td>Fit/Gap, เก็บความต้องการ, ออกแบบระบบ/Interface, สอบทานเทคนิค</td></tr>
+        <tr><td>System Engineer</td><td>ติดตั้ง/ตั้งค่า Server, Network, Backup/DR, สภาพแวดล้อมต่าง ๆ</td></tr>
+        <tr><td>Senior Programmer / Programmer x3</td><td>พัฒนา/Config โมดูล, Integration, แก้ Defect</td></tr>
+        <tr><td>DB Analyst/Designer · DBA</td><td>ออกแบบ/บริหารฐานข้อมูล, ปรับจูน, สิทธิ์เข้าถึง, สำรองข้อมูล</td></tr>
+        <tr><td>Senior Data Engineer</td><td>Data Migration, ETL, Reconciliation ข้อมูลจากระบบเดิม</td></tr>
+        <tr><td>Software Tester / QA</td><td>วางแผน/ทดสอบทุกระดับ, บริหาร Defect, UAT support</td></tr>
+        <tr><td>Project Coordinator</td><td>ประสานงาน, จัดประชุม, เอกสาร, ฝึกอบรม, ติดตามงาน</td></tr>
+        <tr><td>Graphic UI Designer · UX Designer</td><td>ออกแบบหน้าจอ/ประสบการณ์ผู้ใช้ Web + Mobile 3 แอป</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 4 การจัดสรรเวลา/อัตรากำลังตามเฟส -->
+    <h2 class="sec"><span class="n">4</span>การจัดสรรอัตรากำลังตามเฟส (Resource Allocation by Phase)</h2>
+    <p class="small muted">ระดับการใช้งาน: ● เต็มเวลา/หลัก · ◐ บางส่วน · ○ ตามที่ต้องการ</p>
+    <table>
+      <thead><tr><th style="width:28%">ตำแหน่ง</th><th>M1<br>วางแผน</th><th>M2<br>Fit/Gap+ออกแบบ</th><th>M3<br>พัฒนา/ทดสอบ/อบรม</th><th>M4<br>Go-Live</th></tr></thead>
+      <tbody>
+        <tr><td>Project Manager</td><td>●</td><td>●</td><td>●</td><td>●</td></tr>
+        <tr><td>System Analyst</td><td>●</td><td>●</td><td>◐</td><td>◐</td></tr>
+        <tr><td>System Engineer</td><td>◐</td><td>◐</td><td>●</td><td>●</td></tr>
+        <tr><td>Sr Programmer / Programmer x3</td><td>○</td><td>◐</td><td>●</td><td>◐</td></tr>
+        <tr><td>DB Analyst/Designer · DBA</td><td>○</td><td>●</td><td>●</td><td>◐</td></tr>
+        <tr><td>Senior Data Engineer</td><td>○</td><td>◐</td><td>●</td><td>◐</td></tr>
+        <tr><td>Software Tester / QA</td><td>◐</td><td>◐</td><td>●</td><td>●</td></tr>
+        <tr><td>Project Coordinator</td><td>●</td><td>●</td><td>●</td><td>●</td></tr>
+        <tr><td>Graphic UI / UX Designer</td><td>○</td><td>●</td><td>◐</td><td>○</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 5 ทีม HIS เดิม -->
+    <h2 class="sec"><span class="n">5</span>ทีม HIS เดิม (External) และรูปแบบการประสานงาน</h2>
+    <p>เนื่องจาก<strong>ไม่มีผู้เชี่ยวชาญระบบ HIS เดิม (HAIT Plus) ในทีมโครงการโดยตรง</strong> ต้องอาศัยการยืมตัว/ขอคำปรึกษาจากทีมระบบเดิมเป็นช่วง ๆ ตามจังหวะงาน จึงกำหนดรูปแบบประสานงานผ่านจุดติดต่อเดียว (SPOC)</p>
+    <table>
+      <thead><tr><th style="width:30%">หัวข้อ</th><th>รายละเอียด</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td><b>SPOC ฝั่งทีม HIS เดิม</b></td><td><span class="fill">ชื่อ/ตำแหน่ง/ช่องทางติดต่อ</span></td></tr>
+        <tr class="fillrow"><td><b>SPOC ฝั่งโครงการ</b></td><td><span class="fill">Project Coordinator / SA</span></td></tr>
+        <tr class="fillrow"><td><b>รูปแบบการขอใช้ทีม</b></td><td><span class="fill">จองคิวล่วงหน้า ≥ __ วัน, batch sprint ตามจังหวะ critical path</span></td></tr>
+        <tr class="fillrow"><td><b>โควตา/เงื่อนไข</b></td><td><span class="fill">ตาม MOU — ระบุชั่วโมง/ช่วงเวลา</span></td></tr>
+        <tr class="fillrow"><td><b>การยกระดับปัญหา (Escalation)</b></td><td><span class="fill">PM → ประธาน Steering Committee</span></td></tr>
+      </tbody>
+    </table>
+    <ul class="chk">
+      <li>จองคิวทีม HIS เดิมล่วงหน้าตั้งแต่ Day 0 สำหรับงาน Integration บน critical path</li>
+      <li>จัด Consult Sprint แบบรวมงาน (batch) เพื่อใช้เวลาทีมเดิมให้คุ้มค่า</li>
+      <li>เตรียม mock/stub ของ Interface เพื่อพัฒนาต่อได้ระหว่างรอทีมเดิม</li>
+      <li class="star">ถอดความรู้ (Knowledge Capture) ทุกครั้งที่ประสานงานกับทีม HIS เดิม</li>
+    </ul>
+    <div class="warn"><b>⚠️ ความเสี่ยงสำคัญ:</b> หากทีม HIS เดิมว่างไม่ตรงจังหวะ critical path จะกระทบกำหนดส่งมอบ — ต้องมี MOU และกลไก escalation ชัดเจน (ดู <a href="M1-01.html">M1-01 ข้อ 6 การบริหารความเสี่ยง</a>)</div>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">6</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — Project Manager</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — System Analyst</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ — เจ้าของงาน</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิง TOR ข้อ 6 (ทีมงานโครงการ)
+  </div>
+</div>
+</body>
+</html>

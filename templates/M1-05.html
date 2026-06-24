@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1-05 แผนการพัฒนาและส่งมอบระบบ (Implementation Plan)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m1">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M1-04.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M1-06.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M1-05 · งวดที่ 1</span>
+    <h1>แผนการพัฒนาและส่งมอบระบบ (Implementation Plan)</h1>
+    <div class="en">Implementation Plan</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-IMP-005</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">Project Manager / Dev Lead</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">__________</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.1.5 · ISO 29110 (SI.4 Construction)</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: วางแผนก่อนพัฒนา — ดำเนินจริงในงวด M3</span>
+      <span class="chip who">เจ้าของ: Project Manager / Dev Lead</span>
+      <span class="chip iso">ISO 29110: SI.4 Construction</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> กำหนดกลยุทธ์การพัฒนา ลำดับโมดูลและความสัมพันธ์ (dependency) แผน Sprint นิยาม Definition of Done และแนวทางการเชื่อมต่อระบบเดิม เพื่อให้การพัฒนาและส่งมอบระบบ DIS เป็นไปตามแผนเวลาและคุณภาพ · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>PM / Dev Lead</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 กลยุทธ์การพัฒนา -->
+    <h2 class="sec"><span class="n">1</span>กลยุทธ์การพัฒนา (Development Strategy)</h2>
+    <ul>
+      <li>พัฒนาแบบ <strong>รายโมดูลเป็นเฟส (Phased / Iterative)</strong> ส่งมอบทีละชุดเพื่อให้ทดสอบและตรวจรับได้เร็ว</li>
+      <li>ยึดหลัก <strong>Config ก่อน Develop</strong> — ใช้ความสามารถมาตรฐานก่อน เขียนโค้ดเฉพาะส่วน Gap (ต่อยอดจาก Fit/Gap M2-01)</li>
+      <li>จัดลำดับตาม dependency และความสำคัญต่อ Go-Live (โมดูลแกน HIS/ทันตกรรมก่อน)</li>
+      <li>ใช้ระบบควบคุมเวอร์ชันและ CI/CD เพื่อ deploy ขึ้น Test/Staging อัตโนมัติ</li>
+    </ul>
+    <div class="tip"><b>หลักการ:</b> โมดูลที่จัดเป็น <span class="badge b-cfg">CONFIG</span> ทำก่อน, <span class="badge b-gap">GAP</span> ที่ซับซ้อนและพึ่ง integration วางไว้ให้สอดคล้องกับช่วงที่ทีม HIS เดิมว่าง</div>
+
+    <!-- 2 ลำดับโมดูล + dependency -->
+    <h2 class="sec"><span class="n">2</span>ลำดับโมดูลและความสัมพันธ์ (Dependency)</h2>
+    <table>
+      <thead><tr><th style="width:8%">ลำดับ</th><th style="width:34%">โมดูล</th><th style="width:24%">ขึ้นกับ (Depends on)</th><th>หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>1</td><td>Master Data / ผู้ป่วย (Patient bank)</td><td>—</td><td>เป็นฐานของทุกโมดูล</td></tr>
+        <tr class="fillrow"><td>2</td><td>เวชระเบียน / ลงทะเบียน</td><td>1</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>3</td><td>คลินิกทันตกรรม / Dental Chart</td><td>1, 2</td><td>โมดูลแกนหลัก</td></tr>
+        <tr class="fillrow"><td>4</td><td>ห้องยา / สั่งยา</td><td>3</td><td>เชื่อมคลินิก</td></tr>
+        <tr class="fillrow"><td>5</td><td>รังสี/PACS + LIS/RIS</td><td>3</td><td>integration</td></tr>
+        <tr class="fillrow"><td>6</td><td>นัดหมาย / คิว</td><td>2, 3</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>7</td><td>การเงิน/ลูกหนี้ + พัสดุ (SAP)</td><td>3</td><td>integration SAP</td></tr>
+        <tr class="fillrow"><td>8</td><td>Mobile App (Patient/Student/Dentist)</td><td>2–7</td><td>ต่อยอด API</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 3 แผน Sprint -->
+    <h2 class="sec"><span class="n">3</span>แผน Sprint</h2>
+    <p class="small muted">วาง Sprint ให้พอดีกับช่วง build ในงวด M3 — แต่ละ Sprint 2 สัปดาห์ (ปรับได้)</p>
+    <table class="alt">
+      <thead><tr><th style="width:14%">Sprint</th><th style="width:28%">ช่วงเวลา</th><th>โมดูลที่พัฒนา</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>Sprint 1</td><td>__/__/2026 – __/__/2026</td><td>Master Data, เวชระเบียน (Config)</td></tr>
+        <tr class="fillrow"><td>Sprint 2</td><td>__/__/2026 – __/__/2027</td><td>คลินิกทันตกรรม / Dental Chart</td></tr>
+        <tr class="fillrow"><td>Sprint 3</td><td>__/__/2027 – __/__/2027</td><td>ห้องยา, นัดหมาย</td></tr>
+        <tr class="fillrow"><td>Sprint 4</td><td>__/__/2027 – __/__/2027</td><td>รังสี/PACS, LIS/RIS (integration)</td></tr>
+        <tr class="fillrow"><td>Sprint 5</td><td>__/__/2027 – __/__/2027</td><td>การเงิน/ลูกหนี้, พัสดุ (SAP)</td></tr>
+        <tr class="fillrow"><td>Sprint 6</td><td>__/__/2027 – __/__/2027</td><td>Mobile App + เก็บงาน/แก้ไข</td></tr>
+      </tbody>
+    </table>
+    <p class="eg">Sprint 2 พัฒนา Dental Chart พร้อม demo ให้ทันตแพทย์รีวิวปลาย Sprint เพื่อปรับก่อนเข้า UAT</p>
+
+    <!-- 4 Definition of Done -->
+    <h2 class="sec"><span class="n">4</span>นิยามความเสร็จสมบูรณ์ (Definition of Done)</h2>
+    <ul class="chk">
+      <li class="star">พัฒนา/Config ครบตามความต้องการ (SRS) ที่ sign-off แล้ว</li>
+      <li>ผ่าน Unit Test / Code Review</li>
+      <li>ผ่าน Integration Test กับโมดูล/ระบบที่เกี่ยวข้อง</li>
+      <li>ไม่มี defect ระดับ Critical/High คงค้าง</li>
+      <li>มีเอกสารประกอบ (คู่มือ/หมายเหตุการตั้งค่า) ครบ</li>
+      <li>Deploy ขึ้น Staging และพร้อมให้ผู้ใช้ทดสอบ UAT</li>
+      <li>เจ้าของงานยืนยันยอมรับฟังก์ชัน (Acceptance)</li>
+    </ul>
+
+    <!-- 5 Integration + mock/stub -->
+    <h2 class="sec"><span class="n">5</span>การเชื่อมต่อระบบ (Integration) และการใช้ Mock/Stub</h2>
+    <p class="muted">การเชื่อม HAIT Plus, SAP, PACS, LIS/RIS, WU-HRMS พึ่งทีม HIS เดิมเป็นช่วง ๆ จึงต้องลดการพึ่งพาแบบ blocking ด้วย mock/stub</p>
+    <ul>
+      <li>ออกแบบ Interface ตามสัญญา/สเปก (อ้าง M2-06 Interface Design) ก่อนทีมเดิมจะว่าง</li>
+      <li>สร้าง <strong>Mock/Stub ของ HAIT Plus</strong> เพื่อให้ Dev พัฒนา/ทดสอบต่อได้ระหว่างรอทีมเดิม</li>
+      <li>เมื่อทีม HIS เดิมว่าง (Consult Sprint) จึงทำ Integration Test กับระบบจริงและปรับแก้</li>
+      <li>บันทึกผลทดสอบ interface และ sign-off ร่วมกับทีมเดิม</li>
+    </ul>
+    <div class="warn"><b>⚠️ จุดวิกฤต:</b> งาน Integration ที่พึ่งทีม HIS เดิมต้องจองคิวล่วงหน้าและทำเป็น batch — ใช้ mock/stub ครอบไว้เพื่อไม่ให้ Dev หยุดรอ</div>
+    <div class="ascii">Dev ──▶ DIS ──▶ [ Mock/Stub HAIT Plus ]   (ระหว่างรอทีมเดิม)
+                     │
+   Consult Sprint ───┴──▶ [ HAIT Plus จริง ]   (Integration Test + sign-off)</div>
+
+    <!-- 6 ตารางเวลา build -->
+    <h2 class="sec"><span class="n">6</span>ตารางเวลาการพัฒนา (Build Schedule)</h2>
+    <p class="small muted">ช่วง build อยู่ในงวด M3 ระหว่าง 08/11/2026 – 16/02/2027 (ก่อนเข้าทดสอบ/UAT ปลาย M3)</p>
+    <table>
+      <thead><tr><th style="width:30%">กิจกรรม</th><th style="width:28%">ช่วงเวลา</th><th>ผู้รับผิดชอบ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>เริ่ม Build (Sprint 1)</td><td>08/11/2026</td><td>Dev Lead</td></tr>
+        <tr class="fillrow"><td>พัฒนาโมดูลแกน + Integration</td><td>__/__/2026 – __/__/2027</td><td>ทีม Dev</td></tr>
+        <tr class="fillrow"><td>Build เสร็จ (Code Complete)</td><td>16/02/2027</td><td>Dev Lead</td></tr>
+        <tr class="fillrow"><td>System/Integration Test + UAT</td><td>__/__/2027 – __/__/2027</td><td>QA + เจ้าของงาน</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>หมายเหตุ:</b> การส่งมอบระบบทดสอบ/ฝึกอบรม/Migration อยู่ในงวด M3 (กำหนด 18/03/2027) และ Go-Live ในงวด M4 (07/04/2027)</div>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">7</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — Project Manager / Dev Lead</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิง TOR ข้อ 6.1.5
+  </div>
+</div>
+</body>
+</html>

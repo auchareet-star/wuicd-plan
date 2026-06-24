@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1-08 แผนการสำรองและกู้คืนระบบ และการจัดทำคู่มือ (Backup, Recovery &amp; Documentation Plan)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m1">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M1-07.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M1-09.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M1-08 · งวดที่ 1</span>
+    <h1>แผนการสำรองและกู้คืนระบบ และการจัดทำคู่มือ</h1>
+    <div class="en">Backup, Recovery &amp; Documentation Plan</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-BCP-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">System Engineer / DBA</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">System Analyst</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">Project Manager</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.1.8</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: วางแผนงวด M1 — ทดสอบ DR และส่งคู่มือในงวด M3/M4</span>
+      <span class="chip who">เจ้าของ: System Engineer / DBA</span>
+      <span class="chip iso">มาตรฐาน HA: ความต่อเนื่องของระบบ</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> กำหนดนโยบายการสำรองข้อมูล (Backup) การกู้คืนระบบ (Recovery/DR) พร้อมเป้าหมาย RPO/RTO และแผนการจัดทำคู่มือทั้งหมด เพื่อให้ระบบ DIS มีความต่อเนื่อง ปลอดภัย และส่งมอบเอกสารครบถ้วนตาม TOR · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>System Engineer</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 RPO/RTO -->
+    <h2 class="sec"><span class="n">1</span>เป้าหมายการกู้คืน (RPO / RTO)</h2>
+    <p><strong>RPO</strong> (Recovery Point Objective) = ปริมาณข้อมูลสูงสุดที่ยอมให้สูญหายได้ · <strong>RTO</strong> (Recovery Time Objective) = ระยะเวลาสูงสุดที่ยอมให้ระบบหยุดได้</p>
+    <table>
+      <thead><tr><th style="width:34%">ระบบ/ข้อมูล</th><th style="width:18%">RPO</th><th style="width:18%">RTO</th><th>ความสำคัญ</th></tr></thead>
+      <tbody>
+        <tr><td>ฐานข้อมูลหลัก (เวชระเบียน/คลินิก)</td><td><span class="fill">≤ 15 นาที</span></td><td><span class="fill">≤ 2 ชม.</span></td><td><span class="badge b-must">วิกฤต</span></td></tr>
+        <tr><td>ระบบการเงิน/ลูกหนี้</td><td><span class="fill">≤ 1 ชม.</span></td><td><span class="fill">≤ 4 ชม.</span></td><td><span class="badge b-should">สูง</span></td></tr>
+        <tr class="fillrow"><td>PACS / ภาพรังสี</td><td><span class="fill">≤ __ ชม.</span></td><td><span class="fill">≤ __ ชม.</span></td><td><span class="badge b-should">สูง</span></td></tr>
+        <tr class="fillrow"><td>ระบบการเรียนการสอน</td><td><span class="fill">≤ __ ชม.</span></td><td><span class="fill">≤ __ ชม.</span></td><td><span class="badge b-could">ปานกลาง</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 2 ตารางสำรองข้อมูล -->
+    <h2 class="sec"><span class="n">2</span>ตารางการสำรองข้อมูล (Backup Schedule)</h2>
+    <table>
+      <thead><tr><th style="width:20%">ประเภท</th><th style="width:18%">ความถี่</th><th style="width:20%">เก็บรักษา (Retention)</th><th>สถานที่จัดเก็บ</th></tr></thead>
+      <tbody>
+        <tr><td><b>Full Backup</b></td><td><span class="fill">ทุกสัปดาห์</span></td><td><span class="fill">__ สัปดาห์</span></td><td>On-site + Off-site (DR)</td></tr>
+        <tr><td><b>Incremental</b></td><td><span class="fill">ทุกวัน</span></td><td><span class="fill">__ วัน</span></td><td>On-site</td></tr>
+        <tr class="fillrow"><td>Differential</td><td><span class="fill">__</span></td><td><span class="fill">__</span></td><td><span class="fill">__</span></td></tr>
+        <tr class="fillrow"><td>Transaction Log</td><td><span class="fill">ทุก 15 นาที</span></td><td><span class="fill">__</span></td><td>On-site</td></tr>
+      </tbody>
+    </table>
+    <ul class="chk">
+      <li>เข้ารหัส (Encryption) ไฟล์สำรองข้อมูลตามมาตรฐาน PDPA</li>
+      <li>ตรวจสอบความสมบูรณ์ของ Backup (Verify) อัตโนมัติทุกครั้ง</li>
+      <li>มีสำเนาสำรองนอกสถานที่ (Off-site) อย่างน้อย 1 ชุด</li>
+    </ul>
+
+    <!-- 3 DR Site -->
+    <h2 class="sec"><span class="n">3</span>ศูนย์สำรอง (DR Site)</h2>
+    <p>รายละเอียดสถาปัตยกรรมและที่ตั้งศูนย์สำรองข้อมูล (DR Site) อ้างอิง <strong>ภาคผนวก ข</strong> ของ TOR</p>
+    <table>
+      <thead><tr><th style="width:34%">หัวข้อ</th><th>รายละเอียด</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>รูปแบบ DR</td><td><span class="fill">Cold / Warm / Hot Standby</span></td></tr>
+        <tr class="fillrow"><td>ที่ตั้ง</td><td><span class="fill">ตามภาคผนวก ข</span></td></tr>
+        <tr class="fillrow"><td>การจำลองข้อมูล (Replication)</td><td><span class="fill">Real-time / Scheduled</span></td></tr>
+        <tr class="fillrow"><td>การสลับระบบ (Failover)</td><td><span class="fill">Manual / Automatic</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 4 ขั้นตอนกู้คืน -->
+    <h2 class="sec"><span class="n">4</span>ขั้นตอนการกู้คืนระบบ (Recovery Procedure)</h2>
+    <ul class="chk">
+      <li>ตรวจพบเหตุและประเมินความรุนแรง — แจ้ง System Engineer / DBA</li>
+      <li>ประกาศเหตุการณ์ (Declare DR) โดยผู้มีอำนาจตามที่กำหนด</li>
+      <li>เลือกชุดสำรองข้อมูลล่าสุดที่สมบูรณ์ตาม RPO</li>
+      <li>กู้คืนฐานข้อมูลและแอปพลิเคชันบน DR Site</li>
+      <li>ทดสอบความถูกต้องของข้อมูลและการเชื่อมต่อ (HAIT Plus, SAP, PACS, LIS/RIS)</li>
+      <li>สลับการใช้งานมายัง DR และแจ้งผู้ใช้</li>
+      <li class="star">ตรวจสอบ RTO/RPO ว่าอยู่ในเกณฑ์ และบันทึกเหตุการณ์ (Incident Log)</li>
+    </ul>
+
+    <!-- 5 การทดสอบ DR -->
+    <h2 class="sec"><span class="n">5</span>การทดสอบแผนกู้คืน (DR Drill)</h2>
+    <table>
+      <thead><tr><th style="width:26%">รายการ</th><th style="width:20%">ความถี่</th><th>หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>ทดสอบกู้คืนข้อมูล (Restore Test)</td><td><span class="fill">ทุกไตรมาส</span></td><td>ยืนยัน Backup ใช้กู้ได้จริง</td></tr>
+        <tr class="fillrow"><td>ซ้อม Failover ไป DR Site</td><td><span class="fill">อย่างน้อยปีละ 1 ครั้ง</span></td><td>วัด RTO/RPO จริง</td></tr>
+        <tr class="fillrow"><td>ทดสอบ DR ก่อนส่งมอบ</td><td><span class="fill">งวด M3/M4</span></td><td>ส่งมอบรายงานผล DR Drill</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>⚠️ ช่วงประกัน 2 ปี:</b> ผู้รับจ้างต้องสนับสนุนการซ้อมและทบทวนแผน DR ตลอดช่วงประกัน (08/04/2027–07/04/2029)</div>
+
+    <!-- 6 รายการคู่มือ -->
+    <h2 class="sec"><span class="n">6</span>รายการคู่มือที่จะจัดทำ (Documentation Deliverables)</h2>
+    <table>
+      <thead><tr><th style="width:26%">ประเภทคู่มือ</th><th style="width:34%">ขอบเขตเนื้อหา</th><th style="width:18%">กลุ่มผู้ใช้</th><th>งวดส่งมอบ</th></tr></thead>
+      <tbody>
+        <tr><td><b>คู่มือผู้ใช้</b><br>(User Manual)</td><td>ขั้นตอนใช้งานทุกโมดูล + Mobile App</td><td>End-user / Key-user</td><td><span class="fill">M3/M4</span></td></tr>
+        <tr><td><b>คู่มือผู้ดูแลระบบ</b><br>(Admin Manual)</td><td>ตั้งค่าสิทธิ์, ผู้ใช้, Master data, การบำรุงรักษา</td><td>ผู้ดูแลระบบ</td><td><span class="fill">M4</span></td></tr>
+        <tr><td><b>คู่มือระบบ</b><br>(System/Technical)</td><td>สถาปัตยกรรม, Interface, Backup/DR, การติดตั้ง</td><td>System Engineer/DBA</td><td><span class="fill">M4</span></td></tr>
+        <tr class="fillrow"><td>คู่มือ Backup &amp; Recovery</td><td>ขั้นตอนสำรอง/กู้คืนตามเอกสารนี้</td><td>ทีมเทคนิค</td><td><span class="fill">M4</span></td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">หมายเหตุ: คู่มือฝึกอบรมเชื่อมโยงกับ <a href="M1-07.html">M1-07 แผนการฝึกอบรม</a></p>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">7</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — System Engineer / DBA</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — System Analyst</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ — Project Manager</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิง TOR ข้อ 6.1.8
+  </div>
+</div>
+</body>
+</html>

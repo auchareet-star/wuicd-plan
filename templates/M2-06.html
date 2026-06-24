@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-06 ตารางจับคู่ข้อมูลระหว่างระบบ (Data Mapping)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m2">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M2-05.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M2-07.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M2-06 · งวดที่ 2</span>
+    <h1>ตารางจับคู่ข้อมูลระหว่างระบบ</h1>
+    <div class="en">Data Mapping</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-DMAP-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">DB Analyst</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">__________</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.x · ISO 29110 SI.2</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ระยะวิเคราะห์/ออกแบบ — ฐานของงาน Integration และ Data Migration</span>
+      <span class="chip who">เจ้าของ: DB Analyst</span>
+      <span class="chip iso">ISO 29110: SI.2 / SI.3 (Architecture/Design)</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> ระบุการจับคู่ข้อมูล (field-to-field) ระหว่างระบบที่เชื่อมต่อกับ DIS พร้อมชนิดข้อมูลและกฎการแปลง เพื่อใช้เป็นฐานในการพัฒนา Interface และการโยกย้ายข้อมูล (Migration) ให้ถูกต้องครบถ้วน · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>DB Analyst</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 วัตถุประสงค์/ขอบเขต -->
+    <h2 class="sec"><span class="n">1</span>วัตถุประสงค์และขอบเขต</h2>
+    <ul>
+      <li>กำหนดการจับคู่ข้อมูลระหว่าง DIS กับระบบที่เชื่อมต่อ: HAIT Plus, SAP, LIS, PACS (และ WU-HRMS)</li>
+      <li>ระบุชนิดข้อมูล กฎการแปลง (transformation) และหมายเหตุของแต่ละ field</li>
+      <li>ใช้เป็นฐานสำหรับงาน Integration (Interface) และ Data Migration พร้อมเกณฑ์ตรวจสอบ (reconciliation)</li>
+    </ul>
+    <div class="warn"><b>⚠️ ข้อควรระวัง:</b> field ที่มีกฎแปลง/รหัส master ต่างกัน ต้องตกลงกับ <b>ทีม HIS เดิม</b> ก่อน lock การออกแบบ (ดูหัวข้อ 3)</div>
+
+    <!-- 2 ตาราง Data Mapping -->
+    <h2 class="sec"><span class="n">2</span>ตารางจับคู่ข้อมูล (Data Mapping)</h2>
+
+    <h3 class="sub">2.1 DIS ↔ HAIT Plus (ข้อมูลผู้ป่วย — Patient)</h3>
+    <table>
+      <thead><tr>
+        <th style="width:22%">ระบบต้นทาง.field</th><th style="width:22%">DIS.field</th><th style="width:14%">ชนิด</th><th>กฎการแปลง</th><th style="width:18%">หมายเหตุ</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>HAIT.PATIENT.HN</td><td>dis_patient.hn</td><td>VARCHAR(13)</td><td>คงรูปแบบเดิม ใช้เป็น key เชื่อม</td><td>Primary key เชื่อมระบบ</td></tr>
+        <tr><td>HAIT.PATIENT.FNAME / LNAME</td><td>dis_patient.full_name</td><td>VARCHAR</td><td>ต่อ FNAME + ' ' + LNAME</td><td>ตรวจ encoding ภาษาไทย</td></tr>
+        <tr><td>HAIT.PATIENT.BIRTH</td><td>dis_patient.dob</td><td>DATE</td><td>แปลง พ.ศ.→ค.ศ. / format YYYY-MM-DD</td><td><span class="fill">ยืนยันรูปแบบวันที่</span></td></tr>
+        <tr><td>HAIT.PATIENT.SEX</td><td>dis_patient.gender</td><td>CHAR(1)</td><td>map 1→M, 2→F (lookup)</td><td>ตกลง code list</td></tr>
+        <tr><td>HAIT.PATIENT.RIGHT_CODE</td><td>dis_patient.coverage</td><td>VARCHAR</td><td>map สิทธิ์การรักษาตามตาราง lookup</td><td><span class="fill">ขอ master สิทธิ์</span></td></tr>
+        <tr class="fillrow"><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.2 DIS ↔ SAP (การเงิน — Billing / AR)</h3>
+    <table>
+      <thead><tr>
+        <th style="width:22%">ระบบต้นทาง.field</th><th style="width:22%">DIS.field</th><th style="width:14%">ชนิด</th><th>กฎการแปลง</th><th style="width:18%">หมายเหตุ</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>DIS.invoice.invoice_no</td><td>SAP.AR.DOC_NO</td><td>VARCHAR</td><td>prefix ตามรหัสหน่วยงาน + running</td><td>ส่งจาก DIS → SAP</td></tr>
+        <tr><td>DIS.invoice.amount</td><td>SAP.AR.AMOUNT</td><td>DECIMAL(12,2)</td><td>หน่วยบาท ทศนิยม 2 ตำแหน่ง</td><td>กระทบยอด reconciliation</td></tr>
+        <tr><td>DIS.invoice.cost_center</td><td>SAP.AR.COST_CTR</td><td>VARCHAR</td><td>map คลินิก → cost center</td><td><span class="fill">ขอตาราง cost center</span></td></tr>
+        <tr><td>DIS.invoice.gl_code</td><td>SAP.AR.GL_ACCOUNT</td><td>VARCHAR</td><td>map รหัสหัตถการ → ผังบัญชี (GL)</td><td>ตกลงกับฝ่ายบัญชี</td></tr>
+        <tr class="fillrow"><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.3 DIS ↔ LIS (ผลตรวจ — Lab Result)</h3>
+    <table>
+      <thead><tr>
+        <th style="width:22%">ระบบต้นทาง.field</th><th style="width:22%">DIS.field</th><th style="width:14%">ชนิด</th><th>กฎการแปลง</th><th style="width:18%">หมายเหตุ</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>LIS.RESULT.ORDER_ID</td><td>dis_lab_order.order_id</td><td>VARCHAR</td><td>map ตาม HL7 ORM/ORU</td><td>ผูกกับ visit/HN</td></tr>
+        <tr><td>LIS.RESULT.TEST_CODE</td><td>dis_lab_result.test_code</td><td>VARCHAR</td><td>map รหัสตรวจ (lookup LOINC/local)</td><td><span class="fill">ตกลง code list</span></td></tr>
+        <tr><td>LIS.RESULT.VALUE / UNIT</td><td>dis_lab_result.value / unit</td><td>VARCHAR</td><td>คงค่า + หน่วยตามต้นทาง</td><td>แสดงค่าอ้างอิง (ref range)</td></tr>
+        <tr><td>LIS.RESULT.STATUS</td><td>dis_lab_result.status</td><td>VARCHAR</td><td>map P→Prelim, F→Final</td><td>—</td></tr>
+        <tr class="fillrow"><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.4 DIS ↔ PACS (ภาพรังสี — Imaging)</h3>
+    <table>
+      <thead><tr>
+        <th style="width:22%">ระบบต้นทาง.field</th><th style="width:22%">DIS.field</th><th style="width:14%">ชนิด</th><th>กฎการแปลง</th><th style="width:18%">หมายเหตุ</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>PACS.STUDY.STUDY_UID</td><td>dis_image.study_uid</td><td>VARCHAR</td><td>DICOM Study Instance UID (คงค่า)</td><td>ใช้ลิงก์ WADO เปิดภาพ</td></tr>
+        <tr><td>PACS.STUDY.PATIENT_ID</td><td>dis_image.hn</td><td>VARCHAR</td><td>map Patient ID → HN</td><td>ต้องตรงกับ HAIT</td></tr>
+        <tr><td>PACS.STUDY.MODALITY</td><td>dis_image.modality</td><td>VARCHAR</td><td>คงค่า (เช่น DX, PX, CBCT)</td><td>—</td></tr>
+        <tr><td>PACS.STUDY.STUDY_DATE</td><td>dis_image.study_date</td><td>DATE</td><td>format YYYY-MM-DD</td><td>—</td></tr>
+        <tr class="fillrow"><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 3 field ที่ต้องตกลงกับทีม HIS เดิม -->
+    <h2 class="sec"><span class="n">3</span>รายการ field ที่ต้องตกลงกับทีม HIS เดิม</h2>
+    <table>
+      <thead><tr><th style="width:8%">ลำดับ</th><th style="width:26%">field / ประเด็น</th><th>สิ่งที่ต้องตกลง</th><th style="width:16%">สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>รูปแบบวันเกิด (พ.ศ./ค.ศ.)</td><td>มาตรฐานการแปลงวันที่ที่ใช้ร่วมกัน</td><td><span class="fill">รอยืนยัน</span></td></tr>
+        <tr><td>2</td><td>Master สิทธิ์การรักษา (RIGHT_CODE)</td><td>ตาราง lookup รหัสสิทธิ์และการ map</td><td><span class="fill">รอยืนยัน</span></td></tr>
+        <tr><td>3</td><td>Code list เพศ/สถานะ</td><td>ค่ามาตรฐานและความหมาย</td><td><span class="fill">รอยืนยัน</span></td></tr>
+        <tr><td>4</td><td>วิธีเชื่อมต่อ (API/HL7/DB View)</td><td>ช่องทาง, ความถี่ sync, การ auth</td><td><span class="fill">รอยืนยัน</span></td></tr>
+        <tr><td>5</td><td>รหัสหัตถการ ↔ GL/cost center</td><td>การ map ไป SAP</td><td><span class="fill">รอยืนยัน</span></td></tr>
+        <tr class="fillrow"><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">4</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — DB Analyst</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิง ISO 29110 SI.2
+  </div>
+</div>
+</body>
+</html>

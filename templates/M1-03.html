@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1-03 แผนการโอนย้ายข้อมูล (Database Migration Plan)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m1">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M1-02.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M1-04.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M1-03 · งวดที่ 1</span>
+    <h1>แผนการโอนย้ายข้อมูล (Database Migration Plan)</h1>
+    <div class="en">Database Migration Plan</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-DMP-003</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">Senior Data Engineer</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">__________</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.1.3 · ISO 29110 (SI Implementation)</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: วางแผนต้นโครงการ — ดำเนินจริงใน M3 ก่อน Go-Live</span>
+      <span class="chip who">เจ้าของ: Senior Data Engineer</span>
+      <span class="chip iso">ISO 29110: SI.4 Construction</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> กำหนดขอบเขต วิธีการ และเกณฑ์การตรวจสอบความถูกต้องของการโอนย้ายข้อมูลจากระบบเดิม (HAIT Plus) มายังระบบ DIS ให้ครบถ้วน ถูกต้อง และตรวจสอบย้อนกลับได้ พร้อมแผน Rollback · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>Sr. Data Engineer</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 ขอบเขตข้อมูลที่ย้าย -->
+    <h2 class="sec"><span class="n">1</span>ขอบเขตข้อมูลที่โอนย้าย</h2>
+    <p class="small muted">ระบุชุดข้อมูลที่ต้องย้าย ปริมาณโดยประมาณ และช่วงเวลาข้อมูล (Cut-off)</p>
+    <table>
+      <thead><tr><th style="width:30%">ชุดข้อมูล (Dataset)</th><th style="width:18%">ปริมาณ (โดยประมาณ)</th><th>หมายเหตุ/ช่วงข้อมูล</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>ทะเบียนผู้ป่วย (Patient Master)</td><td><span class="blank">&nbsp;</span> ราย</td><td>master + HN, สิทธิการรักษา</td></tr>
+        <tr class="fillrow"><td>ประวัติการรักษา / Dental Chart</td><td><span class="blank">&nbsp;</span> records</td><td>ย้อนหลัง __ ปี</td></tr>
+        <tr class="fillrow"><td>นัดหมาย / Appointment</td><td><span class="blank">&nbsp;</span> records</td><td>เฉพาะนัดในอนาคต + ประวัติ</td></tr>
+        <tr class="fillrow"><td>ยา/รายการยา (Drug)</td><td><span class="blank">&nbsp;</span> รายการ</td><td>master + mapping รหัสยา</td></tr>
+        <tr class="fillrow"><td>ผลแล็บ/รังสี (LIS/PACS index)</td><td><span class="blank">&nbsp;</span> records</td><td>link ไป PACS</td></tr>
+        <tr class="fillrow"><td>บัญชีลูกหนี้ / การเงิน</td><td><span class="blank">&nbsp;</span> records</td><td>ยอดค้าง ณ cut-off</td></tr>
+      </tbody>
+    </table>
+    <p class="eg">Patient Master 120,000 ราย, Dental Chart ย้อนหลัง 5 ปี ~ 850,000 records — ใช้กำหนดขนาด dry-run และเวลาประมวลผล</p>
+
+    <!-- 2 ระบบต้นทาง/ปลายทาง -->
+    <h2 class="sec"><span class="n">2</span>ระบบต้นทางและปลายทาง</h2>
+    <table class="alt">
+      <thead><tr><th style="width:22%">รายการ</th><th>ต้นทาง (Source)</th><th>ปลายทาง (Target)</th></tr></thead>
+      <tbody>
+        <tr><td>ระบบ</td><td>HAIT Plus (HIS เดิม)</td><td>DIS</td></tr>
+        <tr class="fillrow"><td>ฐานข้อมูล</td><td><span class="blank">&nbsp;</span> (เช่น Oracle/MS SQL)</td><td><span class="blank">&nbsp;</span> (DIS DB)</td></tr>
+        <tr class="fillrow"><td>วิธีดึงข้อมูล</td><td><span class="blank">&nbsp;</span> (DB link / export / API)</td><td>Staging schema</td></tr>
+        <tr class="fillrow"><td>สิทธิ์เข้าถึง</td><td><span class="blank">&nbsp;</span> (read-only โดยทีม HIS เดิม)</td><td>DBA โครงการ</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>⚠️ ข้อควรระวัง:</b> สิทธิ์เข้าถึง HAIT Plus และโครงสร้างตารางต้องได้รับการยืนยันจากทีม HIS เดิม (ดูข้อ 7) ก่อนเริ่ม Extract</div>
+
+    <!-- 3 วิธีการ ETL -->
+    <h2 class="sec"><span class="n">3</span>วิธีการโอนย้าย (ETL: Extract / Transform / Load)</h2>
+    <h3 class="sub">3.1 Extract</h3>
+    <p class="muted">ดึงข้อมูลจาก HAIT Plus เข้า Staging โดยไม่กระทบระบบ Production (read-only / นอกเวลาทำการ)</p>
+    <h3 class="sub">3.2 Transform</h3>
+    <ul>
+      <li>Mapping ฟิลด์ต้นทาง → ปลายทาง (ตาราง mapping แยกไฟล์)</li>
+      <li>แปลงรูปแบบ: ปี <strong>พ.ศ. → ค.ศ.</strong>, รหัส, encoding ภาษาไทย</li>
+      <li>ทำความสะอาดข้อมูล (Data Cleansing) — ค่าซ้ำ/ว่าง/ไม่ valid</li>
+      <li>ตรวจ Referential Integrity ก่อน Load</li>
+    </ul>
+    <h3 class="sub">3.3 Load</h3>
+    <p class="muted">นำเข้า DIS ตามลำดับ master → transaction พร้อม log การนำเข้าและ error report</p>
+    <div class="ascii">HAIT Plus DB ──(Extract)──▶ Staging ──(Transform/Cleanse)──▶ Validated ──(Load)──▶ DIS DB
+        │                                                                          │
+        └──────────────────────── Reconciliation (ข้อ 5) ◀────────────────────────┘</div>
+
+    <!-- 4 รอบ Dry-run -->
+    <h2 class="sec"><span class="n">4</span>รอบทดลองโอนย้าย (Dry-run) และรอบจริง (Final)</h2>
+    <table>
+      <thead><tr><th style="width:18%">รอบ</th><th style="width:20%">วันที่</th><th>วัตถุประสงค์ / เกณฑ์ผ่าน</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>Dry-run #1</td><td>__/__/2026</td><td>ทดสอบ pipeline + จับ error mapping เบื้องต้น</td></tr>
+        <tr class="fillrow"><td>Dry-run #2</td><td>__/__/2027</td><td>ทดสอบเต็มชุด + วัดเวลาประมวลผล + reconciliation</td></tr>
+        <tr class="fillrow"><td>Dry-run #3 (สำรอง)</td><td>__/__/2027</td><td>ยืนยันแก้ไขข้อบกพร่องครบ (ถ้าจำเป็น)</td></tr>
+        <tr class="fillrow"><td><b>Final (Cutover)</b></td><td>__/__/2027</td><td>โอนจริงก่อน Go-Live, reconciliation 100%</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>เกณฑ์:</b> ต้องทำ Dry-run อย่างน้อย 2 รอบและผ่าน reconciliation ก่อนจึงจะอนุมัติรอบ Final</div>
+
+    <!-- 5 เกณฑ์ Reconciliation -->
+    <h2 class="sec"><span class="n">5</span>เกณฑ์การตรวจสอบความถูกต้อง (Reconciliation)</h2>
+    <ul class="chk">
+      <li class="star">นับจำนวน record ต้นทาง = ปลายทาง ทุก dataset (Record Count = 100%)</li>
+      <li>ตรวจยอดรวมเชิงตัวเลข (Control Total) เช่น ยอดลูกหนี้รวม</li>
+      <li>สุ่มตรวจรายตัว (Sampling) อย่างน้อย <span class="fill">__</span>% หรือ <span class="fill">__</span> records/dataset</li>
+      <li>ตรวจ Referential Integrity (ไม่มี orphan record)</li>
+      <li>ตรวจฟิลด์สำคัญ: HN, ชื่อ-สกุล, วันเกิด (พ.ศ.→ค.ศ.), สิทธิการรักษา</li>
+      <li>เจ้าของงานรายโมดูลยืนยัน (sign-off) ผลการ reconcile</li>
+    </ul>
+
+    <!-- 6 หน้าต่างเวลา cutover -->
+    <h2 class="sec"><span class="n">6</span>หน้าต่างเวลา Cutover / Downtime</h2>
+    <table>
+      <thead><tr><th style="width:30%">รายการ</th><th>รายละเอียด</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>วัน-เวลา Cutover</td><td><span class="blank">&nbsp;</span> (แนะนำนอกเวลาทำการ/วันหยุด)</td></tr>
+        <tr class="fillrow"><td>ระยะ Downtime ที่ยอมรับได้</td><td><span class="blank">&nbsp;</span> ชั่วโมง</td></tr>
+        <tr class="fillrow"><td>Data freeze ระบบเดิม</td><td>หยุดบันทึกข้อมูลใหม่ตั้งแต่ <span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>จุดตัดสินใจ Go / No-Go</td><td>หลัง reconciliation Final เวลา <span class="blank">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+    <div class="tip"><b>คำแนะนำ:</b> ประกาศ Downtime ให้ผู้ใช้ทราบล่วงหน้า และเตรียมแผนสำรองบันทึกด้วยมือ (manual) ระหว่าง freeze</div>
+
+    <!-- 7 บทบาททีม HIS เดิม -->
+    <h2 class="sec"><span class="n">7</span>บทบาทของทีม HIS เดิม</h2>
+    <p class="small muted">ทีมไม่มีผู้เชี่ยวชาญ HAIT Plus จึงต้องพึ่งทีมเดิมในงานสำคัญด้านล่าง — จองคิวล่วงหน้าเป็น Sprint</p>
+    <table>
+      <thead><tr><th style="width:40%">กิจกรรม</th><th style="width:30%">บทบาททีม HIS เดิม</th><th>บทบาททีมเรา</th></tr></thead>
+      <tbody>
+        <tr><td>อธิบายโครงสร้างตาราง/พจนานุกรมข้อมูล</td><td>R (ให้ข้อมูล)</td><td>C</td></tr>
+        <tr><td>ให้สิทธิ์ read-only / export</td><td>R</td><td>I</td></tr>
+        <tr><td>ยืนยัน mapping ฟิลด์</td><td>C</td><td>R</td></tr>
+        <tr><td>ตรวจสอบ reconciliation</td><td>C</td><td>R</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>⚠️ จุดวิกฤต:</b> ต้องจองทีม HIS เดิมให้ตรงรอบ Dry-run/Final ใน MOU ตั้งแต่ต้น มิเช่นนั้น Migration จะหลุด critical path</div>
+
+    <!-- 8 ความเสี่ยง + Rollback -->
+    <h2 class="sec"><span class="n">8</span>ความเสี่ยงและแผนถอยกลับ (Rollback)</h2>
+    <table>
+      <thead><tr><th style="width:34%">ความเสี่ยง</th><th style="width:10%">โอกาส</th><th style="width:10%">ผลกระทบ</th><th>การรับมือ</th></tr></thead>
+      <tbody>
+        <tr><td>คุณภาพข้อมูลต้นทางต่ำ (ซ้ำ/ว่าง/ผิด)</td><td>สูง</td><td>สูง</td><td>Data profiling/cleansing ก่อน, error report, ให้เจ้าของงานตัดสิน</td></tr>
+        <tr><td>แปลงปี พ.ศ.→ค.ศ. ผิด</td><td>กลาง</td><td>สูง</td><td>กฎแปลงรวมศูนย์, unit test, สุ่มตรวจวันเกิด/วันนัด</td></tr>
+        <tr><td>Cutover เกินหน้าต่างเวลา</td><td>กลาง</td><td>สูง</td><td>วัดเวลาใน Dry-run, แบ่ง batch, Go/No-Go gate</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <h3 class="sub">8.1 แผน Rollback</h3>
+    <ul class="chk">
+      <li>สำรองข้อมูล (Full Backup) ระบบเดิมและ DIS ก่อน Cutover</li>
+      <li>เกณฑ์ตัดสินใจ Rollback: <span class="fill">reconciliation ไม่ผ่าน / เกินเวลา downtime</span></li>
+      <li>ขั้นตอนกลับสู่ระบบเดิม + ผู้มีอำนาจสั่ง Rollback: <span class="blank">&nbsp;</span></li>
+      <li>เวลาที่ต้องใช้ Rollback (ประมาณ): <span class="fill">__</span> ชั่วโมง</li>
+    </ul>
+
+    <!-- 9 ตารางเวลา -->
+    <h2 class="sec"><span class="n">9</span>ตารางเวลาการโอนย้าย</h2>
+    <table>
+      <thead><tr><th>กิจกรรม</th><th>ช่วงเวลา</th><th>ผู้รับผิดชอบ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>จัดทำ Mapping + Profiling</td><td>__/__/2026 – __/__/2026</td><td>Data Engineer + ทีม HIS เดิม</td></tr>
+        <tr class="fillrow"><td>Dry-run #1–#2</td><td>__/__/2026 – __/__/2027</td><td>Data Engineer</td></tr>
+        <tr class="fillrow"><td>แก้ไข + Reconciliation</td><td>__/__/2027</td><td>Data Engineer + เจ้าของงาน</td></tr>
+        <tr class="fillrow"><td>Final Cutover (ก่อน Go-Live)</td><td>__/__/2027</td><td>ทีมโครงการ + ทีม HIS เดิม</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>หมายเหตุ:</b> งาน Migration ดำเนินจริงในงวด M3 (08/11/2026–18/03/2027) ก่อนการ Go-Live ในงวด M4</div>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">10</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — Senior Data Engineer</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — Project Manager</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิง TOR ข้อ 6.1.3
+  </div>
+</div>
+</body>
+</html>

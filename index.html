@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>โครงการ DIS — หน้ารวมเอกสาร (ม.วลัยลักษณ์)</title>
+<style>
+  :root{
+    --primary:#0d6e6e; --primary-dark:#0a5252; --accent:#e8743b;
+    --bg:#eef1f3; --card:#fff; --line:#d7dde2; --ink:#1f2d3d; --muted:#5b6b7b;
+    --m1:#3b82c4; --m2:#0d6e6e; --m3:#c79500; --m4:#d6453d;
+  }
+  *{box-sizing:border-box}
+  body{font-family:"Sarabun","Segoe UI Thai","Leelawadee UI","Tahoma",sans-serif;
+    margin:0; background:var(--bg); color:var(--ink); line-height:1.6; font-size:15px}
+  .wrap{max-width:1080px; margin:0 auto; padding:30px 20px 80px}
+  header.cover{background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:#fff;
+    border-radius:18px; padding:34px 34px 30px; box-shadow:0 12px 34px rgba(13,110,110,.28)}
+  header.cover .ksmall{font-size:13px; opacity:.85; letter-spacing:1px; font-weight:700}
+  header.cover h1{margin:6px 0 6px; font-size:27px; line-height:1.3}
+  header.cover .org{font-size:14px; opacity:.92}
+  .pills{margin-top:18px; display:flex; flex-wrap:wrap; gap:8px}
+  .pill{background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.3);
+    padding:6px 13px; border-radius:999px; font-size:13px; font-weight:700}
+  /* mini timeline */
+  .tl{display:flex; gap:8px; margin:22px 0 4px}
+  .tl .seg{flex:1; background:var(--card); border:1px solid var(--line); border-top:4px solid var(--primary);
+    border-radius:10px; padding:10px 12px; box-shadow:0 2px 8px rgba(31,45,61,.05)}
+  .tl .seg.t1{border-top-color:var(--m1)}.tl .seg.t2{border-top-color:var(--m2)}
+  .tl .seg.t3{border-top-color:var(--m3)}.tl .seg.t4{border-top-color:var(--m4)}
+  .tl .seg b{font-size:15px; color:var(--primary-dark)}
+  .tl .seg .d{font-size:12px; color:var(--accent); font-weight:700; margin:2px 0}
+  .tl .seg .x{font-size:11.5px; color:var(--muted)}
+  h2.sec{font-size:19px; color:var(--primary-dark); margin:34px 0 4px}
+  h2.sec small{font-weight:400; color:var(--muted); font-size:14px}
+  .lead{color:var(--muted); font-size:13.5px; margin:2px 0 14px}
+  /* main doc cards */
+  .maincards{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px}
+  .mcard{display:block; text-decoration:none; color:inherit; background:var(--card); border:1px solid var(--line);
+    border-radius:14px; padding:18px 20px; box-shadow:0 3px 12px rgba(31,45,61,.06); transition:.15s}
+  .mcard:hover{transform:translateY(-3px); box-shadow:0 8px 22px rgba(13,110,110,.16); border-color:var(--primary)}
+  .mcard .ic{font-size:26px}
+  .mcard h3{margin:8px 0 4px; font-size:17px; color:var(--primary-dark)}
+  .mcard p{margin:0; font-size:13px; color:var(--muted)}
+  .mcard .go{display:inline-block; margin-top:10px; color:var(--accent); font-weight:700; font-size:13px}
+  /* deliverables grid */
+  .mgroups{display:grid; grid-template-columns:repeat(auto-fit,minmax(248px,1fr)); gap:16px; margin-top:6px}
+  .mg{background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden;
+    box-shadow:0 3px 12px rgba(31,45,61,.06)}
+  .mg .mh{padding:12px 16px; color:#fff; font-weight:700; display:flex; justify-content:space-between; align-items:center}
+  .mg.g1 .mh{background:var(--m1)}.mg.g2 .mh{background:var(--m2)}
+  .mg.g3 .mh{background:var(--m3)}.mg.g4 .mh{background:var(--m4)}
+  .mg .mh .pct{background:rgba(255,255,255,.22); border-radius:6px; padding:2px 9px; font-size:12.5px}
+  .mg .mh .dd{font-size:11.5px; opacity:.9; font-weight:600}
+  .mg ul{list-style:none; margin:0; padding:6px 0}
+  .mg li a{display:flex; gap:9px; align-items:baseline; text-decoration:none; color:var(--ink);
+    padding:6px 16px; font-size:13.5px; border-left:3px solid transparent}
+  .mg li a:hover{background:#f3f7f7; border-left-color:var(--accent)}
+  .mg li a .code{flex:0 0 auto; font-family:"Cascadia Code","Consolas",monospace; font-size:11.5px;
+    color:#fff; background:#9bb0c2; border-radius:5px; padding:1px 7px; font-weight:700}
+  .mg.g1 li a .code{background:var(--m1)}.mg.g2 li a .code{background:var(--m2)}
+  .mg.g3 li a .code{background:var(--m3)}.mg.g4 li a .code{background:var(--m4)}
+  .note{background:#eef7f7; border-left:4px solid var(--primary); border-radius:9px; padding:12px 16px; font-size:13.5px; margin:16px 0}
+  footer{text-align:center; color:var(--muted); font-size:12.5px; margin-top:30px; padding-top:14px; border-top:1px solid var(--line)}
+  @media(max-width:560px){.tl{flex-wrap:wrap} .tl .seg{flex:1 1 45%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="cover">
+    <div class="ksmall">TERMS OF REFERENCE · ชุดเอกสารโครงการ</div>
+    <h1>ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม<br>(Dental Information System)</h1>
+    <div class="org">คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+    <div class="pills">
+      <span class="pill">💰 9,600,000 บาท</span>
+      <span class="pill">📅 300 วัน</span>
+      <span class="pill">🖊️ เซ็น 11/06/2026</span>
+      <span class="pill">🏁 ส่งมอบ 07/04/2027</span>
+      <span class="pill">🛡️ ประกัน 2 ปี</span>
+      <span class="pill">📐 ISO 29110 · HA</span>
+    </div>
+  </header>
+
+  <!-- mini timeline -->
+  <div class="tl">
+    <div class="seg t1"><b>M1</b><div class="d">11/07/2026</div><div class="x">เตรียมพร้อม · แผน 9 ฉบับ · 20%</div></div>
+    <div class="seg t2"><b>M2</b><div class="d">08/11/2026</div><div class="x">Fit/Gap + ออกแบบ · 20%</div></div>
+    <div class="seg t3"><b>M3</b><div class="d">18/03/2027</div><div class="x">ทดสอบ + อบรม · 40%</div></div>
+    <div class="seg t4"><b>M4</b><div class="d">07/04/2027</div><div class="x">Go-Live + ส่งมอบ · 20%</div></div>
+  </div>
+
+  <!-- main documents -->
+  <h2 class="sec">เอกสารหลัก</h2>
+  <p class="lead">เริ่มที่นี่ — แผนภาพรวม, เอกสารส่งมอบ + มาตรฐาน</p>
+  <div class="maincards">
+    <a class="mcard" href="แผนดำเนินงาน-FitGap-Develop.html">
+      <div class="ic">🗺️</div>
+      <h3>แผนดำเนินงาน Fit/Gap + Develop</h3>
+      <p>แผนภาพรวม · Flow เฟส · Gantt ตามวันจริง · Resource Loading · รายละเอียดเฟส 0–6 · ความเสี่ยง · checklist</p>
+      <span class="go">เปิดแผน ▸</span>
+    </a>
+    <a class="mcard" href="เอกสารส่งมอบรายงวด.html">
+      <div class="ic">📋</div>
+      <h3>เอกสารส่งมอบรายงวด + มาตรฐาน</h3>
+      <p>อธิบายมาตรฐานบังคับ (ISO 29110 / HA / Made in Thailand / SME) + สารบัญเอกสารส่งมอบทุกงวด พร้อมตัวอย่าง</p>
+      <span class="go">เปิดสารบัญ ▸</span>
+    </a>
+    <a class="mcard" href="แผนกำลังคนภายใน.html" style="border-color:#334e68">
+      <div class="ic">👥</div>
+      <h3>แผนกำลังคน (สำหรับคุยภายใน)</h3>
+      <p>Heatmap ภาระงานรายบทบาท × รายเดือน · กำลังคนแยกตามช่วงเวลา · จัดการ 2 ช่วง peak · หน้าต่างทีม HIS เดิม · วาระประชุม</p>
+      <span class="go">เปิดแผนกำลังคน ▸</span>
+    </a>
+    <a class="mcard" href="แผนดำเนินงาน-FitGap-Develop.md">
+      <div class="ic">📝</div>
+      <h3>แผนฉบับ Markdown (.md)</h3>
+      <p>ฉบับแก้ไขง่าย มี mermaid Flow + Gantt — เปิดบน GitHub / VS Code เพื่อเรนเดอร์แผนภาพ</p>
+      <span class="go">เปิดไฟล์ .md ▸</span>
+    </a>
+  </div>
+
+  <!-- deliverable templates -->
+  <h2 class="sec">เอกสารส่งมอบ — Template เต็ม 38 ฉบับ <small>(คลิกเปิดได้ทันที)</small></h2>
+  <p class="lead">แยกตามงวด · ทุกฉบับเป็น template กรอกใช้งานได้จริง พร้อมปุ่มพิมพ์ PDF และนำทาง ก่อนหน้า/ถัดไป</p>
+  <div class="mgroups">
+
+    <div class="mg g1">
+      <div class="mh"><span>งวด M1 · เตรียมพร้อม <span class="dd">11/07/26</span></span><span class="pct">20%</span></div>
+      <ul>
+        <li><a href="templates/M1-01.html"><span class="code">M1-01</span> แผนดำเนินงานโครงการภาพรวม (PMP)</a></li>
+        <li><a href="templates/M1-02.html"><span class="code">M1-02</span> แผนการสำรวจและออกแบบระบบ</a></li>
+        <li><a href="templates/M1-03.html"><span class="code">M1-03</span> แผนการโอนย้ายข้อมูล (Migration)</a></li>
+        <li><a href="templates/M1-04.html"><span class="code">M1-04</span> แผนการติดตั้งระบบ</a></li>
+        <li><a href="templates/M1-05.html"><span class="code">M1-05</span> แผนการพัฒนา/ส่งมอบ (Implementation)</a></li>
+        <li><a href="templates/M1-06.html"><span class="code">M1-06</span> แผนการทดสอบ (Test Plan)</a></li>
+        <li><a href="templates/M1-07.html"><span class="code">M1-07</span> แผนการฝึกอบรมและถ่ายทอด</a></li>
+        <li><a href="templates/M1-08.html"><span class="code">M1-08</span> แผนสำรอง/กู้คืน + คู่มือ (Backup/DR)</a></li>
+        <li><a href="templates/M1-09.html"><span class="code">M1-09</span> แผนการบริหารการเปลี่ยนแปลง</a></li>
+        <li><a href="templates/M1-10.html"><span class="code">M1-10</span> โครงสร้างทีมงาน</a></li>
+      </ul>
+    </div>
+
+    <div class="mg g2">
+      <div class="mh"><span>งวด M2 · วิเคราะห์/ออกแบบ <span class="dd">08/11/26</span></span><span class="pct">20%</span></div>
+      <ul>
+        <li><a href="templates/M2-01.html"><span class="code">M2-01</span> Fit/Gap Analysis Report ★</a></li>
+        <li><a href="templates/M2-02.html"><span class="code">M2-02</span> Requirement Traceability Matrix</a></li>
+        <li><a href="templates/M2-03.html"><span class="code">M2-03</span> Workflow Diagram (As-is/To-be)</a></li>
+        <li><a href="templates/M2-04.html"><span class="code">M2-04</span> System Requirement Spec (SRS)</a></li>
+        <li><a href="templates/M2-05.html"><span class="code">M2-05</span> Business Process Mapping (BPM)</a></li>
+        <li><a href="templates/M2-06.html"><span class="code">M2-06</span> Data Mapping</a></li>
+        <li><a href="templates/M2-07.html"><span class="code">M2-07</span> User Authorization Matrix</a></li>
+        <li><a href="templates/M2-08.html"><span class="code">M2-08</span> API Specification</a></li>
+        <li><a href="templates/M2-09.html"><span class="code">M2-09</span> Migration Data Mapping</a></li>
+        <li><a href="templates/M2-10.html"><span class="code">M2-10</span> Technical Specification</a></li>
+        <li><a href="templates/M2-11.html"><span class="code">M2-11</span> Data Dictionary</a></li>
+        <li><a href="templates/M2-12.html"><span class="code">M2-12</span> System Architecture</a></li>
+        <li><a href="templates/M2-13.html"><span class="code">M2-13</span> Database Schema Design</a></li>
+      </ul>
+    </div>
+
+    <div class="mg g3">
+      <div class="mh"><span>งวด M3 · ทดสอบ/อบรม <span class="dd">18/03/27</span></span><span class="pct">40%</span></div>
+      <ul>
+        <li><a href="templates/M3-01.html"><span class="code">M3-01</span> Test Cases / Test Scripts</a></li>
+        <li><a href="templates/M3-02.html"><span class="code">M3-02</span> SIT Report (Integration)</a></li>
+        <li><a href="templates/M3-03.html"><span class="code">M3-03</span> UAT Plan + Sign-off</a></li>
+        <li><a href="templates/M3-04.html"><span class="code">M3-04</span> Master Data Setup Document</a></li>
+        <li><a href="templates/M3-05.html"><span class="code">M3-05</span> Data Migration Reconciliation</a></li>
+        <li><a href="templates/M3-06.html"><span class="code">M3-06</span> คู่มือผู้ใช้ (User Manual)</a></li>
+        <li><a href="templates/M3-07.html"><span class="code">M3-07</span> เอกสารฝึกอบรม + ทะเบียน</a></li>
+        <li><a href="templates/M3-08.html"><span class="code">M3-08</span> End-to-End Test Report</a></li>
+      </ul>
+    </div>
+
+    <div class="mg g4">
+      <div class="mh"><span>งวด M4 · Go-Live/ส่งมอบ <span class="dd">07/04/27</span></span><span class="pct">20%</span></div>
+      <ul>
+        <li><a href="templates/M4-01.html"><span class="code">M4-01</span> Go-Live / Cutover Checklist</a></li>
+        <li><a href="templates/M4-02.html"><span class="code">M4-02</span> Deployment / Installation</a></li>
+        <li><a href="templates/M4-03.html"><span class="code">M4-03</span> Source Code Handover</a></li>
+        <li><a href="templates/M4-04.html"><span class="code">M4-04</span> As-built / System Doc</a></li>
+        <li><a href="templates/M4-05.html"><span class="code">M4-05</span> คู่มือผู้ดูแลระบบ (Admin)</a></li>
+        <li><a href="templates/M4-06.html"><span class="code">M4-06</span> ใบส่งมอบ / ตรวจรับ (Acceptance)</a></li>
+        <li><a href="templates/M4-07.html"><span class="code">M4-07</span> การรับประกัน + SLA (2 ปี)</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="note">💡 <b>เริ่มอย่างไร:</b> ดู <a href="แผนดำเนินงาน-FitGap-Develop.html">แผนภาพรวม</a> ก่อนเพื่อเข้าใจลำดับงานและ Gantt → เปิด <a href="เอกสารส่งมอบรายงวด.html">สารบัญเอกสาร</a> เพื่อรู้ว่าแต่ละงวดต้องส่งอะไร → คลิก template ด้านบนเพื่อกรอกจริง ·
+  <b>หมายเหตุ:</b> template เป็นแบบฟอร์มเปล่าให้กรอก · ข้อมูลตัวอย่างเป็นค่าสมมุติ · ควรทานรหัสข้อ TOR กับต้นฉบับ (ไฟล์สแกน) อีกครั้งก่อนยื่นจริง</div>
+
+  <footer>ชุดเอกสารโครงการ DIS · มหาวิทยาลัยวลัยลักษณ์ · รวม 3 เอกสารหลัก + 38 template + แผน .md</footer>
+</div>
+</body>
+</html>

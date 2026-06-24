@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-11 พจนานุกรมข้อมูล (Data Dictionary)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m2">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M2-10.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M2-12.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M2-11 · งวดที่ 2</span>
+    <h1>พจนานุกรมข้อมูล (Data Dictionary)</h1>
+    <div class="en">Data Dictionary</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-DD-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">DB Analyst</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">DB Designer / SA</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.2 · ISO/IEC 11179 (Metadata)</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ออกแบบฐานข้อมูล — อ้างอิงคู่กับ M2-12/M2-13 และตลอดช่วงพัฒนา</span>
+      <span class="chip who">เจ้าของ: DB Analyst</span>
+      <span class="chip iso">ISO/IEC 11179</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> นิยามความหมายของทุกตาราง/ฟิลด์ในฐานข้อมูล DIS ให้ทีมพัฒนา ทีมเชื่อมต่อ และผู้ดูแลข้อมูลเข้าใจตรงกัน — รวมชนิดข้อมูล, การยอมให้ว่าง (Null), คีย์หลัก/คีย์นอก (PK/FK), ความหมาย และค่าที่ยอมรับ พร้อมมาตรฐานการตั้งชื่อและรายการ Code/Lookup · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>DB Analyst</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 วัตถุประสงค์/วิธีใช้ -->
+    <h2 class="sec"><span class="n">1</span>วัตถุประสงค์และวิธีใช้เอกสาร</h2>
+    <p><strong>1.1 วัตถุประสงค์</strong> — พจนานุกรมข้อมูลนี้เป็น “แหล่งความจริงเดียว” (Single Source of Truth) สำหรับโครงสร้างข้อมูลของระบบ DIS ใช้อ้างอิงในการพัฒนา การตรวจสอบ การย้ายข้อมูล (Migration) และการเชื่อมต่อกับระบบภายนอก (HAIT Plus, SAP, PACS, LIS/RIS)</p>
+    <p><strong>1.2 วิธีอ่านตาราง</strong></p>
+    <ul>
+      <li><strong>ตาราง / Field</strong> — ชื่อตารางและชื่อคอลัมน์ในฐานข้อมูล (snake_case)</li>
+      <li><strong>ชนิดข้อมูล</strong> — ระบุชนิดเชิงตรรกะ (logical type) เพื่อรองรับ DB หลายชนิด (PostgreSQL/SQL Server/Oracle) เช่น <code>VARCHAR(n)</code> = NVARCHAR/VARCHAR2 ตาม DBMS</li>
+      <li><strong>Null?</strong> — Y = ยอมให้ว่าง, N = ห้ามว่าง (NOT NULL)</li>
+      <li><strong>PK/FK</strong> — PK = Primary Key, FK = Foreign Key (อ้างถึงตาราง.คอลัมน์)</li>
+      <li><strong>ความหมาย/ค่าที่ยอมรับ</strong> — คำอธิบาย และโดเมนค่า (อ้างอิงตาราง Lookup ในข้อ 4)</li>
+    </ul>
+    <div class="note"><b>หมายเหตุชนิดข้อมูลข้ามแพลตฟอร์ม:</b> ค่าเวลาใช้ <code>TIMESTAMP</code> (PostgreSQL/Oracle) เทียบเท่า <code>DATETIME2</code> (SQL Server); ตัวระบุภายในใช้ <code>BIGINT</code>/IDENTITY/SEQUENCE; เก็บค่าเงินด้วย <code>NUMERIC(12,2)</code> เสมอ (ห้ามใช้ float)</div>
+
+    <!-- 2 ตาราง Data Dictionary รายตาราง -->
+    <h2 class="sec"><span class="n">2</span>พจนานุกรมข้อมูลรายตาราง (Field-level Dictionary)</h2>
+    <p class="small muted">ด้านล่างเป็นตัวอย่างจริงของตารางหลัก ผู้จัดทำต้องเพิ่มให้ครบทุกตารางตามรายการใน M2-13</p>
+
+    <h3 class="sub">2.1 ตาราง <code>patient</code> — ข้อมูลผู้ป่วย</h3>
+    <table>
+      <thead><tr><th style="width:14%">Field</th><th style="width:18%">ชนิดข้อมูล</th><th style="width:7%">Null?</th><th style="width:11%">PK/FK</th><th>ความหมาย / ค่าที่ยอมรับ</th></tr></thead>
+      <tbody>
+        <tr><td>patient_id</td><td>BIGINT</td><td>N</td><td><b>PK</b></td><td>รหัสภายในระบบ (surrogate key)</td></tr>
+        <tr><td>hn</td><td>VARCHAR(13)</td><td>N</td><td>UNIQUE</td><td>เลขประจำตัวผู้ป่วย (Hospital Number) เช่น 66-000123</td></tr>
+        <tr><td>citizen_id</td><td>VARCHAR(13)</td><td>Y</td><td>&nbsp;</td><td>เลขบัตรประชาชน 13 หลัก (เข้ารหัส/PII)</td></tr>
+        <tr><td>title</td><td>VARCHAR(20)</td><td>Y</td><td>&nbsp;</td><td>คำนำหน้า (นาย/นาง/นางสาว/ด.ช./ด.ญ.)</td></tr>
+        <tr><td>first_name</td><td>VARCHAR(100)</td><td>N</td><td>&nbsp;</td><td>ชื่อ</td></tr>
+        <tr><td>last_name</td><td>VARCHAR(100)</td><td>N</td><td>&nbsp;</td><td>นามสกุล</td></tr>
+        <tr><td>gender</td><td>CHAR(1)</td><td>N</td><td>&nbsp;</td><td>เพศ: M / F / U (ดู Lookup ข้อ 4.1)</td></tr>
+        <tr><td>birth_date</td><td>DATE</td><td>Y</td><td>&nbsp;</td><td>วันเกิด</td></tr>
+        <tr><td>phone</td><td>VARCHAR(20)</td><td>Y</td><td>&nbsp;</td><td>เบอร์โทรติดต่อ</td></tr>
+        <tr><td>blood_group</td><td>VARCHAR(3)</td><td>Y</td><td>&nbsp;</td><td>หมู่เลือด: A/B/AB/O (+/-)</td></tr>
+        <tr><td>allergy_flag</td><td>BOOLEAN</td><td>N</td><td>&nbsp;</td><td>มีประวัติแพ้ยา/สาร (true/false) ค่าเริ่มต้น false</td></tr>
+        <tr><td>created_at</td><td>TIMESTAMP</td><td>N</td><td>&nbsp;</td><td>วันเวลาสร้างเรคคอร์ด</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.2 ตาราง <code>visit</code> — การมารับบริการ</h3>
+    <table>
+      <thead><tr><th style="width:14%">Field</th><th style="width:18%">ชนิดข้อมูล</th><th style="width:7%">Null?</th><th style="width:11%">PK/FK</th><th>ความหมาย / ค่าที่ยอมรับ</th></tr></thead>
+      <tbody>
+        <tr><td>visit_id</td><td>BIGINT</td><td>N</td><td><b>PK</b></td><td>รหัสการมารับบริการ</td></tr>
+        <tr><td>patient_id</td><td>BIGINT</td><td>N</td><td><b>FK</b> → patient.patient_id</td><td>ผู้ป่วยที่มารับบริการ</td></tr>
+        <tr><td>visit_no</td><td>VARCHAR(15)</td><td>N</td><td>UNIQUE</td><td>เลข VN ของการมาแต่ละครั้ง</td></tr>
+        <tr><td>visit_date</td><td>TIMESTAMP</td><td>N</td><td>&nbsp;</td><td>วันเวลาเข้ารับบริการ</td></tr>
+        <tr><td>clinic_code</td><td>VARCHAR(10)</td><td>N</td><td>FK → clinic.clinic_code</td><td>คลินิก/แผนกทันตกรรม</td></tr>
+        <tr><td>dentist_id</td><td>BIGINT</td><td>Y</td><td>FK → users.user_id</td><td>ทันตแพทย์ผู้ตรวจ</td></tr>
+        <tr><td>visit_type</td><td>VARCHAR(15)</td><td>N</td><td>&nbsp;</td><td>ประเภท: OPD / WALKIN / FOLLOWUP / EMERGENCY</td></tr>
+        <tr><td>status</td><td>VARCHAR(15)</td><td>N</td><td>&nbsp;</td><td>สถานะการมา (ดู Lookup ข้อ 4.3)</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.3 ตาราง <code>treatment</code> — การรักษา/หัตถการทันตกรรม</h3>
+    <table>
+      <thead><tr><th style="width:14%">Field</th><th style="width:18%">ชนิดข้อมูล</th><th style="width:7%">Null?</th><th style="width:11%">PK/FK</th><th>ความหมาย / ค่าที่ยอมรับ</th></tr></thead>
+      <tbody>
+        <tr><td>treatment_id</td><td>BIGINT</td><td>N</td><td><b>PK</b></td><td>รหัสรายการหัตถการ</td></tr>
+        <tr><td>visit_id</td><td>BIGINT</td><td>N</td><td><b>FK</b> → visit.visit_id</td><td>การมารับบริการที่ทำหัตถการ</td></tr>
+        <tr><td>tooth_no</td><td>VARCHAR(3)</td><td>Y</td><td>&nbsp;</td><td>เลขซี่ฟันแบบ FDI เช่น 11, 36, 48 (ว่างได้กรณีไม่เจาะจงซี่)</td></tr>
+        <tr><td>surface</td><td>VARCHAR(5)</td><td>Y</td><td>&nbsp;</td><td>ด้านของฟัน (M/O/D/B/L) เช่น MOD</td></tr>
+        <tr><td>procedure_code</td><td>VARCHAR(15)</td><td>N</td><td>FK → procedure.code</td><td>รหัสหัตถการ (อ้างอิง ICD-10-TM/CDT)</td></tr>
+        <tr><td>dx_code</td><td>VARCHAR(15)</td><td>Y</td><td>FK → diagnosis.code</td><td>รหัสวินิจฉัย (ICD-10) เช่น K02.1 ฟันผุชั้นเนื้อฟัน</td></tr>
+        <tr><td>fee</td><td>NUMERIC(12,2)</td><td>N</td><td>&nbsp;</td><td>ค่าบริการ/ค่าหัตถการ (บาท) ค่าเริ่มต้น 0.00</td></tr>
+        <tr><td>status</td><td>VARCHAR(15)</td><td>N</td><td>&nbsp;</td><td>PLANNED / IN_PROGRESS / DONE / CANCELLED</td></tr>
+        <tr><td>performed_by</td><td>BIGINT</td><td>Y</td><td>FK → users.user_id</td><td>ผู้ทำหัตถการ (ทันตแพทย์/นักศึกษา)</td></tr>
+        <tr><td>created_at</td><td>TIMESTAMP</td><td>N</td><td>&nbsp;</td><td>วันเวลาบันทึก</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.4 ตาราง <code>appointment</code> — การนัดหมาย</h3>
+    <table>
+      <thead><tr><th style="width:14%">Field</th><th style="width:18%">ชนิดข้อมูล</th><th style="width:7%">Null?</th><th style="width:11%">PK/FK</th><th>ความหมาย / ค่าที่ยอมรับ</th></tr></thead>
+      <tbody>
+        <tr><td>appointment_id</td><td>BIGINT</td><td>N</td><td><b>PK</b></td><td>รหัสการนัดหมาย</td></tr>
+        <tr><td>patient_id</td><td>BIGINT</td><td>N</td><td><b>FK</b> → patient.patient_id</td><td>ผู้ป่วยที่นัด</td></tr>
+        <tr><td>dentist_id</td><td>BIGINT</td><td>Y</td><td>FK → users.user_id</td><td>ทันตแพทย์ที่นัด</td></tr>
+        <tr><td>appoint_date</td><td>TIMESTAMP</td><td>N</td><td>&nbsp;</td><td>วันเวลานัด</td></tr>
+        <tr><td>clinic_code</td><td>VARCHAR(10)</td><td>N</td><td>FK → clinic.clinic_code</td><td>คลินิกที่นัด</td></tr>
+        <tr><td>status</td><td>VARCHAR(15)</td><td>N</td><td>&nbsp;</td><td>สถานะนัด: SCHEDULED / CONFIRMED / ARRIVED / DONE / CANCELLED / NO_SHOW (ดู Lookup ข้อ 4.2)</td></tr>
+        <tr><td>note</td><td>VARCHAR(255)</td><td>Y</td><td>&nbsp;</td><td>หมายเหตุการนัด</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.5 ตาราง <code>drug</code> — ทะเบียนยา</h3>
+    <table>
+      <thead><tr><th style="width:14%">Field</th><th style="width:18%">ชนิดข้อมูล</th><th style="width:7%">Null?</th><th style="width:11%">PK/FK</th><th>ความหมาย / ค่าที่ยอมรับ</th></tr></thead>
+      <tbody>
+        <tr><td>drug_id</td><td>BIGINT</td><td>N</td><td><b>PK</b></td><td>รหัสยาภายในระบบ</td></tr>
+        <tr><td>drug_code</td><td>VARCHAR(20)</td><td>N</td><td>UNIQUE</td><td>รหัสยา (อ้างอิง TMT/24-digit)</td></tr>
+        <tr><td>generic_name</td><td>VARCHAR(200)</td><td>N</td><td>&nbsp;</td><td>ชื่อสามัญทางยา</td></tr>
+        <tr><td>trade_name</td><td>VARCHAR(200)</td><td>Y</td><td>&nbsp;</td><td>ชื่อการค้า</td></tr>
+        <tr><td>unit</td><td>VARCHAR(20)</td><td>N</td><td>&nbsp;</td><td>หน่วยนับ (เม็ด/หลอด/ขวด)</td></tr>
+        <tr><td>unit_price</td><td>NUMERIC(12,2)</td><td>N</td><td>&nbsp;</td><td>ราคาต่อหน่วย (บาท)</td></tr>
+        <tr><td>is_active</td><td>BOOLEAN</td><td>N</td><td>&nbsp;</td><td>สถานะใช้งาน (true/false)</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.6 ตาราง <code>users</code> — ผู้ใช้งานระบบ (ทันตแพทย์/นักศึกษา/เจ้าหน้าที่)</h3>
+    <table>
+      <thead><tr><th style="width:14%">Field</th><th style="width:18%">ชนิดข้อมูล</th><th style="width:7%">Null?</th><th style="width:11%">PK/FK</th><th>ความหมาย / ค่าที่ยอมรับ</th></tr></thead>
+      <tbody>
+        <tr><td>user_id</td><td>BIGINT</td><td>N</td><td><b>PK</b></td><td>รหัสผู้ใช้</td></tr>
+        <tr><td>username</td><td>VARCHAR(50)</td><td>N</td><td>UNIQUE</td><td>ชื่อเข้าใช้ระบบ</td></tr>
+        <tr><td>password_hash</td><td>VARCHAR(255)</td><td>N</td><td>&nbsp;</td><td>รหัสผ่านแบบ hash (bcrypt/argon2 — ไม่เก็บ plaintext)</td></tr>
+        <tr><td>full_name</td><td>VARCHAR(200)</td><td>N</td><td>&nbsp;</td><td>ชื่อ-นามสกุลผู้ใช้</td></tr>
+        <tr><td>user_type</td><td>VARCHAR(15)</td><td>N</td><td>&nbsp;</td><td>DENTIST / STUDENT / STAFF / ADMIN (ดู Lookup ข้อ 4.4)</td></tr>
+        <tr><td>license_no</td><td>VARCHAR(30)</td><td>Y</td><td>&nbsp;</td><td>เลขใบประกอบวิชาชีพ (กรณีทันตแพทย์)</td></tr>
+        <tr><td>role_id</td><td>BIGINT</td><td>N</td><td>FK → role.role_id</td><td>บทบาท/สิทธิ์การใช้งาน</td></tr>
+        <tr><td>is_active</td><td>BOOLEAN</td><td>N</td><td>&nbsp;</td><td>สถานะบัญชี</td></tr>
+        <tr><td>last_login_at</td><td>TIMESTAMP</td><td>Y</td><td>&nbsp;</td><td>เข้าใช้ครั้งล่าสุด</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 3 มาตรฐานการตั้งชื่อ -->
+    <h2 class="sec"><span class="n">3</span>มาตรฐานการตั้งชื่อ (Naming Convention)</h2>
+    <table>
+      <thead><tr><th style="width:24%">รายการ</th><th style="width:28%">รูปแบบ</th><th>ตัวอย่าง</th></tr></thead>
+      <tbody>
+        <tr><td>ชื่อตาราง</td><td>snake_case เอกพจน์ ตัวพิมพ์เล็ก</td><td><code>patient</code>, <code>appointment</code>, <code>drug_order</code></td></tr>
+        <tr><td>ชื่อคอลัมน์</td><td>snake_case ตัวพิมพ์เล็ก</td><td><code>first_name</code>, <code>visit_date</code></td></tr>
+        <tr><td>Primary Key</td><td>&lt;table&gt;_id</td><td><code>patient_id</code>, <code>visit_id</code></td></tr>
+        <tr><td>Foreign Key</td><td>&lt;referenced_table&gt;_id</td><td><code>patient_id</code> ใน visit</td></tr>
+        <tr><td>คอลัมน์บูลีน</td><td>is_ / has_ นำหน้า</td><td><code>is_active</code>, <code>has_allergy</code></td></tr>
+        <tr><td>คอลัมน์วันเวลา</td><td>_at (timestamp) / _date (date)</td><td><code>created_at</code>, <code>birth_date</code></td></tr>
+        <tr><td>Index</td><td>idx_&lt;table&gt;_&lt;cols&gt;</td><td><code>idx_visit_patient_id</code></td></tr>
+        <tr><td>Foreign Key Constraint</td><td>fk_&lt;table&gt;_&lt;ref&gt;</td><td><code>fk_visit_patient</code></td></tr>
+        <tr><td>Unique Constraint</td><td>uq_&lt;table&gt;_&lt;cols&gt;</td><td><code>uq_patient_hn</code></td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>กฎทั่วไป:</b> ห้ามใช้คำสงวน (reserved word) ของ DBMS เป็นชื่อ · ใช้ภาษาอังกฤษเท่านั้น · ทุกตารางต้องมี <code>created_at</code> และ <code>updated_at</code> สำหรับ Audit · ใช้ตัวระบุ surrogate key (BIGINT) เป็น PK เสมอ</div>
+
+    <!-- 4 รายการ Code/Lookup -->
+    <h2 class="sec"><span class="n">4</span>รายการรหัส/ตารางอ้างอิง (Code / Lookup)</h2>
+
+    <h3 class="sub">4.1 เพศ (gender)</h3>
+    <table>
+      <thead><tr><th style="width:20%">รหัส</th><th>ความหมาย</th></tr></thead>
+      <tbody>
+        <tr><td>M</td><td>ชาย (Male)</td></tr>
+        <tr><td>F</td><td>หญิง (Female)</td></tr>
+        <tr><td>U</td><td>ไม่ระบุ/ไม่ทราบ (Unknown)</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">4.2 สถานะการนัดหมาย (appointment.status)</h3>
+    <table>
+      <thead><tr><th style="width:24%">รหัส</th><th>ความหมาย</th></tr></thead>
+      <tbody>
+        <tr><td>SCHEDULED</td><td>นัดแล้ว รอยืนยัน</td></tr>
+        <tr><td>CONFIRMED</td><td>ยืนยันนัดแล้ว</td></tr>
+        <tr><td>ARRIVED</td><td>ผู้ป่วยมาถึง/เช็คอินแล้ว</td></tr>
+        <tr><td>DONE</td><td>เข้ารับบริการเสร็จสิ้น</td></tr>
+        <tr><td>CANCELLED</td><td>ยกเลิกนัด</td></tr>
+        <tr><td>NO_SHOW</td><td>ผิดนัด (ไม่มาตามนัด)</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">4.3 สถานะการมารับบริการ (visit.status)</h3>
+    <table>
+      <thead><tr><th style="width:24%">รหัส</th><th>ความหมาย</th></tr></thead>
+      <tbody>
+        <tr><td>WAITING</td><td>รอตรวจ/รอคิว</td></tr>
+        <tr><td>IN_SERVICE</td><td>กำลังรับบริการ</td></tr>
+        <tr><td>COMPLETED</td><td>เสร็จสิ้น</td></tr>
+        <tr><td>CANCELLED</td><td>ยกเลิก</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">4.4 ประเภทผู้ใช้ (users.user_type)</h3>
+    <table>
+      <thead><tr><th style="width:24%">รหัส</th><th>ความหมาย</th></tr></thead>
+      <tbody>
+        <tr><td>DENTIST</td><td>ทันตแพทย์</td></tr>
+        <tr><td>STUDENT</td><td>นักศึกษาทันตแพทย์</td></tr>
+        <tr><td>STAFF</td><td>เจ้าหน้าที่ (เวชระเบียน/การเงิน/ห้องยา)</td></tr>
+        <tr><td>ADMIN</td><td>ผู้ดูแลระบบ</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>การจัดการ Lookup:</b> เก็บค่ารหัสในตาราง <code>lookup_code</code> (category, code, label_th, label_en, sort_order, is_active) เพื่อให้แก้ไขค่าได้โดยไม่ต้องแก้โปรแกรม</div>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">5</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — DB Analyst</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — DB Designer/SA</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิง TOR ข้อ 6.2
+  </div>
+</div>
+</body>
+</html>

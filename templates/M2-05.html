@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-05 การจับคู่กระบวนการทางธุรกิจ (Business Process Mapping)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m2">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M2-04.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M2-06.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M2-05 · งวดที่ 2</span>
+    <h1>การจับคู่กระบวนการทางธุรกิจ</h1>
+    <div class="en">Business Process Mapping (BPM)</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-BPM-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">System Analyst</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">__________</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.x · ISO 29110 SI.2</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ระยะวิเคราะห์ — เชื่อมกระบวนการจริงเข้ากับความต้องการระบบ (FR)</span>
+      <span class="chip who">เจ้าของ: System Analyst</span>
+      <span class="chip iso">ISO 29110: SI.2 Requirements Analysis</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> ระบุและจับคู่กระบวนการทางธุรกิจของโรงพยาบาลทันตกรรมเข้ากับฟังก์ชันของระบบ DIS (FR) เพื่อให้มั่นใจว่าทุกกระบวนการสำคัญถูกรองรับด้วยระบบ และระบุจุดที่ต้องปรับปรุงกระบวนการ · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>SA</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 วัตถุประสงค์ -->
+    <h2 class="sec"><span class="n">1</span>วัตถุประสงค์และขอบเขต</h2>
+    <ul>
+      <li>ระบุกระบวนการทางธุรกิจหลักของโรงพยาบาลทันตกรรมที่ระบบ DIS ต้องรองรับ</li>
+      <li>จับคู่ (Mapping) แต่ละกระบวนการเข้ากับความต้องการเชิงหน้าที่ (FR) ใน M2-04</li>
+      <li>ระบุเจ้าของกระบวนการ (Process Owner) Input/Output และตัวชี้วัด (KPI)</li>
+      <li>ชี้จุดที่ควรปรับปรุงกระบวนการ (Process Improvement) เมื่อนำระบบมาใช้</li>
+    </ul>
+
+    <!-- 2 รายการกระบวนการธุรกิจ -->
+    <h2 class="sec"><span class="n">2</span>รายการกระบวนการทางธุรกิจ (Business Process Inventory)</h2>
+    <table>
+      <thead><tr>
+        <th style="width:8%">Process ID</th><th style="width:18%">ชื่อกระบวนการ</th><th style="width:14%">เจ้าของกระบวนการ</th><th>Input</th><th>Output</th><th style="width:18%">KPI</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>BP-01</td><td>ลงทะเบียน/ค้นผู้ป่วย</td><td>เวชระเบียน</td>
+          <td>HN / ข้อมูลผู้ป่วยจาก HAIT Plus</td><td>เวชระเบียนพร้อมรับบริการ</td><td>เวลาลงทะเบียนเฉลี่ย ≤ <span class="fill">__</span> นาที</td>
+        </tr>
+        <tr>
+          <td>BP-02</td><td>นัดหมาย &amp; Recall</td><td>เวชระเบียน/คลินิก</td>
+          <td>แผนการรักษา, คิวเก้าอี้/แพทย์</td><td>นัดหมาย + การแจ้งเตือน</td><td>อัตราผู้ป่วยมาตามนัด ≥ <span class="fill">__%</span></td>
+        </tr>
+        <tr>
+          <td>BP-03</td><td>ตรวจรักษา &amp; บันทึก Dental Chart</td><td>ทันตแพทย์/นักศึกษา</td>
+          <td>เวชระเบียน, ผังฟัน, ผล Lab/รังสี</td><td>บันทึกหัตถการ + แผนรักษา</td><td>ความครบถ้วนเวชระเบียน ≥ <span class="fill">__%</span></td>
+        </tr>
+        <tr>
+          <td>BP-04</td><td>สั่งจ่ายยา (ตรวจแพ้ยา)</td><td>ทันตแพทย์/เภสัชกร</td>
+          <td>ใบสั่งยา, ประวัติแพ้ยา</td><td>จ่ายยา + บันทึกการเตือน</td><td>ความผิดพลาดจ่ายยา = 0</td>
+        </tr>
+        <tr>
+          <td>BP-05</td><td>ขอความยินยอม (Consent)</td><td>ทันตแพทย์/เวชระเบียน</td>
+          <td>ข้อมูลหัตถการ, ผู้ป่วย</td><td>เอกสาร Consent อิเล็กทรอนิกส์</td><td>เคสมี Consent ครบ ≥ <span class="fill">__%</span></td>
+        </tr>
+        <tr>
+          <td>BP-06</td><td>เรียกเก็บเงิน &amp; ออกใบเสร็จ</td><td>การเงิน</td>
+          <td>รายการหัตถการ, สิทธิ์/ส่วนลด</td><td>ใบเสร็จ + รายการ AR ใน SAP</td><td>ยอดกระทบบัญชีตรง 100%</td>
+        </tr>
+        <tr>
+          <td>BP-07</td><td>งานแล็บทันตกรรม</td><td>Dental Lab</td>
+          <td>ใบสั่งงานแล็บ</td><td>ชิ้นงาน + สถานะติดตาม</td><td>ส่งงานตรงเวลา ≥ <span class="fill">__%</span></td>
+        </tr>
+        <tr class="fillrow"><td><span class="fill">BP-__</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 3 ตัวอย่าง Process Map -->
+    <h2 class="sec"><span class="n">3</span>ตัวอย่างแผนภาพกระบวนการ (Process Map)</h2>
+    <p class="small muted">ตัวอย่าง BP-04 — กระบวนการสั่งจ่ายยาพร้อมการเตือนแพ้ยา</p>
+    <div class="ascii">  [ทันตแพทย์]            [ระบบ DIS]              [เภสัชกร]
+       |                      |                       |
+   เปิดเวชระเบียน ----------> ดึงประวัติแพ้ยา          |
+       |                      |                       |
+   เลือกยา/สั่งจ่าย --------> ตรวจสอบแพ้ยา/interaction |
+       |                      |                       |
+       |               แพ้ยา? --yes--> [ALERT] บังคับยืนยัน/ระบุเหตุผล
+       |                      | no                    |
+       |                      v                       |
+       |               บันทึกใบสั่งยา --------------> ตรวจสอบ/จัดยา
+       |                      |                       |
+       |                 บันทึก audit log <---------- จ่ายยา + บันทึก
+       v                      v                       v
+   เสร็จสิ้น              (log/รายงาน)             ส่งมอบผู้ป่วย</div>
+    <p class="small muted">หมายเหตุ: แผนภาพฉบับเต็ม (BPMN/Swimlane) จัดทำแยกตามกระบวนการ และอ้างอิงในภาคผนวก</p>
+
+    <!-- 4 การจับคู่ Process -> FR -->
+    <h2 class="sec"><span class="n">4</span>การจับคู่กระบวนการกับความต้องการระบบ (Process → FR)</h2>
+    <table>
+      <thead><tr><th style="width:12%">Process ID</th><th style="width:26%">ชื่อกระบวนการ</th><th style="width:18%">FR ที่รองรับ</th><th>หมายเหตุ / ช่องว่าง (Gap)</th></tr></thead>
+      <tbody>
+        <tr><td>BP-01</td><td>ลงทะเบียน/ค้นผู้ป่วย</td><td>FR-06</td><td>ดึงข้อมูลจาก HAIT Plus ไม่ลงทะเบียนซ้ำ</td></tr>
+        <tr><td>BP-02</td><td>นัดหมาย &amp; Recall</td><td>FR-02</td><td>เชื่อม Mobile App แจ้งเตือนผู้ป่วย</td></tr>
+        <tr><td>BP-03</td><td>ตรวจรักษา &amp; Dental Chart</td><td>FR-04, FR-07</td><td>แสดงผล Lab/PACS ในเวชระเบียน</td></tr>
+        <tr><td>BP-04</td><td>สั่งจ่ายยา</td><td>FR-01</td><td>Alert แพ้ยาเป็น Must</td></tr>
+        <tr><td>BP-05</td><td>ขอความยินยอม</td><td>FR-03</td><td>ลายเซ็นดิจิทัล + timestamp</td></tr>
+        <tr><td>BP-06</td><td>เรียกเก็บเงิน</td><td>FR-05</td><td>เชื่อม SAP เรื่อง AR</td></tr>
+        <tr><td>BP-07</td><td>งานแล็บ</td><td>FR-08</td><td>—</td></tr>
+        <tr class="fillrow"><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 5 จุดปรับปรุงกระบวนการ -->
+    <h2 class="sec"><span class="n">5</span>จุดปรับปรุงกระบวนการ (Process Improvement)</h2>
+    <table>
+      <thead><tr><th style="width:12%">Process ID</th><th>กระบวนการเดิม (As-Is)</th><th>กระบวนการใหม่ (To-Be)</th><th style="width:18%">ประโยชน์</th></tr></thead>
+      <tbody>
+        <tr><td>BP-01</td><td>กรอกข้อมูลผู้ป่วยซ้ำในหลายระบบ</td><td>ดึงข้อมูลอัตโนมัติจาก HAIT Plus</td><td>ลดเวลา/ลดข้อผิดพลาด</td></tr>
+        <tr><td>BP-04</td><td>ตรวจแพ้ยาด้วยตาจากแฟ้มกระดาษ</td><td>ระบบเตือนแพ้ยาอัตโนมัติก่อนจ่าย</td><td>ความปลอดภัยผู้ป่วย (HA)</td></tr>
+        <tr><td>BP-05</td><td>Consent กระดาษ จัดเก็บ/ค้นยาก</td><td>Consent อิเล็กทรอนิกส์ผูกเวชระเบียน</td><td>สอบกลับได้/ครบถ้วน</td></tr>
+        <tr class="fillrow"><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">6</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — System Analyst</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิง ISO 29110 SI.2
+  </div>
+</div>
+</body>
+</html>

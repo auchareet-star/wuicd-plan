@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M4-07 เอกสารการรับประกันและข้อตกลงระดับบริการ (Warranty &amp; SLA)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m4">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M4-06.html">◂ เอกสารก่อนหน้า</a>
+      <a href="../เอกสารส่งมอบรายงวด.html">กลับสารบัญ ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M4-07 · งวดที่ 4</span>
+    <h1>เอกสารการรับประกันและข้อตกลงระดับบริการ</h1>
+    <div class="en">Warranty &amp; Service Level Agreement (SLA)</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-SLA-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">ผู้รับจ้าง</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2027</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">Project Manager</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> เงื่อนไขการรับประกันและบำรุงรักษา</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ส่งมอบงวด M4 — มีผลตลอดช่วงประกัน 08/04/2027–07/04/2029</span>
+      <span class="chip who">เจ้าของ: ผู้รับจ้าง</span>
+      <span class="chip iso">SLA ตาม TOR</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> กำหนดขอบเขตการรับประกัน ระยะเวลา และระดับการให้บริการ (SLA) ของระบบ DIS หลัง Go-Live เพื่อให้ผู้ว่าจ้างและผู้รับจ้างเข้าใจตรงกันถึงสิทธิ์ หน้าที่ ช่องทางและเวลาในการแก้ปัญหา รวมถึงการดูแลจุดเชื่อมต่อ HAIT Plus ในช่วงประกัน · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2027</td><td>ผู้รับจ้าง</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 ขอบเขตการรับประกัน -->
+    <h2 class="sec"><span class="n">1</span>ขอบเขตการรับประกัน (Warranty Scope)</h2>
+    <p>ผู้รับจ้างรับประกันระบบ DIS ที่ส่งมอบเป็นระยะเวลา <b>2 ปี</b> ครอบคลุม:</p>
+    <ul>
+      <li>แก้ไขข้อบกพร่อง (Bug/Defect) ของระบบที่เกิดจากการพัฒนาโดยไม่คิดค่าใช้จ่าย</li>
+      <li>ดูแลให้ระบบทำงานได้ตามที่ระบุในเอกสารวิเคราะห์/ออกแบบและที่ผ่าน UAT</li>
+      <li>ดูแลจุดเชื่อมต่อ (Integration) กับ HAIT Plus และระบบเชื่อมโยงอื่นให้ทำงานต่อเนื่อง</li>
+      <li>ปรับปรุง/แก้ไขเพื่อความปลอดภัย (Security Patch) ที่เกี่ยวกับระบบที่ส่งมอบ</li>
+      <li>ให้คำปรึกษาการใช้งานและสนับสนุนผู้ดูแลระบบของโรงพยาบาล</li>
+    </ul>
+
+    <!-- 2 ระยะเวลา -->
+    <h2 class="sec"><span class="n">2</span>ระยะเวลารับประกัน (Warranty Period)</h2>
+    <table>
+      <tbody>
+        <tr class="fillrow"><td style="width:40%"><b>วันเริ่มประกัน</b></td><td><b>08/04/2027</b> (ถัดจากวันตรวจรับ M4 สมบูรณ์)</td></tr>
+        <tr class="fillrow"><td><b>วันสิ้นสุดประกัน</b></td><td><b>07/04/2029</b> (ครบ 2 ปี)</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">หากการตรวจรับงวด M4 เลื่อน ให้นับวันเริ่มประกันถัดจากวันตรวจรับสมบูรณ์จริง (อ้างอิงใบตรวจรับ M4-06)</p>
+
+    <!-- 3 ตาราง SLA -->
+    <h2 class="sec"><span class="n">3</span>ข้อตกลงระดับการให้บริการ (SLA)</h2>
+    <p>กำหนดระดับปัญหา เวลาตอบรับ (Response) และเวลาแก้ไข (Resolution) ตาม TOR ดังนี้:</p>
+    <table class="alt">
+      <thead><tr><th style="width:28%">ระดับปัญหา</th><th>ลักษณะ</th><th style="width:16%">ตอบรับ</th><th style="width:16%">แก้ไข</th><th style="width:18%">ช่องทาง</th></tr></thead>
+      <tbody>
+        <tr><td><b>ทั่วไป</b> (General / Minor)</td><td>ปัญหาเล็กน้อย ใช้งานได้ มีทางเลี่ยง เช่น รายงานบางส่วน, การแสดงผล</td><td>ภายใน <b>30 นาที</b></td><td>ภายใน <b>1 วัน</b></td><td>Onsite / Online / Telephone</td></tr>
+        <tr><td><b>รุนแรง</b> (Severe / Major)</td><td>ระบบหลักใช้งานไม่ได้ / กระทบบริการผู้ป่วย / Integration HAIT Plus ล่ม</td><td>ภายใน <b>1 ชม.</b></td><td>ภายใน <b>24 ชม.</b></td><td>Onsite / Online / Telephone</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">เวลานับจากเวลาที่ผู้ว่าจ้างแจ้งปัญหาผ่านช่องทางที่กำหนด · กรณีปัญหารุนแรงผู้รับจ้างต้องเข้าดำเนินการอย่างต่อเนื่องจนกว่าจะแก้ไขได้</p>
+
+    <!-- 4 ขอบเขตบริการ -->
+    <h2 class="sec"><span class="n">4</span>ขอบเขตบริการในช่วงประกัน</h2>
+    <ul>
+      <li><b>Update / Patch:</b> ปรับปรุงแก้ไขข้อบกพร่องและ Security Patch ตามขั้นตอนการเปลี่ยนแปลง (อ้างอิง M4-05 ข้อ 7)</li>
+      <li><b>ดูแลระบบ:</b> สนับสนุนการเฝ้าระวัง (Monitoring), ตรวจสอบ log, ให้คำแนะนำการ Tuning เบื้องต้น</li>
+      <li><b>การจัดสิทธิ์:</b> สนับสนุนการตั้งค่าสิทธิ์ตาม role (ทันตแพทย์/นักศึกษา/เวชระเบียน/เภสัช/การเงิน/แอดมิน)</li>
+      <li><b>สนับสนุนผู้ดูแลระบบ:</b> ให้คำปรึกษาการใช้งานและการแก้ปัญหาเบื้องต้น</li>
+    </ul>
+
+    <!-- 5 ขั้นตอนแจ้งปัญหา -->
+    <h2 class="sec"><span class="n">5</span>ขั้นตอนการแจ้งปัญหา (Ticket Flow)</h2>
+    <div class="ascii">  ผู้ใช้/ผู้ดูแลระบบ
+        │  แจ้งปัญหา (Onsite / Online / Telephone)
+        ▼
+  ┌──────────────────┐   ตอบรับ (Acknowledge)
+  │  เปิด Ticket      │   Minor ≤ 30 นาที · Major ≤ 1 ชม.
+  │  + จัดระดับปัญหา  │
+  └────────┬─────────┘
+           ▼
+  ┌──────────────────┐
+  │  วิเคราะห์/แก้ไข  │── เกี่ยวกับ HAIT Plus? ──► ประสานทีม HIS เดิม (ข้อ 7)
+  └────────┬─────────┘
+           ▼   แก้ไข (Resolve)
+  ┌──────────────────┐   Minor ≤ 1 วัน · Major ≤ 24 ชม.
+  │  ทดสอบ + ยืนยัน   │
+  │  กับผู้แจ้ง        │
+  └────────┬─────────┘
+           ▼
+  ┌──────────────────┐
+  │  ปิด Ticket +     │
+  │  บันทึกผล/รายงาน  │
+  └──────────────────┘</div>
+    <p class="small muted">รายงานสรุป Ticket และสถิติ SLA ส่งให้ผู้ว่าจ้างทุก <span class="fill">เดือน / ไตรมาส</span></p>
+
+    <!-- 6 ข้อยกเว้น -->
+    <h2 class="sec"><span class="n">6</span>ข้อยกเว้นการรับประกัน (Exclusions)</h2>
+    <ul>
+      <li>ความเสียหายจากการใช้งานผิดวิธี หรือแก้ไขระบบเองโดยไม่ได้รับอนุญาต</li>
+      <li>ปัญหาจากฮาร์ดแวร์ เครือข่าย ไฟฟ้า หรือระบบปฏิบัติการที่อยู่นอกขอบเขตสัญญา</li>
+      <li>ความต้องการใหม่ (New Requirement) หรือการพัฒนาเพิ่มเติมนอกขอบเขตเดิม (คิดเป็นงานเพิ่ม)</li>
+      <li>การเปลี่ยนแปลงของระบบภายนอก (เช่น HAIT Plus, SAP) ที่กระทบ interface โดยมิใช่ความผิดผู้รับจ้าง</li>
+      <li>เหตุสุดวิสัย (Force Majeure) ภัยธรรมชาติ หรือเหตุนอกเหนือการควบคุม</li>
+      <li><span class="fill">ระบุข้อยกเว้นเพิ่มเติมตามที่ตกลง</span></li>
+    </ul>
+
+    <!-- 7 การต่อโควตาทีม HIS เดิม -->
+    <h2 class="sec"><span class="n">7</span>การต่อโควตาทีม HIS เดิมช่วงประกัน</h2>
+    <div class="warn"><b>⚠️ จุดเสี่ยงสำคัญ:</b> การแก้ปัญหา Integration กับ <b>HAIT Plus</b> ในช่วงประกันอาจต้องอาศัยทีม HIS เดิม การไม่มีโควตา/ทีม HIS เดิมพร้อมจะทำให้แก้ปัญหารุนแรงไม่ทัน SLA</div>
+    <ul>
+      <li>ต้องเจรจาต่อ/สำรองโควตาทีม HIS เดิม (HAIT Plus) ครอบคลุมตลอดช่วงประกัน 08/04/2027–07/04/2029</li>
+      <li>จัดทำข้อตกลง/MOU ระบุจำนวนชั่วโมงสนับสนุน, เวลาตอบสนอง และช่องทาง escalation</li>
+      <li>กำหนดผู้ประสานงาน (Point of Contact) ทั้งฝั่งผู้รับจ้างและทีม HIS เดิม</li>
+      <li>กรณีปัญหารุนแรงด้าน Integration ให้ escalate ไปทีม HIS เดิมทันทีเพื่อรักษา SLA 24 ชม.</li>
+    </ul>
+    <table>
+      <thead><tr><th style="width:34%">รายการ</th><th>รายละเอียด (กรอก)</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>โควตาทีม HIS เดิม/เดือน</td><td><span class="fill">__ ชม. หรือ __ ครั้ง</span></td></tr>
+        <tr class="fillrow"><td>เวลาตอบสนอง Integration</td><td><span class="fill">__</span></td></tr>
+        <tr class="fillrow"><td>ผู้ประสานงานทีม HIS เดิม</td><td><span class="fill">ชื่อ / ช่องทางติดต่อ</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 8 ช่องทางติดต่อ -->
+    <h2 class="sec"><span class="n">8</span>ช่องทางการติดต่อ (Contact)</h2>
+    <table>
+      <thead><tr><th style="width:28%">ช่องทาง</th><th>รายละเอียด</th><th style="width:26%">เวลาให้บริการ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>Telephone (Hotline)</td><td><span class="fill">0-XXXX-XXXX</span></td><td><span class="fill">จ.–ศ. 08:30–16:30</span></td></tr>
+        <tr class="fillrow"><td>Online (Ticket/Email)</td><td><span class="fill">support@___ / ระบบ Ticket</span></td><td><span class="fill">24×7 (รับเรื่อง)</span></td></tr>
+        <tr class="fillrow"><td>Line / Chat</td><td><span class="fill">@___</span></td><td><span class="fill">ในเวลาทำการ</span></td></tr>
+        <tr class="fillrow"><td>Onsite</td><td><span class="fill">เข้าหน้างานตามเงื่อนไข SLA</span></td><td><span class="fill">ตามนัด/ปัญหารุนแรง</span></td></tr>
+        <tr class="fillrow"><td>ผู้จัดการบริการ (Service Manager)</td><td><span class="fill">ชื่อ / เบอร์ / อีเมล</span></td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">9</span>การลงนามรับทราบและตกลงร่วมกัน</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — ผู้รับจ้าง</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — Project Manager</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้รับทราบ/อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · ประกัน 2 ปี 08/04/2027–07/04/2029
+  </div>
+</div>
+</body>
+</html>

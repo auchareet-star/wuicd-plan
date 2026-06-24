@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M3-08 รายงานผลทดสอบครบวงจร (End-to-End Test Report)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m3">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M3-07.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M4-01.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M3-08 · งวดที่ 3</span>
+    <h1>รายงานผลทดสอบครบวงจร</h1>
+    <div class="en">End-to-End Test Report</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-E2E-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">QA + ผู้ใช้</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2027</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">Project Manager</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง:</b> flow ผู้ป่วยครบวงจร · ก่อน Go-Live</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ทดสอบ E2E ปลายงวด M3 ก่อนตัดสิน Go-Live</span>
+      <span class="chip who">เจ้าของ: QA + ผู้ใช้งานจริง</span>
+      <span class="chip iso">ISO 29110: SI Integration &amp; Test</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> รายงานผลการทดสอบระบบ DIS แบบครบวงจร (End-to-End) ตาม flow ผู้ป่วยจริง: ลงทะเบียน → ซักประวัติ → ตรวจ/รักษา (Dental chart) → สั่งยา/แลป/X-ray → เก็บเงิน → นัด/Recall ครอบคลุมการเชื่อมต่อ HAIT Plus และระบบที่เกี่ยวข้อง พร้อมบันทึก Defect และสรุปความพร้อมก่อน Go-Live · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2027</td><td>QA</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 ขอบเขต E2E scenario -->
+    <h2 class="sec"><span class="n">1</span>ขอบเขตการทดสอบครบวงจร (E2E Scope)</h2>
+    <p><strong>1.1 Flow ผู้ป่วยครบวงจรที่ทดสอบ</strong></p>
+    <div class="ascii">ลงทะเบียน ─▸ ซักประวัติ ─▸ ตรวจ/รักษา (Dental chart) ─▸ สั่งยา/แลป/X-ray ─▸ เก็บเงิน ─▸ นัด/Recall</div>
+    <p><strong>1.2 ระบบที่เกี่ยวข้องในการทดสอบ</strong></p>
+    <ul>
+      <li>DIS (Web + Mobile) · เชื่อมต่อ <strong>HAIT Plus</strong> (HIS เดิม)</li>
+      <li>ระบบห้องยา, LIS (แลป), PACS/รังสี (X-ray), การเงิน/ลูกหนี้, นัดหมาย</li>
+      <li>บทบาทผู้ทดสอบ: เวชระเบียน, ทันตแพทย์/นักศึกษา, เภสัชกร, การเงิน, แอดมิน</li>
+    </ul>
+    <p><strong>1.3 สภาพแวดล้อมและข้อมูลที่ใช้ทดสอบ</strong></p>
+    <ul>
+      <li>Environment: <span class="fill">UAT / Pre-prod</span> · เวอร์ชันระบบ: <span class="fill">________</span></li>
+      <li>ข้อมูลทดสอบ: <span class="fill">ชุดผู้ป่วยจำลอง / ข้อมูล Migration</span></li>
+    </ul>
+
+    <!-- 2 ตารางผล E2E -->
+    <h2 class="sec"><span class="n">2</span>ผลการทดสอบครบวงจร (E2E Results)</h2>
+    <p class="small muted">เกณฑ์ผ่าน: ทุกขั้นตอนใน scenario ทำงานต่อเนื่องและส่งข้อมูลถูกต้องระหว่างระบบ</p>
+    <table>
+      <thead><tr><th style="width:24%">Scenario</th><th>ขั้นตอน (Steps)</th><th style="width:12%">ผล</th></tr></thead>
+      <tbody>
+        <tr><td>E2E-01 ผู้ป่วยใหม่ครบวงจร</td><td>ลงทะเบียน → ซักประวัติ → ตรวจ/บันทึก Dental chart → สั่งยา → เก็บเงิน → ออกใบนัด</td><td><span class="badge b-fit">ผ่าน</span></td></tr>
+        <tr><td>E2E-02 สั่งแลป + X-ray</td><td>เปิดเวชระเบียน → สั่งแลป (LIS) + X-ray (PACS) → รับผล → บันทึกผลในเคส</td><td><span class="badge b-par">ตรวจซ้ำ</span></td></tr>
+        <tr><td>E2E-03 นัด/Recall + แจ้งเตือน</td><td>สร้างนัด → ระบบส่งแจ้งเตือน → ผู้ป่วยมาตามนัด → check-in</td><td><span class="badge b-fit">ผ่าน</span></td></tr>
+        <tr><td>E2E-04 เคสนักศึกษา + อาจารย์อนุมัติ</td><td>นักศึกษาบันทึก Dental chart → ส่งอนุมัติ → อาจารย์ยืนยัน → ปิดเคส</td><td><span class="badge b-gap">ไม่ผ่าน</span></td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+      <tfoot><tr style="font-weight:700;background:#f3f7f7"><td>สรุป</td><td>ผ่าน <span class="fill">__</span> / ตรวจซ้ำ <span class="fill">__</span> / ไม่ผ่าน <span class="fill">__</span> จากทั้งหมด <span class="fill">__</span></td><td><span class="fill">__%</span></td></tr></tfoot>
+    </table>
+
+    <!-- 3 Defect -->
+    <h2 class="sec"><span class="n">3</span>รายการข้อบกพร่องที่พบ (Defect Log)</h2>
+    <table>
+      <thead><tr><th style="width:8%">ID</th><th style="width:16%">Scenario</th><th>รายละเอียดข้อบกพร่อง</th><th style="width:12%">ระดับ</th><th style="width:12%">สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td>D-01</td><td>E2E-02</td><td>ผล X-ray จาก PACS แสดงล่าช้า ~30 วิ</td><td><span class="badge b-should">Medium</span></td><td><span class="badge b-par">กำลังแก้</span></td></tr>
+        <tr><td>D-02</td><td>E2E-04</td><td>เคสที่อาจารย์อนุมัติแล้วยังแก้ไขได้ (สิทธิ์ผิด)</td><td><span class="badge b-must">High</span></td><td><span class="badge b-gap">ค้างแก้</span></td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">ระดับ: <span class="badge b-must">High</span> ต้องแก้ก่อน Go-Live · <span class="badge b-should">Medium</span> ควรแก้ · <span class="badge b-could">Low</span> แก้ภายหลังได้</p>
+
+    <!-- 4 สรุปความพร้อม Go-Live -->
+    <h2 class="sec"><span class="n">4</span>สรุปความพร้อมก่อน Go-Live</h2>
+    <ul class="chk">
+      <li>ทุก scenario หลักมีสถานะ <span class="badge b-fit">ผ่าน</span> หรือมีแผนปิดที่ยอมรับได้</li>
+      <li>Defect ระดับ <span class="badge b-must">High</span>/Critical = 0 รายการค้าง</li>
+      <li>การเชื่อมต่อ HAIT Plus และระบบเกี่ยวข้องทำงานครบ</li>
+      <li>ข้อมูล Migration กระทบยอดผ่าน (อ้างอิง <a href="M3-05.html">M3-05</a>)</li>
+      <li>ผู้ใช้งานจริงร่วมทดสอบและยืนยันผล</li>
+    </ul>
+    <p><strong>สรุปผลโดยรวม:</strong> <span class="fill">☐ พร้อม Go-Live &nbsp;&nbsp; ☐ พร้อมแบบมีเงื่อนไข &nbsp;&nbsp; ☐ ยังไม่พร้อม</span></p>
+    <div class="warn"><b>⚠️ เงื่อนไขก่อน Go-Live:</b> Defect ระดับ High ทุกรายการ (เช่น D-02) ต้องแก้ไขและทดสอบซ้ำผ่านก่อนเปิดใช้งานจริง</div>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">5</span>การรับรองและอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — QA</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้แทนผู้ใช้งาน</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · งวด M3 (18/03/2027)
+  </div>
+</div>
+</body>
+</html>

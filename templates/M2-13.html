@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-13 การออกแบบโครงสร้างฐานข้อมูล (Database Schema Design)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m2">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M2-12.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M3-01.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M2-13 · งวดที่ 2</span>
+    <h1>การออกแบบโครงสร้างฐานข้อมูล (Database Schema Design)</h1>
+    <div class="en">Database Schema Design</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-DBS-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">DB Designer</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">DB Analyst / SA</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.2 · อ้างอิงคู่กับ M2-11</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ออกแบบฐานข้อมูล — เป็นพิมพ์เขียวสำหรับสร้าง schema จริง</span>
+      <span class="chip who">เจ้าของ: DB Designer</span>
+      <span class="chip iso">3NF / Referential Integrity</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> ออกแบบโครงสร้างฐานข้อมูลของระบบ DIS ตามหลักการ Normalization และ Referential Integrity — ครอบคลุม ERD ความสัมพันธ์ระหว่างเอนทิตี, รายการตารางทั้งหมด, นิยามตาราง (DDL), Index/Constraint และมาตรฐานการตั้งชื่อ เพื่อใช้สร้าง schema จริงรองรับ DB หลายชนิด · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>DB Designer</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 หลักการออกแบบ -->
+    <h2 class="sec"><span class="n">1</span>หลักการออกแบบ (Design Principles)</h2>
+    <ul>
+      <li><strong>Normalization (3NF)</strong> — ออกแบบตารางให้อยู่ในรูปแบบบรรทัดฐานที่สาม ลดความซ้ำซ้อน (redundancy) และความผิดปกติของข้อมูล (anomaly) ยกเว้นกรณีจำเป็นด้านประสิทธิภาพจึง denormalize อย่างมีเหตุผล</li>
+      <li><strong>Referential Integrity</strong> — บังคับความสัมพันธ์ด้วย Foreign Key Constraint ทุกความสัมพันธ์ พร้อมกำหนด ON DELETE/UPDATE ที่เหมาะสม (RESTRICT/CASCADE)</li>
+      <li><strong>Surrogate Key</strong> — ทุกตารางใช้ <code>&lt;table&gt;_id</code> (BIGINT) เป็น PK เพื่อความเสถียร ส่วน Business Key (เช่น HN, VN) ใช้ UNIQUE Constraint</li>
+      <li><strong>Data Type ข้ามแพลตฟอร์ม</strong> — ใช้ชนิดข้อมูลมาตรฐาน ISO SQL รองรับ PostgreSQL / SQL Server / Oracle (ค่าเงิน NUMERIC, เวลา TIMESTAMP)</li>
+      <li><strong>Audit & Soft Delete</strong> — ทุกตารางหลักมี <code>created_at</code>, <code>updated_at</code> และพิจารณา <code>is_deleted</code> สำหรับ soft delete ข้อมูลผู้ป่วย</li>
+      <li><strong>ความปลอดภัยข้อมูล</strong> — ข้อมูล PII/สุขภาพ เข้ารหัสและควบคุมการเข้าถึงตามสิทธิ์ (สอดคล้อง PDPA)</li>
+    </ul>
+
+    <!-- 2 ERD -->
+    <h2 class="sec"><span class="n">2</span>แผนภาพความสัมพันธ์ของข้อมูล (ERD)</h2>
+    <p>แสดงความสัมพันธ์หลักของเอนทิตี โดยใช้สัญลักษณ์ <code>1 ──&lt; N</code> หมายถึงความสัมพันธ์แบบหนึ่งต่อกลุ่ม (One-to-Many)</p>
+    <div class="ascii">
+   ┌──────────────┐ 1        N ┌──────────────┐ 1        N ┌──────────────┐
+   │   patient    │───────────►│    visit     │───────────►│  treatment   │
+   ├──────────────┤            ├──────────────┤            ├──────────────┤
+   │ PK patient_id│            │ PK visit_id  │            │PK treatment_id│
+   │    hn (UQ)   │            │ FK patient_id│            │ FK visit_id  │
+   │    first_name│            │ FK dentist_id│            │   tooth_no   │
+   │    gender    │            │    visit_date│            │   dx_code    │
+   └──────┬───────┘            │    status    │            │   fee        │
+          │ 1                  └──────────────┘            └──────┬───────┘
+          │                                                       │ N
+          │ N                                                     │
+   ┌──────▼───────┐                                        ┌──────▼───────┐
+   │ appointment  │                                        │  procedure   │
+   ├──────────────┤        ┌──────────────┐ 1        N     ├──────────────┤
+   │PK appoint_id │        │ prescription │───────────►    │ PK code      │
+   │ FK patient_id│        ├──────────────┤  presc_item    │   name       │
+   │ FK dentist_id│   N    │PK presc_id   │      N         └──────────────┘
+   │   status     │◄───────│ FK visit_id  │──────►┌──────────────┐
+   └──────────────┘        └──────────────┘  1    │     drug     │
+                                                  ├──────────────┤
+   ┌──────────────┐ 1    N ┌──────────────┐       │ PK drug_id   │
+   │    users     │───────►│ treatment /  │       │   drug_code  │
+   │ (dentist /   │        │ visit (ผู้ทำ) │       └──────────────┘
+   │  student)    │        └──────────────┘
+   └──────────────┘
+    </div>
+    <p class="small muted">หมายเหตุ: patient 1:N visit, visit 1:N treatment, patient 1:N appointment, visit 1:N prescription, prescription 1:N prescription_item (เชื่อม drug), users (dentist/student) 1:N visit/treatment</p>
+
+    <!-- 3 รายการตารางทั้งหมด -->
+    <h2 class="sec"><span class="n">3</span>รายการตารางทั้งหมด (Table List)</h2>
+    <table>
+      <thead><tr><th style="width:8%">#</th><th style="width:22%">ชื่อตาราง</th><th style="width:42%">คำอธิบาย</th><th>Primary Key</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><code>patient</code></td><td>ข้อมูลผู้ป่วย (HN, ข้อมูลส่วนตัว, ประวัติแพ้)</td><td>patient_id</td></tr>
+        <tr><td>2</td><td><code>visit</code></td><td>การมารับบริการแต่ละครั้ง (VN)</td><td>visit_id</td></tr>
+        <tr><td>3</td><td><code>treatment</code></td><td>การรักษา/หัตถการทันตกรรมรายซี่</td><td>treatment_id</td></tr>
+        <tr><td>4</td><td><code>appointment</code></td><td>การนัดหมาย</td><td>appointment_id</td></tr>
+        <tr><td>5</td><td><code>prescription</code></td><td>ใบสั่งยา (หัวใบ)</td><td>prescription_id</td></tr>
+        <tr><td>6</td><td><code>prescription_item</code></td><td>รายการยาในใบสั่งยา</td><td>presc_item_id</td></tr>
+        <tr><td>7</td><td><code>drug</code></td><td>ทะเบียนยา</td><td>drug_id</td></tr>
+        <tr><td>8</td><td><code>lab_result</code></td><td>ผลแลป/ผลตรวจ</td><td>lab_result_id</td></tr>
+        <tr><td>9</td><td><code>invoice</code></td><td>ใบแจ้งหนี้/ใบเสร็จการเงิน</td><td>invoice_id</td></tr>
+        <tr><td>10</td><td><code>invoice_item</code></td><td>รายการในใบเสร็จ</td><td>invoice_item_id</td></tr>
+        <tr><td>11</td><td><code>users</code></td><td>ผู้ใช้งาน (ทันตแพทย์/นักศึกษา/เจ้าหน้าที่)</td><td>user_id</td></tr>
+        <tr><td>12</td><td><code>role</code></td><td>บทบาท/สิทธิ์การใช้งาน (RBAC)</td><td>role_id</td></tr>
+        <tr><td>13</td><td><code>clinic</code></td><td>คลินิก/แผนกทันตกรรม</td><td>clinic_code</td></tr>
+        <tr><td>14</td><td><code>procedure</code></td><td>รหัสหัตถการ (ICD-10-TM/CDT)</td><td>code</td></tr>
+        <tr><td>15</td><td><code>diagnosis</code></td><td>รหัสวินิจฉัย (ICD-10)</td><td>code</td></tr>
+        <tr><td>16</td><td><code>lookup_code</code></td><td>ตารางอ้างอิงรหัส/Lookup รวม</td><td>lookup_id</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>เพิ่มตารางเพิ่มเติมตามขอบเขตจริง</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 4 นิยามตารางตัวอย่าง DDL -->
+    <h2 class="sec"><span class="n">4</span>นิยามตารางตัวอย่าง (Table Definition — DDL)</h2>
+    <p class="small muted">ตัวอย่าง DDL เชิงตรรกะ (ปรับชนิดข้อมูลให้ตรง DBMS ที่ใช้จริง) — แสดง field, type, PK/FK</p>
+    <div class="ascii">
+CREATE TABLE patient (
+    patient_id    BIGINT        NOT NULL,
+    hn            VARCHAR(13)   NOT NULL,
+    citizen_id    VARCHAR(13)   NULL,
+    title         VARCHAR(20)   NULL,
+    first_name    VARCHAR(100)  NOT NULL,
+    last_name     VARCHAR(100)  NOT NULL,
+    gender        CHAR(1)       NOT NULL,        -- M / F / U
+    birth_date    DATE          NULL,
+    phone         VARCHAR(20)   NULL,
+    allergy_flag  BOOLEAN       NOT NULL DEFAULT FALSE,
+    created_at    TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMP     NULL,
+    CONSTRAINT pk_patient PRIMARY KEY (patient_id),
+    CONSTRAINT uq_patient_hn UNIQUE (hn)
+);
+
+CREATE TABLE visit (
+    visit_id      BIGINT        NOT NULL,
+    patient_id    BIGINT        NOT NULL,
+    visit_no      VARCHAR(15)   NOT NULL,
+    visit_date    TIMESTAMP     NOT NULL,
+    clinic_code   VARCHAR(10)   NOT NULL,
+    dentist_id    BIGINT        NULL,
+    visit_type    VARCHAR(15)   NOT NULL,
+    status        VARCHAR(15)   NOT NULL,
+    created_at    TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT pk_visit PRIMARY KEY (visit_id),
+    CONSTRAINT uq_visit_no UNIQUE (visit_no),
+    CONSTRAINT fk_visit_patient FOREIGN KEY (patient_id)
+        REFERENCES patient (patient_id),
+    CONSTRAINT fk_visit_dentist FOREIGN KEY (dentist_id)
+        REFERENCES users (user_id)
+);
+
+CREATE TABLE treatment (
+    treatment_id   BIGINT        NOT NULL,
+    visit_id       BIGINT        NOT NULL,
+    tooth_no       VARCHAR(3)    NULL,           -- FDI เช่น 11, 36, 48
+    surface        VARCHAR(5)    NULL,           -- M/O/D/B/L
+    procedure_code VARCHAR(15)   NOT NULL,
+    dx_code        VARCHAR(15)   NULL,           -- ICD-10 เช่น K02.1
+    fee            NUMERIC(12,2) NOT NULL DEFAULT 0.00,
+    status         VARCHAR(15)   NOT NULL,
+    performed_by   BIGINT        NULL,
+    created_at     TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT pk_treatment PRIMARY KEY (treatment_id),
+    CONSTRAINT fk_treatment_visit FOREIGN KEY (visit_id)
+        REFERENCES visit (visit_id) ON DELETE CASCADE,
+    CONSTRAINT fk_treatment_proc FOREIGN KEY (procedure_code)
+        REFERENCES procedure (code),
+    CONSTRAINT fk_treatment_performer FOREIGN KEY (performed_by)
+        REFERENCES users (user_id)
+);
+    </div>
+
+    <!-- 5 Index & Constraint -->
+    <h2 class="sec"><span class="n">5</span>ดัชนีและข้อจำกัด (Index &amp; Constraint)</h2>
+    <table>
+      <thead><tr><th style="width:14%">ประเภท</th><th style="width:30%">ชื่อ (ตัวอย่าง)</th><th>วัตถุประสงค์</th></tr></thead>
+      <tbody>
+        <tr><td>Primary Key</td><td><code>pk_patient</code>, <code>pk_visit</code></td><td>คีย์หลักของแต่ละตาราง (clustered)</td></tr>
+        <tr><td>Unique</td><td><code>uq_patient_hn</code>, <code>uq_visit_no</code></td><td>บังคับ Business Key ไม่ซ้ำ (HN, VN)</td></tr>
+        <tr><td>Foreign Key</td><td><code>fk_visit_patient</code>, <code>fk_treatment_visit</code></td><td>บังคับความสัมพันธ์/Referential Integrity</td></tr>
+        <tr><td>Index (FK)</td><td><code>idx_visit_patient_id</code></td><td>เร่งการ join/ค้นหาตาม FK</td></tr>
+        <tr><td>Index (ค้นบ่อย)</td><td><code>idx_visit_visit_date</code>, <code>idx_appt_status</code></td><td>เร่งคิวรีตามวันที่/สถานะ</td></tr>
+        <tr><td>Check</td><td><code>ck_patient_gender</code></td><td>จำกัดค่า เช่น gender IN ('M','F','U')</td></tr>
+        <tr><td>Default</td><td>fee DEFAULT 0.00, created_at DEFAULT now()</td><td>ค่าเริ่มต้นเมื่อไม่ได้ระบุ</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>แนวทาง Index:</b> สร้าง Index บนทุกคอลัมน์ FK และคอลัมน์ที่ใช้ใน WHERE/JOIN/ORDER BY บ่อย · หลีกเลี่ยง Index เกินจำเป็น (กระทบ INSERT/UPDATE) · พิจารณา composite index ตามรูปแบบคิวรีจริง</div>
+
+    <!-- 6 มาตรฐานการตั้งชื่อ -->
+    <h2 class="sec"><span class="n">6</span>มาตรฐานการตั้งชื่อ (Naming Convention)</h2>
+    <table>
+      <thead><tr><th style="width:28%">รายการ</th><th style="width:34%">รูปแบบ</th><th>ตัวอย่าง</th></tr></thead>
+      <tbody>
+        <tr><td>ตาราง</td><td>snake_case เอกพจน์</td><td><code>patient</code>, <code>prescription_item</code></td></tr>
+        <tr><td>คอลัมน์</td><td>snake_case</td><td><code>visit_date</code>, <code>tooth_no</code></td></tr>
+        <tr><td>Primary Key</td><td>pk_&lt;table&gt;</td><td><code>pk_patient</code></td></tr>
+        <tr><td>Foreign Key</td><td>fk_&lt;table&gt;_&lt;ref&gt;</td><td><code>fk_visit_patient</code></td></tr>
+        <tr><td>Unique</td><td>uq_&lt;table&gt;_&lt;cols&gt;</td><td><code>uq_patient_hn</code></td></tr>
+        <tr><td>Index</td><td>idx_&lt;table&gt;_&lt;cols&gt;</td><td><code>idx_visit_patient_id</code></td></tr>
+        <tr><td>Check</td><td>ck_&lt;table&gt;_&lt;rule&gt;</td><td><code>ck_patient_gender</code></td></tr>
+        <tr><td>Sequence</td><td>seq_&lt;table&gt;</td><td><code>seq_patient</code></td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>สอดคล้องกับ M2-11:</b> มาตรฐานการตั้งชื่อในเอกสารนี้ต้องตรงกับพจนานุกรมข้อมูล (M2-11 ข้อ 3) เสมอ หากมีการแก้ไขให้ปรับทั้งสองเอกสารพร้อมกัน</div>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">7</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — DB Designer</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — DB Analyst/SA</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิง TOR ข้อ 6.2
+  </div>
+</div>
+</body>
+</html>

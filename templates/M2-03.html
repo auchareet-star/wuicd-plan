@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-03 ผังกระบวนการทำงาน (Workflow Diagram: As-is / To-be)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m2">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M2-02.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M2-04.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M2-03 · งวดที่ 2</span>
+    <h1>ผังกระบวนการทำงาน (As-is / To-be)</h1>
+    <div class="en">Workflow Diagram</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-WFD-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">System Analyst</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">__________</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ภาคผนวก ก ส่วนที่ 1 · ISO 29110 (SI.2)</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: งวดที่ 2 — ระยะวิเคราะห์/ออกแบบ ใช้ยืนยันกระบวนการกับ Process Owner</span>
+      <span class="chip who">เจ้าของ: System Analyst</span>
+      <span class="chip iso">ISO 29110: SI.2 Analysis</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> แสดงกระบวนการทำงานเดิม (As-is) เทียบกับกระบวนการใหม่หลังใช้ DIS (To-be) ด้วยผัง swimlane ระบุจุดที่เปลี่ยน/ปรับปรุง เพื่อให้ทุกฝ่ายเห็นภาพตรงกันก่อนออกแบบระบบ · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>System Analyst</td><td>ร่างฉบับแรก ผัง flow ผู้ป่วยทันตกรรม</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 สัญลักษณ์ -->
+    <h2 class="sec"><span class="n">1</span>สัญลักษณ์ที่ใช้ (Notation)</h2>
+    <table>
+      <thead><tr><th style="width:18%">สัญลักษณ์</th><th>ความหมาย</th></tr></thead>
+      <tbody>
+        <tr><td><code>( ... )</code></td><td>จุดเริ่มต้น / จุดสิ้นสุด (Start / End)</td></tr>
+        <tr><td><code>[ ... ]</code></td><td>กิจกรรม / งาน (Activity / Task)</td></tr>
+        <tr><td><code>&lt; ... &gt;</code></td><td>จุดตัดสินใจ (Decision)</td></tr>
+        <tr><td><code>--&gt;</code></td><td>ทิศทางการไหลของงาน (Flow)</td></tr>
+        <tr><td><code>| Lane |</code></td><td>เลน/ผู้รับผิดชอบ (Swimlane / Actor)</td></tr>
+        <tr><td><code>[[DIS]]</code></td><td>กิจกรรมที่ทำในระบบ DIS (อัตโนมัติ/ดิจิทัล)</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 2 As-is -->
+    <h2 class="sec"><span class="n">2</span>ผังกระบวนการเดิม (As-is)</h2>
+    <p class="small muted">ตัวอย่าง: กระบวนการรับบริการของผู้ป่วยทันตกรรม ตั้งแต่ลงทะเบียนจนนัดครั้งถัดไป (ส่วนใหญ่ยังใช้กระดาษและบันทึกซ้ำซ้อน)</p>
+    <div class="ascii">
+SWIMLANE (As-is) — Flow ผู้ป่วยทันตกรรม
+
+ ผู้ป่วย    │ (มาถึง รพ.)
+            │     │
+ เวชระเบียน │     v
+            │ [ยื่นบัตร/กรอกฟอร์มกระดาษ] --> [ค้น/เปิดแฟ้ม OPD card กระดาษ]
+            │                                        │
+ ผู้ช่วย/   │                                        v
+ พยาบาล     │                          [ซักประวัติ + วัดสัญญาณชีพ จดในแฟ้ม]
+            │                                        │
+ ทันตแพทย์  │                                        v
+            │                  [ตรวจ/รักษา] --> &lt;ต้องสั่งยา?&gt;
+            │                                   │ใช่        │ไม่
+            │                                   v           │
+ ห้องยา     │                       [เขียนใบสั่งยากระดาษ]   │
+            │                                   │           │
+            │                       [จ่ายยา-เช็คแพ้ยาด้วยมือ]│
+            │                                   │           │
+ การเงิน    │                                   v           v
+            │                       [คิดเงิน-ออกใบเสร็จด้วยมือ/แยกระบบ]
+            │                                        │
+            │                                        v
+            │                       [นัดครั้งถัดไป-จดในสมุดนัด] --> (กลับบ้าน)
+    </div>
+    <div class="warn"><b>ปัญหาที่พบ (As-is):</b> บันทึกซ้ำซ้อนหลายจุด, เช็คแพ้ยาด้วยมือเสี่ยงพลาด, ไม่มีระบบ Recall อัตโนมัติ, ค้นประวัติ/ภาพรังสีย้อนหลังช้า, ข้อมูลไม่เชื่อมกับบัญชี</div>
+
+    <!-- 3 To-be -->
+    <h2 class="sec"><span class="n">3</span>ผังกระบวนการใหม่ (To-be — หลังใช้ DIS)</h2>
+    <p class="small muted">ตัวอย่าง: กระบวนการเดียวกันหลังใช้ DIS — บันทึกครั้งเดียวไหลต่อทั้งระบบ เชื่อมแพ้ยา/บัญชี/PACS และมี Recall อัตโนมัติ</p>
+    <div class="ascii">
+SWIMLANE (To-be) — Flow ผู้ป่วยทันตกรรมบน DIS
+
+ ผู้ป่วย    │ (มาถึง / นัดล่วงหน้าผ่าน Patient App)
+            │     │
+ เวชระเบียน │     v
+            │ [[DIS: ค้นผู้ป่วยด้วย HN/บัตร ปชช.]] --> [[เปิด e-เวชระเบียน]]
+            │                                              │
+ ผู้ช่วย/   │                                              v
+ พยาบาล     │                       [[DIS: ซักประวัติ+Vital sign บันทึกครั้งเดียว]]
+            │                                              │
+ ทันตแพทย์  │                                              v
+            │           [[DIS: Dental Chart + บันทึกการรักษา]] --> &lt;สั่งยา?&gt;
+            │                                         │ใช่         │ไม่
+            │                                         v            │
+ ห้องยา     │             [[DIS: สั่งยา -> เตือนแพ้ยา/ยาตีกันอัตโนมัติ]]│
+            │                                         │            │
+            │                       [[DIS: ห้องยาจ่ายยา-ตัดสต็อก]]   │
+            │                                         │            │
+ การเงิน    │                                         v            v
+            │             [[DIS: คิดค่ารักษาอัตโนมัติ -> บัญชีลูกหนี้/SAP]]
+            │                                              │
+ ระบบ DIS   │                                              v
+            │   [[DIS: สร้างนัดถัดไป + Recall อัตโนมัติ]] --> [[แจ้งเตือนผ่าน Patient App/SMS]]
+            │                                              │
+            │                                              v
+            │                                         (เสร็จสิ้น)
+    </div>
+    <div class="tip"><b>ประโยชน์ (To-be):</b> บันทึกครั้งเดียวไหลต่อทั้งระบบ, เตือนแพ้ยา/ยาตีกันอัตโนมัติ, ค่ารักษาเข้าบัญชี/SAP อัตโนมัติ, Recall+แจ้งเตือนนัดผ่าน Mobile, เรียกดูภาพรังสี (PACS) และผล Lab ในจอเดียว</div>
+
+    <!-- 4 จุดเปลี่ยน -->
+    <h2 class="sec"><span class="n">4</span>จุดเปลี่ยน/ปรับปรุง (As-is vs To-be)</h2>
+    <table>
+      <thead><tr><th style="width:18%">ขั้นตอน</th><th style="width:32%">As-is (เดิม)</th><th style="width:32%">To-be (ใหม่)</th><th>ผลที่ได้</th></tr></thead>
+      <tbody>
+        <tr><td>ลงทะเบียน</td><td>กรอกฟอร์มกระดาษ ค้นแฟ้ม</td><td>ค้นด้วย HN/บัตร ปชช. เปิด e-เวชระเบียนทันที</td><td>เร็วขึ้น ลดแฟ้มหาย</td></tr>
+        <tr><td>ซักประวัติ</td><td>จดในแฟ้ม บันทึกซ้ำหลายที่</td><td>บันทึกครั้งเดียวใน DIS ใช้ต่อทั้งระบบ</td><td>ลดงานซ้ำ/คลาดเคลื่อน</td></tr>
+        <tr><td>สั่ง/จ่ายยา</td><td>เขียนใบสั่งยา เช็คแพ้ยาด้วยมือ</td><td>สั่งยาใน DIS เตือนแพ้ยา/ยาตีกันอัตโนมัติ</td><td>ปลอดภัยต่อผู้ป่วยขึ้น</td></tr>
+        <tr><td>เก็บเงิน</td><td>คิดเงินแยกระบบ/ด้วยมือ</td><td>คิดค่ารักษาอัตโนมัติ เชื่อมบัญชี/SAP</td><td>ลดข้อผิดพลาดการเงิน</td></tr>
+        <tr><td>นัดถัดไป</td><td>จดสมุดนัด ไม่มี Recall</td><td>นัด+Recall อัตโนมัติ แจ้งเตือนผ่าน Mobile</td><td>ดูแลต่อเนื่อง ลด no-show</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 5 รายการ workflow ทั้งหมด -->
+    <h2 class="sec"><span class="n">5</span>รายการ Workflow ทั้งหมดที่ต้องจัดทำ (Workflow Inventory)</h2>
+    <p class="small muted">รายการผังกระบวนการ As-is/To-be ที่ต้องจัดทำให้ครบทุกโมดูลตาม TOR — ใช้ติดตามความครบถ้วน</p>
+    <table>
+      <thead><tr><th style="width:8%">ลำดับ</th><th style="width:26%">โมดูล (อ้าง TOR)</th><th style="width:38%">ชื่อ Flow</th><th>สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td>WF-01</td><td>เวชระเบียน (1.1)</td><td>Flow ผู้ป่วยทันตกรรม (ลงทะเบียน→นัดถัดไป)</td><td><span class="badge b-fit">เสร็จ</span></td></tr>
+        <tr><td>WF-02</td><td>ห้องจ่ายยา/เภสัช (1.3–1.4)</td><td>Flow สั่ง-จ่ายยา + เตือนแพ้ยา</td><td><span class="badge b-par">กำลังจัดทำ</span></td></tr>
+        <tr><td>WF-03</td><td>นัดหมาย/Recall (1.11)</td><td>Flow นัดหมายและเรียกกลับ (Recall)</td><td><span class="badge b-par">กำลังจัดทำ</span></td></tr>
+        <tr><td>WF-04</td><td>Consent (1.28)</td><td>Flow ขอความยินยอมอิเล็กทรอนิกส์</td><td><span class="badge b-gap">ยังไม่เริ่ม</span></td></tr>
+        <tr><td>WF-05</td><td>Dental Lab</td><td>Flow ใบสั่งงาน Lab และติดตามสถานะ</td><td><span class="badge b-gap">ยังไม่เริ่ม</span></td></tr>
+        <tr><td>WF-06</td><td>LIS</td><td>Flow ส่งตรวจ Lab และรับผล</td><td><span class="badge b-gap">ยังไม่เริ่ม</span></td></tr>
+        <tr><td>WF-07</td><td>รังสี/PACS (1.7)</td><td>Flow สั่งถ่ายภาพรังสีและดูภาพ</td><td><span class="badge b-gap">ยังไม่เริ่ม</span></td></tr>
+        <tr><td>WF-08</td><td>บัญชีลูกหนี้/เบิกจ่าย (1.18)</td><td>Flow คิดค่ารักษาและตั้งลูกหนี้</td><td><span class="badge b-gap">ยังไม่เริ่ม</span></td></tr>
+        <tr><td>WF-09</td><td>ระบบการเรียนการสอน (ส่วนที่ 2)</td><td>Flow มอบหมาย/ประเมินงานนักศึกษา</td><td><span class="badge b-gap">ยังไม่เริ่ม</span></td></tr>
+        <tr class="fillrow"><td>WF-__</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <p class="hint">เพิ่มแถวให้ครบทุกโมดูลที่ระบุใน TOR (Patient bank, พัสดุคงคลัง, บริหารเอกสาร, นำเข้า-ส่งออกข้อมูล, สิทธิ์ผู้ใช้, Mobile 3 แอป ฯลฯ)</p>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">6</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — System Analyst</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — Process Owner</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิง TOR ภาคผนวก ก ส่วนที่ 1
+  </div>
+</div>
+</body>
+</html>

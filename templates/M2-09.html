@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-09 ตารางจับคู่ข้อมูลการโอนย้าย (Migration Data Mapping)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m2">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M2-08.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M2-10.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M2-09 · งวดที่ 2</span>
+    <h1>ตารางจับคู่ข้อมูลการโอนย้าย</h1>
+    <div class="en">Migration Data Mapping</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-MIG-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">Senior Data Engineer</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">SA / ทีม HIS เดิม</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.x (Data Migration)</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: เตรียม/ดำเนินการโอนย้ายข้อมูลจากระบบเดิม</span>
+      <span class="chip who">เจ้าของ: Senior Data Engineer + ทีม HIS เดิม</span>
+      <span class="chip iso">ISO 29110: Data Migration</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> กำหนดการจับคู่ข้อมูล (mapping) จากระบบเดิม (HAIT Plus) ไปยังโครงสร้างข้อมูลของ DIS ทุกตารางสำคัญ พร้อมกฎการแปลง (เช่น พ.ศ.→ค.ศ., code mapping), การจัดการข้อมูลคุณภาพต่ำ และกฎตรวจสอบความครบถ้วนหลังย้าย (reconciliation) · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>Sr. Data Engineer</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 ขอบเขต/ปริมาณข้อมูล -->
+    <h2 class="sec"><span class="n">1</span>ขอบเขตและปริมาณข้อมูล (Scope &amp; Volume)</h2>
+    <p>ข้อมูลโอนย้ายจากฐานข้อมูล HAIT Plus เดิม (ตรวจสอบชนิด DB จริงในภาคผนวก ข — Oracle/Informix/DB2/SQL Server/MySQL/PostgreSQL) ตารางด้านล่างสรุปขอบเขตและปริมาณโดยประมาณเพื่อวางแผน window การย้าย</p>
+    <table>
+      <thead><tr><th style="width:24%">กลุ่มข้อมูล</th><th>ตารางต้นทางหลัก</th><th style="width:18%">ปริมาณ (ประมาณ)</th><th style="width:14%">วิธีย้าย</th></tr></thead>
+      <tbody>
+        <tr><td>ทะเบียนผู้ป่วย</td><td>patient</td><td><span class="fill">~120,000 ราย</span></td><td>Full</td></tr>
+        <tr><td>การมารับบริการ</td><td>visit / opd_visit</td><td><span class="fill">~900,000 ครั้ง</span></td><td>Full + cutoff</td></tr>
+        <tr><td>การรักษา</td><td>treatment / dental_proc</td><td><span class="fill">~1,500,000 รายการ</span></td><td>Full</td></tr>
+        <tr><td>นัดหมาย</td><td>appointment</td><td><span class="fill">เฉพาะอนาคต/ค้าง</span></td><td>Delta</td></tr>
+        <tr><td>ยา/เวชภัณฑ์</td><td>drug / drug_item</td><td><span class="fill">~3,000 รายการ</span></td><td>Master</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>⚠️ ข้อจำกัด:</b> โครงสร้างและความหมาย field ฝั่ง HAIT Plus ต้องยืนยันกับทีม HIS เดิม — สเปก mapping นี้เป็นร่างจาก data dictionary ที่ได้รับ ต้อง sync + ทำ data profiling จริงก่อนล็อก</div>
+
+    <!-- 2 ตาราง Mapping -->
+    <h2 class="sec"><span class="n">2</span>ตารางจับคู่ข้อมูล source → target (Field Mapping)</h2>
+
+    <h3 class="sub">2.1 patient → dis_patient</h3>
+    <table>
+      <thead><tr><th style="width:20%">field เดิม (source)</th><th style="width:20%">→ field ใหม่ (target)</th><th style="width:12%">ชนิด</th><th>กฎการแปลง</th><th style="width:16%">หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr><td>HN</td><td>hn</td><td>VARCHAR(8)</td><td>pad zero ซ้าย 8 หลัก</td><td>Primary key</td></tr>
+        <tr><td>CID</td><td>citizen_id</td><td>VARCHAR(13)</td><td>trim, ตรวจ checksum 13 หลัก</td><td>ว่าง→NULL</td></tr>
+        <tr><td>SEX (1/2)</td><td>sex (M/F)</td><td>CHAR(1)</td><td>1→M, 2→F, อื่น→U</td><td>code mapping</td></tr>
+        <tr><td>BIRTH (พ.ศ.)</td><td>birth_date</td><td>DATE</td><td><strong>พ.ศ.→ค.ศ. (ปี-543)</strong>, รูปแบบ ISO</td><td>กฎ พ.ศ.→ค.ศ.</td></tr>
+        <tr><td>PRENAME</td><td>title_th</td><td>VARCHAR(20)</td><td>map รหัสคำนำหน้า→ข้อความ</td><td>lookup</td></tr>
+        <tr><td>FNAME / LNAME</td><td>first_name_th / last_name_th</td><td>VARCHAR(100)</td><td>trim ช่องว่างเกิน</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.2 visit → dis_visit</h3>
+    <table>
+      <thead><tr><th style="width:20%">field เดิม</th><th style="width:20%">→ field ใหม่</th><th style="width:12%">ชนิด</th><th>กฎการแปลง</th><th style="width:16%">หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr><td>VN</td><td>visit_id</td><td>VARCHAR(20)</td><td>คงรูปแบบเดิม</td><td>PK</td></tr>
+        <tr><td>HN</td><td>hn</td><td>VARCHAR(8)</td><td>อ้าง FK → dis_patient</td><td>ตรวจ orphan</td></tr>
+        <tr><td>VSTDATE + VSTTIME</td><td>visit_datetime</td><td>TIMESTAMP</td><td>รวม + พ.ศ.→ค.ศ. → ISO 8601</td><td>กฎ พ.ศ.→ค.ศ.</td></tr>
+        <tr><td>CLINIC</td><td>clinic_code</td><td>VARCHAR(10)</td><td>map รหัสคลินิกเดิม→ใหม่</td><td>lookup</td></tr>
+        <tr><td>RIGHT</td><td>insurance_right</td><td>VARCHAR(20)</td><td>map สิทธิ (UC/SSS/OFC…)</td><td>code mapping</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.3 treatment → dis_treatment</h3>
+    <table>
+      <thead><tr><th style="width:20%">field เดิม</th><th style="width:20%">→ field ใหม่</th><th style="width:12%">ชนิด</th><th>กฎการแปลง</th><th style="width:16%">หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr><td>TXN</td><td>treatment_id</td><td>VARCHAR(20)</td><td>คงเดิม</td><td>PK</td></tr>
+        <tr><td>VN</td><td>visit_id</td><td>VARCHAR(20)</td><td>FK → dis_visit</td><td>&nbsp;</td></tr>
+        <tr><td>PROC_CODE</td><td>procedure_code</td><td>VARCHAR(10)</td><td>map รหัสหัตถการเดิม→มาตรฐาน (ICD/CDT)</td><td>code mapping</td></tr>
+        <tr><td>TOOTH</td><td>tooth_no</td><td>VARCHAR(4)</td><td>normalize เลขซี่ฟัน (FDI)</td><td>&nbsp;</td></tr>
+        <tr><td>FEE</td><td>fee_amount</td><td>DECIMAL(10,2)</td><td>cast, ตรวจค่าติดลบ</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.4 appointment → dis_appointment</h3>
+    <table>
+      <thead><tr><th style="width:20%">field เดิม</th><th style="width:20%">→ field ใหม่</th><th style="width:12%">ชนิด</th><th>กฎการแปลง</th><th style="width:16%">หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr><td>APP_ID</td><td>appointment_id</td><td>VARCHAR(20)</td><td>คงเดิม</td><td>PK</td></tr>
+        <tr><td>HN</td><td>hn</td><td>VARCHAR(8)</td><td>FK → dis_patient</td><td>&nbsp;</td></tr>
+        <tr><td>APP_DATE (พ.ศ.)</td><td>appointment_datetime</td><td>TIMESTAMP</td><td><strong>พ.ศ.→ค.ศ.</strong> + ISO 8601</td><td>กฎ พ.ศ.→ค.ศ.</td></tr>
+        <tr><td>STATUS</td><td>status</td><td>VARCHAR(10)</td><td>map: นัด/เลื่อน/ยกเลิก → scheduled/postponed/cancelled</td><td>code mapping</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.5 drug → dis_drug</h3>
+    <table>
+      <thead><tr><th style="width:20%">field เดิม</th><th style="width:20%">→ field ใหม่</th><th style="width:12%">ชนิด</th><th>กฎการแปลง</th><th style="width:16%">หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr><td>DRUG_CODE</td><td>drug_code</td><td>VARCHAR(15)</td><td>map → รหัสมาตรฐาน (TMT) ถ้ามี</td><td>PK</td></tr>
+        <tr><td>DRUG_NAME</td><td>drug_name</td><td>VARCHAR(200)</td><td>trim</td><td>&nbsp;</td></tr>
+        <tr><td>UNIT</td><td>unit</td><td>VARCHAR(20)</td><td>normalize หน่วยนับ</td><td>lookup</td></tr>
+        <tr><td>ACTIVE (Y/N)</td><td>is_active</td><td>BOOLEAN</td><td>Y→true, N→false</td><td>code mapping</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip"><b>กฎรวมที่ใช้ทั้งระบบ:</b> (1) วันที่ทุก field แปลง <strong>พ.ศ. → ค.ศ. (ปี − 543)</strong> และเก็บเป็น ISO 8601 · (2) เพศ <strong>1→M, 2→F</strong>, ค่าอื่น→U · (3) ค่าว่าง/ขีด/0000-00-00 → NULL · (4) trim ช่องว่าง และ normalize encoding เป็น UTF-8</div>
+
+    <!-- 3 ข้อมูลคุณภาพต่ำ -->
+    <h2 class="sec"><span class="n">3</span>การจัดการข้อมูลคุณภาพต่ำ/ตกหล่น (Data Quality)</h2>
+    <table>
+      <thead><tr><th style="width:30%">ปัญหา</th><th>แนวทางจัดการ</th></tr></thead>
+      <tbody>
+        <tr><td>วันที่ผิดรูป/0000-00-00</td><td>ตั้งเป็น NULL + บันทึกลง error table เพื่อให้เจ้าของงานยืนยัน</td></tr>
+        <tr><td>HN ซ้ำ / CID ซ้ำ</td><td>กฎรวมเรคคอร์ด (merge rule) + รายงานให้ยืนยันก่อนรวม</td></tr>
+        <tr><td>FK กำพร้า (orphan visit ไม่มี patient)</td><td>กักไว้ใน quarantine, ไม่โหลดจนกว่าจะแก้ต้นทาง</td></tr>
+        <tr><td>รหัส (เพศ/สิทธิ/คลินิก) นอกชุดที่ map</td><td>map → ค่า default + flag ให้ทบทวน</td></tr>
+        <tr><td>ข้อมูลตกหล่น (NOT NULL ว่าง)</td><td>เติมค่า default ตามกติกา หรือกักไว้แก้</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">ทุกเรคคอร์ดที่ถูกแก้/กัก/ทิ้ง ต้องบันทึกเหตุผลใน migration log และสรุปยอดเสนอเจ้าของงานก่อน sign-off</p>
+
+    <!-- 4 reconciliation -->
+    <h2 class="sec"><span class="n">4</span>กฎการตรวจสอบหลังย้าย (Reconciliation)</h2>
+    <table>
+      <thead><tr><th style="width:30%">การตรวจสอบ</th><th>วิธี/เกณฑ์ผ่าน</th></tr></thead>
+      <tbody>
+        <tr><td>นับจำนวนเรคคอร์ด (row count)</td><td>count source = count target + (quarantine + rejected) ทุกตาราง</td></tr>
+        <tr><td>ผลรวมเชิงตัวเลข (control total)</td><td>SUM(fee) ต้นทาง = ปลายทาง (ภายใน rounding ที่ยอมรับ)</td></tr>
+        <tr><td>สุ่มเทียบราย record (sampling)</td><td>สุ่ม ≥ <span class="fill">1%</span> หรือ <span class="fill">500</span> เรคคอร์ด เทียบทีละ field</td></tr>
+        <tr><td>ความถูกต้องของรูปแบบ (validation)</td><td>วันที่เป็น ค.ศ./ISO, CID checksum, FK ครบ</td></tr>
+        <tr><td>เกณฑ์ยอมรับรวม</td><td><strong>100% reconciliation</strong> (สอดคล้อง M1-01) — ส่วนต่างต้องอธิบายได้ทุกรายการ</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <div class="ascii">-- ตัวอย่าง query ตรวจ row count
+SELECT 'patient' AS tbl,
+       (SELECT COUNT(*) FROM src.patient)      AS src_cnt,
+       (SELECT COUNT(*) FROM dis.dis_patient)  AS tgt_cnt,
+       (SELECT COUNT(*) FROM mig.quarantine WHERE tbl='patient') AS quar,
+       (SELECT COUNT(*) FROM mig.rejected   WHERE tbl='patient') AS rej;
+-- เกณฑ์ผ่าน: src_cnt = tgt_cnt + quar + rej</div>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">5</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — Senior Data Engineer</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — ทีม HIS เดิม</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · ทำ data profiling จริงก่อนล็อก mapping
+  </div>
+</div>
+</body>
+</html>

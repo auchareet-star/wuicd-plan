@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M3-04 เอกสารการตั้งค่าข้อมูลหลัก (Master Data Setup Document)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m3">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M3-03.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M3-05.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M3-04 · งวดที่ 3</span>
+    <h1>เอกสารการตั้งค่าข้อมูลหลัก (Master Data Setup Document)</h1>
+    <div class="en">Master Data Setup Document</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-MDS-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">ทีม Implement</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2027</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">Process Owner</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.3 · มาตรฐาน HA</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ก่อน UAT/Go-Live — ตั้งค่าข้อมูลหลักระบบ</span>
+      <span class="chip who">เจ้าของ: ทีม Implement + Process Owner</span>
+      <span class="chip iso">ISO 29110: SI Deployment</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> รวบรวมและบันทึกการตั้งค่าข้อมูลหลัก (Master Data) ของระบบ DIS ที่จำเป็นต่อการใช้งานจริง โดยทีม Implement ตั้งค่าร่วมกับ Process Owner ผู้เป็นเจ้าของข้อมูล พร้อมการตรวจสอบความถูกต้องก่อนเปิดใช้งาน · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2027</td><td>ทีม Implement</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 รายการ Master Data -->
+    <h2 class="sec"><span class="n">1</span>รายการข้อมูลหลักที่ต้องตั้งค่า (Master Data List)</h2>
+    <table>
+      <thead><tr><th style="width:8%">ลำดับ</th><th style="width:26%">ประเภทข้อมูลหลัก</th><th style="width:14%">จำนวนรายการ</th><th style="width:24%">แหล่งข้อมูล</th><th>ผู้รับผิดชอบ</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>สิทธิการรักษา</td><td class="fill">&nbsp;</td><td>HAIT Plus / สปสช. / งานการเงิน</td><td>งานการเงิน + Implement</td></tr>
+        <tr><td>2</td><td>คลินิก / ห้องตรวจ</td><td class="fill">&nbsp;</td><td>ผังหน่วยบริการ รพ.ทันตกรรม</td><td>งานเวชระเบียน + Implement</td></tr>
+        <tr><td>3</td><td>รายการยา</td><td class="fill">&nbsp;</td><td>บัญชียา รพ. / งานเภสัชกรรม</td><td>งานเภสัชกรรม + Implement</td></tr>
+        <tr><td>4</td><td>รหัสหัตถการทันตกรรม</td><td class="fill">&nbsp;</td><td>รหัสหัตถการมาตรฐาน / คณะฯ</td><td>ทันตแพทย์ + Implement</td></tr>
+        <tr><td>5</td><td>ค่าบริการ</td><td class="fill">&nbsp;</td><td>ประกาศอัตราค่าบริการ รพ.</td><td>งานการเงิน + Implement</td></tr>
+        <tr><td>6</td><td>ทันตแพทย์ / นักศึกษา</td><td class="fill">&nbsp;</td><td>WU-HRMS / ทะเบียนนักศึกษา</td><td>คณะฯ + Implement</td></tr>
+        <tr><td>7</td><td>ผู้ใช้ / สิทธิ์การเข้าถึง (Role)</td><td class="fill">&nbsp;</td><td>โครงสร้างหน่วยงาน / IT</td><td>ทีม IT + Implement</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 2 ตารางบันทึกค่าที่ตั้งจริง -->
+    <h2 class="sec"><span class="n">2</span>บันทึกค่าที่ตั้งจริง (Configuration Record)</h2>
+    <p class="small muted">กรอกค่าที่ตั้งจริงในระบบ เพื่อใช้อ้างอิงและตรวจทาน (ตัวอย่างต่อประเภท — เพิ่มแถวตามจริง)</p>
+
+    <h3 class="sub">2.1 คลินิก / ห้องตรวจ</h3>
+    <table>
+      <thead><tr><th style="width:16%">รหัส</th><th style="width:34%">ชื่อคลินิก/ห้องตรวจ</th><th style="width:20%">หน่วยงาน</th><th>หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>CLN-01</td><td>คลินิกทันตกรรมทั่วไป</td><td>OPD</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>CLN-02</td><td>คลินิกทันตกรรมประดิษฐ์</td><td>OPD</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.2 รหัสหัตถการทันตกรรม</h3>
+    <table>
+      <thead><tr><th style="width:16%">รหัสหัตถการ</th><th style="width:40%">ชื่อหัตถการ</th><th style="width:18%">หมวด</th><th>ค่าบริการ (บาท)</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>D-RES-01</td><td>อุดฟันด้วยวัสดุสีเหมือนฟัน (1 ด้าน)</td><td>ทันตกรรมหัตถการ</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>D-SCL-01</td><td>ขูดหินปูน</td><td>ปริทันตวิทยา</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">2.3 ผู้ใช้ / สิทธิ์การเข้าถึง (Role)</h3>
+    <table>
+      <thead><tr><th style="width:22%">Role</th><th style="width:30%">กลุ่มผู้ใช้</th><th>สิทธิ์การเข้าถึงหลัก</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>ROLE-DENTIST</td><td>ทันตแพทย์</td><td>Dental chart, สั่งยา, สั่งตรวจ</td></tr>
+        <tr class="fillrow"><td>ROLE-PHARM</td><td>เภสัชกร</td><td>ห้องยา, จ่ายยา, เตือนแพ้ยา</td></tr>
+        <tr class="fillrow"><td>ROLE-CASHIER</td><td>เจ้าหน้าที่การเงิน</td><td>เก็บเงิน, ออกใบเสร็จ</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 3 การตรวจสอบความถูกต้อง -->
+    <h2 class="sec"><span class="n">3</span>การตรวจสอบความถูกต้อง (Validation)</h2>
+    <table>
+      <thead><tr><th style="width:30%">ประเภทข้อมูลหลัก</th><th style="width:16%">จำนวนตั้งจริง</th><th style="width:16%">ตรวจสอบโดย</th><th style="width:10%">ผล</th><th>หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr><td>สิทธิการรักษา</td><td class="fill">&nbsp;</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอตรวจ</span></td><td class="fill">&nbsp;</td></tr>
+        <tr><td>คลินิก / ห้องตรวจ</td><td class="fill">&nbsp;</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอตรวจ</span></td><td class="fill">&nbsp;</td></tr>
+        <tr><td>รายการยา</td><td class="fill">&nbsp;</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอตรวจ</span></td><td class="fill">&nbsp;</td></tr>
+        <tr><td>รหัสหัตถการทันตกรรม</td><td class="fill">&nbsp;</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอตรวจ</span></td><td class="fill">&nbsp;</td></tr>
+        <tr><td>ค่าบริการ</td><td class="fill">&nbsp;</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอตรวจ</span></td><td class="fill">&nbsp;</td></tr>
+        <tr><td>ทันตแพทย์ / นักศึกษา</td><td class="fill">&nbsp;</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอตรวจ</span></td><td class="fill">&nbsp;</td></tr>
+        <tr><td>ผู้ใช้ / สิทธิ์การเข้าถึง</td><td class="fill">&nbsp;</td><td class="fill">&nbsp;</td><td><span class="badge b-par">รอตรวจ</span></td><td class="fill">&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">สถานะผล: <span class="badge b-fit">Pass/ผ่าน</span> ครบถ้วนถูกต้อง · <span class="badge b-gap">Fail/ไม่ผ่าน</span> พบข้อผิดพลาดต้องแก้ · <span class="badge b-par">ตรวจซ้ำ</span> รอตรวจซ้ำ</p>
+    <ul class="chk">
+      <li>ตรวจนับจำนวนรายการให้ตรงกับแหล่งข้อมูลต้นทาง (reconciliation)</li>
+      <li>ทดสอบการเรียกใช้งานจริงในระบบ (เช่น เลือกหัตถการแล้วค่าบริการดึงถูกต้อง)</li>
+      <li>Process Owner เจ้าของข้อมูลยืนยันความถูกต้อง</li>
+    </ul>
+
+    <!-- 4 ผู้รับผิดชอบ / วันที่ -->
+    <h2 class="sec"><span class="n">4</span>ผู้รับผิดชอบและกำหนดการ</h2>
+    <table>
+      <thead><tr><th style="width:30%">ประเภทข้อมูลหลัก</th><th style="width:24%">ผู้ตั้งค่า (Implement)</th><th style="width:24%">Process Owner ยืนยัน</th><th>วันที่เสร็จ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>สิทธิการรักษา</td><td>&nbsp;</td><td>&nbsp;</td><td>__/__/2027</td></tr>
+        <tr class="fillrow"><td>คลินิก / ห้องตรวจ</td><td>&nbsp;</td><td>&nbsp;</td><td>__/__/2027</td></tr>
+        <tr class="fillrow"><td>รายการยา</td><td>&nbsp;</td><td>&nbsp;</td><td>__/__/2027</td></tr>
+        <tr class="fillrow"><td>รหัสหัตถการทันตกรรม</td><td>&nbsp;</td><td>&nbsp;</td><td>__/__/2027</td></tr>
+        <tr class="fillrow"><td>ค่าบริการ</td><td>&nbsp;</td><td>&nbsp;</td><td>__/__/2027</td></tr>
+        <tr class="fillrow"><td>ทันตแพทย์ / นักศึกษา</td><td>&nbsp;</td><td>&nbsp;</td><td>__/__/2027</td></tr>
+        <tr class="fillrow"><td>ผู้ใช้ / สิทธิ์การเข้าถึง</td><td>&nbsp;</td><td>&nbsp;</td><td>__/__/2027</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">5</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — ทีม Implement</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — Process Owner</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · งวดที่ 3 (M3-04)
+  </div>
+</div>
+</body>
+</html>

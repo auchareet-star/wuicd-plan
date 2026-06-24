@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1-02 แผนการสำรวจและออกแบบระบบ (System Survey &amp; Design Plan)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m1">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M1-01.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M1-03.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M1-02 · งวดที่ 1</span>
+    <h1>แผนการสำรวจและออกแบบระบบ</h1>
+    <div class="en">System Survey &amp; Design Plan</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-SDP-002</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">System Analyst</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">__________</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.1.2 · ISO 29110 (SI.2 Requirements Analysis)</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ต้นโครงการ — ก่อนเข้าสู่ Fit/Gap และออกแบบ (ส่งมอบในงวด M2)</span>
+      <span class="chip who">เจ้าของ: System Analyst</span>
+      <span class="chip iso">ISO 29110: SI.2 Requirements</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> กำหนดวิธีและตารางการสำรวจความต้องการผู้ใช้ (Requirement Gathering) รายโมดูล และแนวทางออกแบบระบบให้สอดคล้องกับกระบวนงานจริงของโรงพยาบาลทันตกรรม เพื่อเป็นวัตถุดิบของการวิเคราะห์ Fit/Gap และเอกสารออกแบบในงวด M2 · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>SA</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 วัตถุประสงค์/ขอบเขตการสำรวจ -->
+    <h2 class="sec"><span class="n">1</span>วัตถุประสงค์และขอบเขตการสำรวจ</h2>
+    <p><strong>1.1 วัตถุประสงค์</strong> — <span class="muted">รวบรวมความต้องการที่แท้จริงของผู้ใช้แต่ละโมดูล ทำความเข้าใจกระบวนงานปัจจุบัน (As-Is) และออกแบบกระบวนงานเป้าหมาย (To-Be) เพื่อให้ระบบ DIS ตอบโจทย์และเชื่อมต่อกับระบบเดิมได้ถูกต้อง</span></p>
+    <p><strong>1.2 ขอบเขตการสำรวจ</strong></p>
+    <ul>
+      <li>โมดูลด้านทันตกรรมและ HIS ตามภาคผนวก ก ส่วนที่ 1 — เวชระเบียน, Patient bank, คลินิกทันตกรรม, ห้องยา, LIS, รังสี/PACS, Dental Lab, นัดหมาย, บัญชีลูกหนี้, พัสดุคงคลัง, Consent</li>
+      <li>ระบบสารสนเทศการเรียนการสอน ตามภาคผนวก ก ส่วนที่ 2</li>
+      <li>จุดเชื่อมต่อกับระบบเดิม: HAIT Plus, SAP, PACS, LIS/RIS, WU-HRMS</li>
+    </ul>
+    <div class="warn"><b>⚠️ ข้อควรระวัง:</b> ทีมไม่มีผู้เชี่ยวชาญ HIS เดิม การสำรวจ interface กับ HAIT Plus ต้องนัดทีม HIS เดิมร่วมตั้งแต่ต้น (ดูข้อ 6) มิเช่นนั้นข้อมูล interface จะไม่ครบสำหรับ Fit/Gap</div>
+
+    <!-- 2 วิธีเก็บความต้องการ -->
+    <h2 class="sec"><span class="n">2</span>วิธีการเก็บความต้องการ (Requirement Gathering)</h2>
+    <table>
+      <thead><tr><th style="width:22%">วิธีการ</th><th style="width:30%">ใช้กับ</th><th>ผลลัพธ์ที่ได้</th></tr></thead>
+      <tbody>
+        <tr><td>สัมภาษณ์ (Interview)</td><td>หัวหน้าหน่วยงาน / Process Owner รายโมดูล</td><td>ความต้องการเชิงลึก, กฎเกณฑ์ทางธุรกิจ</td></tr>
+        <tr><td>Workshop กลุ่ม</td><td>ผู้ใช้หลายบทบาทในโมดูลเดียวกัน</td><td>ออกแบบ flow To-Be ร่วมกัน, ยืนยันความต้องการ</td></tr>
+        <tr><td>สังเกตการณ์หน้างาน (Observation)</td><td>คลินิก, ห้องยา, จุดลงทะเบียน, ห้องรังสี</td><td>เข้าใจกระบวนงานจริง, ค้นปัญหาที่ผู้ใช้ไม่ได้พูดถึง</td></tr>
+        <tr><td>แบบสอบถาม (Questionnaire)</td><td>ผู้ใช้จำนวนมาก เช่น นักศึกษา/อาจารย์/ทันตแพทย์</td><td>ข้อมูลเชิงปริมาณ, ความต้องการ Mobile App</td></tr>
+        <tr><td>ทบทวนเอกสาร (Document Review)</td><td>แบบฟอร์มเดิม, รายงาน, คู่มือ HAIT Plus</td><td>โครงสร้างข้อมูล, รายงานที่ต้องคงไว้</td></tr>
+      </tbody>
+    </table>
+    <p class="eg">สังเกตการณ์ที่คลินิกทันตกรรม: ตั้งแต่ผู้ป่วยยื่นบัตร → ซักประวัติ → ตรวจ/บันทึก Dental Chart → สั่งยา/ส่งรังสี → นัดครั้งถัดไป เพื่อจับ touch-point ที่ต้องบันทึกในระบบ</p>
+
+    <!-- 3 รายชื่อผู้ให้ข้อมูลรายโมดูล -->
+    <h2 class="sec"><span class="n">3</span>รายชื่อผู้ให้ข้อมูลรายโมดูล</h2>
+    <p class="small muted">กรอกชื่อ Process Owner/ผู้ให้ข้อมูลหลักของแต่ละโมดูล เพื่อใช้นัดหมายและยืนยันความต้องการ</p>
+    <table>
+      <thead><tr><th style="width:32%">โมดูล</th><th style="width:34%">ผู้ให้ข้อมูล (Process Owner)</th><th>หน่วยงาน</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>เวชระเบียน / ลงทะเบียนผู้ป่วย</td><td><span class="blank">&nbsp;</span></td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>คลินิกทันตกรรม / Dental Chart</td><td><span class="blank">&nbsp;</span></td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>ห้องยา / เภสัชกรรม</td><td><span class="blank">&nbsp;</span></td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>รังสี / PACS</td><td><span class="blank">&nbsp;</span></td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>ห้องปฏิบัติการ (LIS/RIS)</td><td><span class="blank">&nbsp;</span></td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>Dental Lab</td><td><span class="blank">&nbsp;</span></td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>นัดหมาย / คิว</td><td><span class="blank">&nbsp;</span></td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>บัญชีลูกหนี้ / การเงิน (SAP)</td><td><span class="blank">&nbsp;</span></td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>พัสดุคงคลัง (SAP IM/PU)</td><td><span class="blank">&nbsp;</span></td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>การเรียนการสอน / นักศึกษา</td><td><span class="blank">&nbsp;</span></td><td><span class="blank">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 4 ตารางนัด Workshop รายโมดูล -->
+    <h2 class="sec"><span class="n">4</span>ตารางนัด Workshop รายโมดูล</h2>
+    <p class="small muted">วาง Workshop ให้ครบทุกโมดูลภายในงวด M1–ต้น M2 เพื่อให้ Fit/Gap (M2) มีข้อมูลครบ</p>
+    <table class="alt">
+      <thead><tr><th style="width:30%">โมดูล</th><th style="width:20%">วันที่/เวลา</th><th>ผู้เข้าร่วม</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>คลินิกทันตกรรม / Dental Chart</td><td>__/__/2026</td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>เวชระเบียน / ลงทะเบียน</td><td>__/__/2026</td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>ห้องยา / เภสัชกรรม</td><td>__/__/2026</td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>รังสี/PACS + LIS/RIS</td><td>__/__/2026</td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>Dental Lab + นัดหมาย</td><td>__/__/2026</td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>การเงิน/ลูกหนี้ + พัสดุ (SAP)</td><td>__/__/2026</td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>การเรียนการสอน / Mobile App</td><td>__/__/2026</td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>Interface HAIT Plus (ร่วมทีมเดิม)</td><td>__/__/2026</td><td><span class="blank">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+    <p class="eg">Workshop "คลินิกทันตกรรม" 14/07/2026 — ทันตแพทย์หัวหน้าคลินิก, ผู้ช่วยทันตแพทย์, เจ้าหน้าที่เวชระเบียน, SA, Dev Lead</p>
+
+    <!-- 5 แนวทาง Fit/Gap -->
+    <h2 class="sec"><span class="n">5</span>แนวทางการวิเคราะห์ Fit/Gap</h2>
+    <p><span class="muted">นำความต้องการที่เก็บได้มาเทียบกับความสามารถมาตรฐานของระบบ DIS แล้วจัดประเภทเป็น Fit / Config / Partial / Gap เพื่อวางแผนพัฒนาในงวดถัดไป รายละเอียดเต็มอยู่ใน</span> <a href="M2-01.html">M2-01 รายงานวิเคราะห์ Fit/Gap</a></p>
+    <ul>
+      <li><span class="badge b-fit">FIT</span> ระบบรองรับได้ทันที — ไม่ต้องแก้</li>
+      <li><span class="badge b-cfg">CONFIG</span> ตั้งค่า/ปรับพารามิเตอร์ได้ — ไม่ต้องเขียนโค้ด</li>
+      <li><span class="badge b-par">PARTIAL</span> รองรับบางส่วน — ต้องพัฒนาเพิ่มเล็กน้อย</li>
+      <li><span class="badge b-gap">GAP</span> ยังไม่รองรับ — ต้องพัฒนาใหม่/ปรับ flow</li>
+    </ul>
+    <div class="tip"><b>หลักการ:</b> Config ก่อน Develop เสมอ เพื่อลดความเสี่ยงและเวลา (สอดคล้องกับ M1-05 แผนการพัฒนา)</div>
+
+    <!-- 6 การมีส่วนร่วมทีม HIS เดิม -->
+    <h2 class="sec"><span class="n">6</span>การมีส่วนร่วมของทีม HIS เดิม (Consult Sprint)</h2>
+    <p class="small muted">เนื่องจากไม่มีผู้เชี่ยวชาญ HAIT Plus ในทีม ต้องยืมทีม HIS เดิมเป็นช่วง ๆ จองคิวล่วงหน้าเป็น Sprint</p>
+    <table>
+      <thead><tr><th style="width:14%">Sprint</th><th style="width:20%">ช่วงเวลา</th><th>ขอบเขตการปรึกษา</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>Consult A</td><td>__/__/2026</td><td>โครงสร้างข้อมูล HAIT Plus, master data, mapping ฟิลด์</td></tr>
+        <tr class="fillrow"><td>Consult B</td><td>__/__/2026</td><td>จุดเชื่อมต่อ/API ที่มีอยู่, รูปแบบ message, ความถี่ sync</td></tr>
+        <tr class="fillrow"><td>Consult C</td><td>__/__/2026</td><td>ยืนยัน Gap ของ interface, ข้อจำกัดด้านเทคนิค/ความปลอดภัย</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>⚠️ จุดวิกฤต:</b> ต้องส่งคำขอจองทีม HIS เดิมและทำ MOU ตารางเวลาตั้งแต่ Day 0 — หากเลื่อน จะกระทบ Fit/Gap ของ interface และ Migration ทั้งสาย</div>
+
+    <!-- 7 ผลลัพธ์ที่ส่งมอบในงวด M2 -->
+    <h2 class="sec"><span class="n">7</span>ผลลัพธ์ที่ส่งมอบในงวด M2</h2>
+    <p class="small muted">การสำรวจ/ออกแบบในแผนนี้นำไปสู่เอกสารส่งมอบของงวด M2 ดังนี้</p>
+    <ul>
+      <li><a href="M2-01.html">M2-01</a> รายงานการวิเคราะห์ Fit/Gap</li>
+      <li><a href="M2-02.html">M2-02</a> เอกสารความต้องการระบบ (SRS)</li>
+      <li><a href="M2-03.html">M2-03</a> เอกสารออกแบบสถาปัตยกรรม (Architecture Design)</li>
+      <li><a href="M2-04.html">M2-04</a> เอกสารออกแบบฐานข้อมูล (Database Design)</li>
+      <li><a href="M2-05.html">M2-05</a> เอกสารออกแบบ UI/UX</li>
+      <li><a href="M2-06.html">M2-06</a> เอกสารออกแบบการเชื่อมต่อ (Interface Design)</li>
+      <li class="muted"><span class="fill">…เอกสารออกแบบรายโมดูลอื่น ๆ ตามสารบัญงวด M2 (M2-07…M2-13)</span></li>
+    </ul>
+    <div class="note"><b>กำหนดส่งมอบงวด M2:</b> 08/11/2026 — เอกสารทั้งหมดในข้อนี้ต้องผ่านการสอบทานก่อนยื่นตรวจรับ</div>
+
+    <!-- 8 ความเสี่ยง -->
+    <h2 class="sec"><span class="n">8</span>ความเสี่ยงและการรับมือ</h2>
+    <table>
+      <thead><tr><th style="width:34%">ความเสี่ยง</th><th style="width:10%">โอกาส</th><th style="width:10%">ผลกระทบ</th><th>การรับมือ</th></tr></thead>
+      <tbody>
+        <tr><td>ผู้ให้ข้อมูล/Process Owner ไม่ว่างเข้า Workshop</td><td>กลาง</td><td>สูง</td><td>นัดล่วงหน้า, มีตัวแทนสำรอง, บันทึก/ยืนยันผ่านเอกสาร</td></tr>
+        <tr><td>ข้อมูล interface HAIT Plus ไม่ครบ (ขาดทีมเดิม)</td><td>สูง</td><td>สูง</td><td>จอง Consult Sprint แต่เนิ่น ๆ, ทำ Document Review ควบคู่</td></tr>
+        <tr><td>ความต้องการเปลี่ยนภายหลัง (Scope creep)</td><td>กลาง</td><td>กลาง</td><td>ยืนยัน/ลงนาม sign-off ความต้องการรายโมดูล, change control</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">9</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — System Analyst</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — Project Manager</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิง TOR ข้อ 6.1.2
+  </div>
+</div>
+</body>
+</html>

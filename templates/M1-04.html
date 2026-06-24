@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1-04 แผนการติดตั้งระบบ (System Installation Plan)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m1">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M1-03.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M1-05.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M1-04 · งวดที่ 1</span>
+    <h1>แผนการติดตั้งระบบ</h1>
+    <div class="en">System Installation Plan</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-SIP-004</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">System Engineer</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">__________</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.1.4 · ISO 29110 (SI.5 Product Integration)</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: เตรียมสภาพแวดล้อม — ติดตั้งต่อเนื่องตั้งแต่ M1 ถึง Go-Live</span>
+      <span class="chip who">เจ้าของ: System Engineer</span>
+      <span class="chip iso">ISO 29110: SI.5 Integration</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> กำหนดสภาพแวดล้อม (Environment) สเปกเซิร์ฟเวอร์/ครุภัณฑ์ ขั้นตอนการติดตั้งระบบ DIS (Web + Mobile) การตั้งค่าเครือข่ายและความปลอดภัย รวมถึงการนำ Mobile App ขึ้น Store เพื่อให้ระบบพร้อมใช้งานจริง · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>System Engineer</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 สภาพแวดล้อม -->
+    <h2 class="sec"><span class="n">1</span>สภาพแวดล้อมระบบ (Environments)</h2>
+    <p class="small muted">แยกสภาพแวดล้อมเพื่อความปลอดภัยและคุณภาพ — พัฒนา/ทดสอบไม่กระทบ Production</p>
+    <table>
+      <thead><tr><th style="width:16%">สภาพแวดล้อม</th><th style="width:30%">วัตถุประสงค์</th><th>สเปก/ที่ตั้ง (กรอก)</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>Development</td><td>พัฒนา/Config โดยทีม Dev</td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>Test / QA</td><td>ทดสอบฟังก์ชัน, integration test</td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>Staging (UAT)</td><td>ผู้ใช้ตรวจรับ, ใกล้เคียง Production</td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>Production</td><td>ใช้งานจริง</td><td><span class="blank">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+    <p class="eg">Staging ใช้สเปกใกล้เคียง Production เพื่อให้ผล UAT สะท้อนของจริง — โดยเฉพาะการ integrate กับ HAIT Plus/SAP</p>
+
+    <!-- 2 สเปกเซิร์ฟเวอร์/ครุภัณฑ์ -->
+    <h2 class="sec"><span class="n">2</span>สเปกเซิร์ฟเวอร์และครุภัณฑ์</h2>
+    <p class="small muted">สเปกครุภัณฑ์ตามสัญญาอยู่ใน <strong>ภาคผนวก ค</strong> — ตารางนี้สรุปองค์ประกอบหลักสำหรับการติดตั้ง</p>
+    <table class="alt">
+      <thead><tr><th style="width:24%">องค์ประกอบ</th><th style="width:18%">จำนวน</th><th>สเปก/หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>Application Server</td><td><span class="blank">&nbsp;</span></td><td>CPU/RAM/Disk ตามภาคผนวก ค</td></tr>
+        <tr class="fillrow"><td>Database Server</td><td><span class="blank">&nbsp;</span></td><td>HA/สำรองข้อมูล</td></tr>
+        <tr class="fillrow"><td>Web / Reverse Proxy</td><td><span class="blank">&nbsp;</span></td><td>SSL/Load balance</td></tr>
+        <tr class="fillrow"><td>Storage / Backup</td><td><span class="blank">&nbsp;</span></td><td>สำหรับภาพรังสี/PACS index</td></tr>
+        <tr class="fillrow"><td>อุปกรณ์เครือข่าย/ความปลอดภัย</td><td><span class="blank">&nbsp;</span></td><td>Firewall/VPN</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 3 ขั้นตอนติดตั้ง -->
+    <h2 class="sec"><span class="n">3</span>ขั้นตอนการติดตั้ง (Installation Checklist)</h2>
+    <ul class="chk">
+      <li class="star">ตรวจรับครุภัณฑ์/เซิร์ฟเวอร์ตามภาคผนวก ค</li>
+      <li>ติดตั้งระบบปฏิบัติการ + patch ความปลอดภัย</li>
+      <li>ติดตั้งฐานข้อมูลและ middleware ที่จำเป็น</li>
+      <li>Deploy แอปพลิเคชัน DIS (Web) แต่ละ environment</li>
+      <li>ตั้งค่า config การเชื่อมต่อ HAIT Plus, SAP, PACS, LIS/RIS, WU-HRMS</li>
+      <li>ตั้งค่า Backup/Restore และทดสอบกู้คืน</li>
+      <li>ทดสอบ Smoke Test หลังติดตั้งทุก environment</li>
+      <li>บันทึกค่า config และส่งมอบ Installation Guide</li>
+    </ul>
+
+    <!-- 4 เครือข่าย/ความปลอดภัย -->
+    <h2 class="sec"><span class="n">4</span>เครือข่ายและความปลอดภัย</h2>
+    <ul>
+      <li>การเข้ารหัสการสื่อสาร (TLS/SSL) ทุกช่องทาง</li>
+      <li>การแบ่ง network zone และกฎ Firewall สำหรับ interface ระบบเดิม</li>
+      <li>การยืนยันตัวตน/สิทธิ์ (Authentication &amp; RBAC) เชื่อม WU-HRMS</li>
+      <li>การจัดเก็บ Log / Audit Trail ตามมาตรฐาน HA</li>
+      <li>การสำรองข้อมูลและแผนกู้คืน (Backup &amp; DR)</li>
+    </ul>
+    <div class="warn"><b>⚠️ ข้อควรระวัง:</b> การเปิด port/firewall เพื่อเชื่อม HAIT Plus ต้องประสานทีม HIS เดิมและฝ่าย IT มหาวิทยาลัยล่วงหน้า</div>
+
+    <!-- 5 Mobile App ขึ้น Store -->
+    <h2 class="sec"><span class="n">5</span>การนำ Mobile App ขึ้น App Store / Google Play</h2>
+    <p class="small muted">Mobile App 3 ตัว: Patient / Student / Dentist — ต้องเตรียมบัญชีและสินทรัพย์ล่วงหน้า เพราะการตรวจของ Store ใช้เวลา</p>
+    <table>
+      <thead><tr><th style="width:30%">รายการ</th><th>สถานะ / ผู้รับผิดชอบ (กรอก)</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>บัญชี Apple Developer (มหาวิทยาลัย)</td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>บัญชี Google Play Console</td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>ไอคอน/Screenshot/คำอธิบาย/นโยบายความเป็นส่วนตัว</td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>Build + Signing (.ipa / .aab)</td><td><span class="blank">&nbsp;</span></td></tr>
+        <tr class="fillrow"><td>ส่งตรวจ (Review) + เผยแพร่</td><td><span class="blank">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+    <div class="tip"><b>คำแนะนำ:</b> สมัครบัญชีในนามมหาวิทยาลัยตั้งแต่ต้นโครงการ และเผื่อเวลา review ของ Apple/Google 1–2 สัปดาห์ก่อน Go-Live</div>
+
+    <!-- 6 ผู้รับผิดชอบ -->
+    <h2 class="sec"><span class="n">6</span>ผู้รับผิดชอบ</h2>
+    <table>
+      <thead><tr><th style="width:40%">งาน</th><th style="width:30%">ผู้รับผิดชอบ</th><th>หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>ติดตั้งเซิร์ฟเวอร์/OS/DB</td><td>System Engineer</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>Deploy แอป + Config</td><td><span class="blank">&nbsp;</span></td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>เครือข่าย/ความปลอดภัย</td><td><span class="blank">&nbsp;</span></td><td>ประสานฝ่าย IT</td></tr>
+        <tr class="fillrow"><td>นำ Mobile App ขึ้น Store</td><td><span class="blank">&nbsp;</span></td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">7</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — System Engineer</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — Project Manager</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิง TOR ข้อ 6.1.4
+  </div>
+</div>
+</body>
+</html>

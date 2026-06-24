@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-01 รายงานวิเคราะห์ความเหมาะสมและส่วนต่าง (Fit/Gap Analysis Report)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m2">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M1-10.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M2-02.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M2-01 · งวดที่ 2</span>
+    <h1>รายงานวิเคราะห์ความเหมาะสมและส่วนต่าง</h1>
+    <div class="en">Fit/Gap Analysis Report</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-FGA-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">System Analyst + ทีม HIS เดิม</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">__________</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ภาคผนวก ก ส่วนที่ 1–2 · ISO 29110 (SI.2 Analysis)</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ต้นงวดที่ 2 — ก่อนเริ่มออกแบบ/พัฒนา เพื่อล็อกขอบเขต Build vs Config</span>
+      <span class="chip who">เจ้าของ: System Analyst (ร่วมกับทีม HIS เดิม)</span>
+      <span class="chip iso">ISO 29110: SI.2 Software Requirements Analysis</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> วิเคราะห์ทุกความต้องการตาม TOR เทียบกับความสามารถของระบบเดิม (HAIT Plus) และส่วนที่ต้องพัฒนาใหม่ ระบุชัดว่าแต่ละข้อเป็น <span class="badge b-fit">Fit</span> / <span class="badge b-cfg">Config</span> / <span class="badge b-par">Partial</span> / <span class="badge b-gap">Gap</span> พร้อมประมาณการ Effort และแนวทางดำเนินการ เพื่อใช้เป็นฐานวางแผน Backlog การพัฒนา · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <div class="tip"><b>ความหมายของผลวิเคราะห์:</b>
+      <span class="badge b-fit">Fit</span> ระบบเดิมรองรับครบ ใช้ได้ทันที ·
+      <span class="badge b-cfg">Config</span> รองรับได้ด้วยการตั้งค่า/ปรับพารามิเตอร์ ไม่ต้องเขียนโค้ด ·
+      <span class="badge b-par">Partial</span> รองรับบางส่วน ต้องเสริมบางจุด ·
+      <span class="badge b-gap">Gap</span> ระบบเดิมไม่มี ต้องพัฒนาใหม่ (Build)
+    </div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>System Analyst</td><td>ร่างฉบับแรก หลังจบ Fit/Gap Workshop รอบที่ 1</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 บทสรุปผู้บริหาร -->
+    <h2 class="sec"><span class="n">1</span>บทสรุปผู้บริหาร (Executive Summary)</h2>
+    <p>การวิเคราะห์ครอบคลุมความต้องการตาม TOR ทั้งหมด <span class="fill">___</span> ข้อ ครอบคลุมระบบ HIS (ส่วนที่ 1), ระบบการเรียนการสอน (ส่วนที่ 2) และ Mobile 3 แอป โดยจัดประชุมเชิงปฏิบัติการ (Workshop) รายโมดูลร่วมกับ Process Owner และทีม HIS เดิม</p>
+    <p class="eg">ผลภาพรวม: ส่วนใหญ่ของระบบ HIS เดิม (HAIT Plus) รองรับงานพื้นฐานได้ในระดับ Fit/Config แต่ส่วนที่เป็นงานทันตกรรมเฉพาะทาง (Dental Chart, Recall, Dental Lab, Consent อิเล็กทรอนิกส์) และ Mobile ทั้ง 3 แอป เป็น Gap ที่ต้องพัฒนาใหม่เป็นหลัก</p>
+    <table>
+      <thead><tr><th style="width:55%">ประเด็นสำคัญ</th><th>ผลสรุป</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>สัดส่วน Fit/Config (ใช้ของเดิมได้)</td><td><span class="fill">___%</span></td></tr>
+        <tr class="fillrow"><td>สัดส่วน Partial/Gap (ต้องพัฒนา/เสริม)</td><td><span class="fill">___%</span></td></tr>
+        <tr class="fillrow"><td>Effort รวมโดยประมาณ</td><td><span class="fill">___ man-day</span></td></tr>
+        <tr class="fillrow"><td>ความเสี่ยงสูงสุด</td><td>การพึ่งพา “ทีม HIS เดิม” ในส่วน Integration และ Config</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>⚠️ ข้อสังเกตเชิงนโยบาย:</b> โครงการไม่มีผู้เชี่ยวชาญ HIS เดิมในทีมโดยตรง การวิเคราะห์ทุกข้อที่เกี่ยวกับ Config/Integration ของ HAIT Plus จึงพึ่งพา “ทีม HIS เดิม” สูง ต้องจองคิว consult ล่วงหน้าและยืนยัน assumption ทุกข้อก่อนปิด Fit/Gap</div>
+
+    <!-- 2 วิธีการวิเคราะห์ -->
+    <h2 class="sec"><span class="n">2</span>วิธีการวิเคราะห์ (Methodology)</h2>
+    <p><strong>2.1 แนวทาง</strong> — จัด Workshop รายโมดูล โดยแต่ละรอบมี Process Owner ของงานนั้น + System Analyst + ตัวแทนทีม HIS เดิม ทบทวนความต้องการ TOR ทีละข้อ แล้วลงผลเป็น Fit/Config/Partial/Gap พร้อม Effort และแนวทาง</p>
+    <p><strong>2.2 เกณฑ์การให้ผล</strong> — ตามนิยามในกล่องด้านบน โดยข้อใดเป็น Config/Integration ต้องมีตัวแทนทีม HIS เดิมยืนยันความเป็นไปได้จริงก่อนปิด</p>
+    <p><strong>2.3 ตารางแผน Workshop รายโมดูล</strong></p>
+    <table>
+      <thead><tr><th style="width:8%">รอบ</th><th>โมดูล (อ้าง TOR)</th><th>ผู้เข้าร่วม</th><th>วันที่</th><th>สถานะ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>W1</td><td>เวชระเบียน (1.1) · Patient bank (1.2)</td><td>SA, PO เวชระเบียน, ทีม HIS เดิม</td><td>__/__/2026</td><td>เสร็จ / รอ</td></tr>
+        <tr class="fillrow"><td>W2</td><td>ห้องจ่ายยา/เภสัช (1.3–1.4)</td><td>SA, PO เภสัช, ทีม HIS เดิม</td><td>__/__/2026</td><td>เสร็จ / รอ</td></tr>
+        <tr class="fillrow"><td>W3</td><td>นัดหมาย/Recall (1.11) · Consent (1.28)</td><td>SA, PO คลินิก, ทีม HIS เดิม</td><td>__/__/2026</td><td>เสร็จ / รอ</td></tr>
+        <tr class="fillrow"><td>W4</td><td>LIS · รังสี/PACS (1.7) · Dental Lab</td><td>SA, PO แลป/รังสี, ทีม HIS เดิม</td><td>__/__/2026</td><td>เสร็จ / รอ</td></tr>
+        <tr class="fillrow"><td>W5</td><td>บัญชีลูกหนี้ (1.18) · พัสดุ · ระบบเรียนการสอน · Mobile</td><td>SA, PO ที่เกี่ยวข้อง</td><td>__/__/2026</td><td>เสร็จ / รอ</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 3 สรุปผลเชิงสถิติ -->
+    <h2 class="sec"><span class="n">3</span>สรุปผลเชิงสถิติ (Fit/Gap Summary by Module)</h2>
+    <p class="small muted">ตารางนับจำนวนความต้องการในแต่ละโมดูล แยกตามผลวิเคราะห์ ใช้เป็นภาพรวมก่อนลงรายละเอียดในข้อ 4</p>
+    <table class="alt">
+      <thead><tr>
+        <th>โมดูล</th>
+        <th style="width:9%">รวมข้อ</th>
+        <th style="width:11%"><span class="badge b-fit">Fit</span></th>
+        <th style="width:11%"><span class="badge b-cfg">Config</span></th>
+        <th style="width:11%"><span class="badge b-par">Partial</span></th>
+        <th style="width:11%"><span class="badge b-gap">Gap</span></th>
+        <th style="width:13%">Effort (man-day)</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>เวชระเบียน (1.1)</td><td>12</td><td>6</td><td>3</td><td>2</td><td>1</td><td>15</td></tr>
+        <tr><td>Patient bank / คิดตามการรักษา (1.2)</td><td>8</td><td>3</td><td>2</td><td>2</td><td>1</td><td>12</td></tr>
+        <tr><td>ห้องจ่ายยา/เภสัช (1.3–1.4)</td><td>10</td><td>4</td><td>2</td><td>2</td><td>2</td><td>22</td></tr>
+        <tr><td>นัดหมาย/Recall (1.11)</td><td>9</td><td>2</td><td>2</td><td>2</td><td>3</td><td>28</td></tr>
+        <tr><td>Consent อิเล็กทรอนิกส์ (1.28)</td><td>6</td><td>0</td><td>1</td><td>1</td><td>4</td><td>20</td></tr>
+        <tr><td>Dental Lab</td><td>7</td><td>0</td><td>1</td><td>1</td><td>5</td><td>30</td></tr>
+        <tr><td>LIS</td><td>6</td><td>3</td><td>1</td><td>1</td><td>1</td><td>10</td></tr>
+        <tr><td>รังสี/PACS (1.7)</td><td>6</td><td>2</td><td>2</td><td>1</td><td>1</td><td>14</td></tr>
+        <tr class="fillrow"><td>... (กรอกโมดูลที่เหลือให้ครบ)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td><b>รวมทั้งหมด</b></td><td><b><span class="fill">__</span></b></td><td><b><span class="fill">__</span></b></td><td><b><span class="fill">__</span></b></td><td><b><span class="fill">__</span></b></td><td><b><span class="fill">__</span></b></td><td><b><span class="fill">__</span></b></td></tr>
+      </tbody>
+    </table>
+    <p class="hint">หมายเหตุ: ตัวเลขด้านบนเป็นตัวอย่างประกอบ ให้แทนที่ด้วยผลนับจริงจาก Workshop</p>
+
+    <!-- 4 ตาราง Fit/Gap รายโมดูลแบบเต็ม -->
+    <h2 class="sec"><span class="n">4</span>ตาราง Fit/Gap รายโมดูลแบบเต็ม (Detailed Fit/Gap)</h2>
+    <p class="small muted">คอลัมน์: <b>Req ID</b> รหัสความต้องการ · <b>ความต้องการ TOR</b> · <b>ระบบเดิมทำได้?</b> · <b>ผล</b> (badge) · <b>Effort</b> (man-day สำหรับ Partial/Gap) · <b>การดำเนินการ</b></p>
+
+    <h3 class="sub">4.1 เวชระเบียน (Medical Record · TOR 1.1)</h3>
+    <table>
+      <thead><tr><th style="width:9%">Req ID</th><th style="width:30%">ความต้องการ TOR</th><th style="width:18%">ระบบเดิมทำได้?</th><th style="width:9%">ผล</th><th style="width:8%">Effort</th><th>การดำเนินการ</th></tr></thead>
+      <tbody>
+        <tr><td>MR-01</td><td>ลงทะเบียนผู้ป่วยใหม่/ค้นประวัติด้วย HN/บัตร ปชช.</td><td>HAIT Plus มีอยู่แล้ว</td><td><span class="badge b-fit">Fit</span></td><td>–</td><td>ใช้ของเดิม / เชื่อม API ค้นผู้ป่วย</td></tr>
+        <tr><td>MR-02</td><td>บันทึกแผนภูมิฟัน (Dental Chart) แบบกราฟิก 32 ซี่</td><td>ไม่มีในระบบเดิม</td><td><span class="badge b-gap">Gap</span></td><td>10</td><td>พัฒนา Dental Chart Component ใหม่ใน DIS</td></tr>
+        <tr><td>MR-03</td><td>บันทึก Vital sign / ประวัติแพ้ยา-แพ้สาร</td><td>มีบางส่วน (แพ้ยา)</td><td><span class="badge b-par">Partial</span></td><td>3</td><td>ดึงข้อมูลแพ้ยาจากเดิม + เพิ่มฟิลด์ทันตกรรม</td></tr>
+        <tr><td>MR-04</td><td>กำหนดสิทธิ์เข้าถึงเวชระเบียนรายบทบาท</td><td>ตั้งค่าได้ในระบบสิทธิ์</td><td><span class="badge b-cfg">Config</span></td><td>–</td><td>ตั้งค่า Role-based ในโมดูลสิทธิ์ (1.31)</td></tr>
+        <tr class="fillrow"><td>MR-__</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">4.2 ห้องจ่ายยา / เภสัชกรรม — เตือนแพ้ยา (Pharmacy · TOR 1.3–1.4)</h3>
+    <table>
+      <thead><tr><th style="width:9%">Req ID</th><th style="width:30%">ความต้องการ TOR</th><th style="width:18%">ระบบเดิมทำได้?</th><th style="width:9%">ผล</th><th style="width:8%">Effort</th><th>การดำเนินการ</th></tr></thead>
+      <tbody>
+        <tr><td>PH-01</td><td>สั่งยา/จ่ายยา ตัดสต็อกอัตโนมัติ</td><td>HAIT Plus มีอยู่</td><td><span class="badge b-fit">Fit</span></td><td>–</td><td>เชื่อมผ่าน API ห้องยาเดิม</td></tr>
+        <tr><td>PH-02</td><td>แจ้งเตือนแพ้ยา (Drug Allergy Alert) ขณะสั่งยา</td><td>มีฐานแพ้ยา แต่ไม่ผูกกับ DIS</td><td><span class="badge b-par">Partial</span></td><td>5</td><td>ดึงรายการแพ้ยาจากเดิม + สร้าง alert ใน DIS</td></tr>
+        <tr><td>PH-03</td><td>ตรวจสอบยาตีกัน (Drug Interaction)</td><td>ไม่มีในระบบเดิม</td><td><span class="badge b-gap">Gap</span></td><td>12</td><td>พัฒนา/จัดหาฐานข้อมูล interaction + rule engine</td></tr>
+        <tr><td>PH-04</td><td>กำหนดบัญชียา/รูปแบบฉลากยา</td><td>ตั้งค่าได้</td><td><span class="badge b-cfg">Config</span></td><td>–</td><td>ตั้งค่า master ยาและ template ฉลาก</td></tr>
+        <tr class="fillrow"><td>PH-__</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">4.3 นัดหมาย และระบบเรียกกลับ (Appointment / Recall · TOR 1.11)</h3>
+    <table>
+      <thead><tr><th style="width:9%">Req ID</th><th style="width:30%">ความต้องการ TOR</th><th style="width:18%">ระบบเดิมทำได้?</th><th style="width:9%">ผล</th><th style="width:8%">Effort</th><th>การดำเนินการ</th></tr></thead>
+      <tbody>
+        <tr><td>AP-01</td><td>จองคิว/นัดหมายตามตารางทันตแพทย์-ยูนิต</td><td>มีระบบนัดพื้นฐาน</td><td><span class="badge b-cfg">Config</span></td><td>–</td><td>ตั้งค่าทรัพยากร (หมอ/ยูนิต/ห้อง)</td></tr>
+        <tr><td>AP-02</td><td>ระบบ Recall เรียกกลับตามแผนรักษา (เช่น ขูดหินปูน 6 เดือน)</td><td>ไม่มี</td><td><span class="badge b-gap">Gap</span></td><td>14</td><td>พัฒนา Recall engine + กำหนดกฎตามหัตถการ</td></tr>
+        <tr><td>AP-03</td><td>แจ้งเตือนนัดผ่าน SMS / Mobile (Patient App)</td><td>ไม่มี</td><td><span class="badge b-gap">Gap</span></td><td>8</td><td>พัฒนา notification + เชื่อม Patient App</td></tr>
+        <tr><td>AP-04</td><td>แสดงปฏิทินนัดรวมรายคลินิก</td><td>มีบางส่วน</td><td><span class="badge b-par">Partial</span></td><td>4</td><td>ทำ calendar view ใหม่ใน DIS</td></tr>
+        <tr class="fillrow"><td>AP-__</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">4.4 หนังสือยินยอมอิเล็กทรอนิกส์ (e-Consent · TOR 1.28)</h3>
+    <table>
+      <thead><tr><th style="width:9%">Req ID</th><th style="width:30%">ความต้องการ TOR</th><th style="width:18%">ระบบเดิมทำได้?</th><th style="width:9%">ผล</th><th style="width:8%">Effort</th><th>การดำเนินการ</th></tr></thead>
+      <tbody>
+        <tr><td>CS-01</td><td>สร้างแบบฟอร์มยินยอมตามชนิดหัตถการ</td><td>ไม่มี</td><td><span class="badge b-gap">Gap</span></td><td>6</td><td>พัฒนา template builder ฟอร์มยินยอม</td></tr>
+        <tr><td>CS-02</td><td>ลงลายมือชื่ออิเล็กทรอนิกส์ (e-Signature) บนแท็บเล็ต</td><td>ไม่มี</td><td><span class="badge b-gap">Gap</span></td><td>8</td><td>พัฒนา e-Signature + ผูกกับเวชระเบียน</td></tr>
+        <tr><td>CS-03</td><td>จัดเก็บ/ค้นคืน Consent ย้อนหลังพร้อม audit</td><td>ไม่มี</td><td><span class="badge b-gap">Gap</span></td><td>6</td><td>เก็บใน DIS + เชื่อม Audit Log</td></tr>
+        <tr class="fillrow"><td>CS-__</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">4.5 งานทันตกรรมประดิษฐ์ (Dental Lab)</h3>
+    <table>
+      <thead><tr><th style="width:9%">Req ID</th><th style="width:30%">ความต้องการ TOR</th><th style="width:18%">ระบบเดิมทำได้?</th><th style="width:9%">ผล</th><th style="width:8%">Effort</th><th>การดำเนินการ</th></tr></thead>
+      <tbody>
+        <tr><td>DL-01</td><td>ออกใบสั่งงาน Lab (Lab Work Order) จากคลินิก</td><td>ไม่มี</td><td><span class="badge b-gap">Gap</span></td><td>10</td><td>พัฒนา Work Order + ผูกกับผู้ป่วย/หัตถการ</td></tr>
+        <tr><td>DL-02</td><td>ติดตามสถานะงาน Lab (ส่ง/กำลังทำ/เสร็จ/ส่งคืน)</td><td>ไม่มี</td><td><span class="badge b-gap">Gap</span></td><td>8</td><td>พัฒนา status tracking + แจ้งเตือน</td></tr>
+        <tr><td>DL-03</td><td>คิดต้นทุน/ค่าบริการงาน Lab เข้าบัญชีลูกหนี้</td><td>เชื่อมบัญชีได้บางส่วน</td><td><span class="badge b-par">Partial</span></td><td>5</td><td>เชื่อม API บัญชีลูกหนี้ (1.18)</td></tr>
+        <tr class="fillrow"><td>DL-__</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">4.6 ห้องปฏิบัติการ (LIS)</h3>
+    <table>
+      <thead><tr><th style="width:9%">Req ID</th><th style="width:30%">ความต้องการ TOR</th><th style="width:18%">ระบบเดิมทำได้?</th><th style="width:9%">ผล</th><th style="width:8%">Effort</th><th>การดำเนินการ</th></tr></thead>
+      <tbody>
+        <tr><td>LS-01</td><td>ส่งตรวจ Lab / รับผลกลับ</td><td>LIS เดิมมีอยู่</td><td><span class="badge b-fit">Fit</span></td><td>–</td><td>เชื่อม HL7/API กับ LIS เดิม</td></tr>
+        <tr><td>LS-02</td><td>แสดงผล Lab ในเวชระเบียนทันตกรรม</td><td>ต้อง map ฟิลด์</td><td><span class="badge b-par">Partial</span></td><td>4</td><td>ทำ mapping + แสดงผลใน DIS</td></tr>
+        <tr class="fillrow"><td>LS-__</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">4.7 ภาพรังsี (PACS / Imaging · TOR 1.7)</h3>
+    <table>
+      <thead><tr><th style="width:9%">Req ID</th><th style="width:30%">ความต้องการ TOR</th><th style="width:18%">ระบบเดิมทำได้?</th><th style="width:9%">ผล</th><th style="width:8%">Effort</th><th>การดำเนินการ</th></tr></thead>
+      <tbody>
+        <tr><td>PC-01</td><td>ดูภาพ X-ray (Periapical/Pano/CBCT) ในเวชระเบียน</td><td>PACS เดิมมีอยู่</td><td><span class="badge b-cfg">Config</span></td><td>–</td><td>ฝัง viewer / เชื่อม DICOM/WADO</td></tr>
+        <tr><td>PC-02</td><td>ผูกภาพรังสีกับซี่ฟัน/หัตถการ</td><td>ไม่มี</td><td><span class="badge b-gap">Gap</span></td><td>7</td><td>พัฒนาการเชื่อมภาพกับ Dental Chart</td></tr>
+        <tr><td>PC-03</td><td>สั่งถ่ายภาพรังสี (RIS Order)</td><td>มีบางส่วน</td><td><span class="badge b-par">Partial</span></td><td>4</td><td>เชื่อม order กับ RIS เดิม</td></tr>
+        <tr class="fillrow"><td>PC-__</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <p class="hint">เพิ่มหัวข้อ 4.x สำหรับโมดูลที่เหลือให้ครบ (Patient bank, บัญชีลูกหนี้, พัสดุ, บริหารเอกสาร, นำเข้า-ส่งออก, สิทธิ์ผู้ใช้, ระบบเรียนการสอน, Mobile 3 แอป) ในรูปแบบตารางเดียวกัน</p>
+
+    <!-- 5 Integration -->
+    <h2 class="sec"><span class="n">5</span>Fit/Gap ด้านการเชื่อมต่อระบบ (Integration)</h2>
+    <table>
+      <thead><tr><th style="width:16%">ระบบปลายทาง</th><th style="width:24%">สิ่งที่ต้องเชื่อม</th><th style="width:16%">วิธี/Protocol</th><th style="width:9%">ผล</th><th style="width:8%">Effort</th><th>หมายเหตุ/ความเสี่ยง</th></tr></thead>
+      <tbody>
+        <tr><td>HAIT Plus (HIS เดิม)</td><td>ข้อมูลผู้ป่วย, แพ้ยา, สั่งยา, นัด, บัญชี</td><td>REST API / DB View</td><td><span class="badge b-par">Partial</span></td><td>20</td><td>พึ่งทีม HIS เดิมเปิด API/สเปก — critical path</td></tr>
+        <tr><td>SAP</td><td>บัญชี/การเงิน/จัดซื้อ</td><td>REST / IDoc</td><td><span class="badge b-par">Partial</span></td><td>15</td><td>ต้องสเปก interface จากฝั่ง SAP</td></tr>
+        <tr><td>PACS</td><td>ดึง/แสดงภาพ DICOM</td><td>DICOM / WADO-RS</td><td><span class="badge b-cfg">Config</span></td><td>6</td><td>มาตรฐานชัด ความเสี่ยงต่ำ</td></tr>
+        <tr><td>LIS / RIS</td><td>ส่งตรวจ/รับผล/สั่งถ่ายภาพ</td><td>HL7 v2 / API</td><td><span class="badge b-par">Partial</span></td><td>10</td><td>ต้อง map ฟิลด์และทดสอบ end-to-end</td></tr>
+        <tr><td>WU-HRMS</td><td>ข้อมูลบุคลากร/อาจารย์/นักศึกษา (SSO)</td><td>API / SSO</td><td><span class="badge b-cfg">Config</span></td><td>5</td><td>ใช้สำหรับสิทธิ์และระบบเรียนการสอน</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>⚠️ Integration พึ่งทีมเดิมสูง:</b> การเชื่อม HAIT Plus/SAP ขึ้นกับการเปิด API และสเปกจากเจ้าของระบบ ให้ระบุเป็น dependency ใน Gap Backlog และจองคิว consult ทีม HIS เดิมล่วงหน้า</div>
+
+    <!-- 6 ข้อมูล/Migration -->
+    <h2 class="sec"><span class="n">6</span>Fit/Gap ด้านข้อมูลและการย้ายข้อมูล (Data / Migration)</h2>
+    <table>
+      <thead><tr><th style="width:22%">ชุดข้อมูล</th><th style="width:16%">แหล่งต้นทาง</th><th style="width:18%">ปริมาณ/คุณภาพ</th><th style="width:9%">ผล</th><th style="width:8%">Effort</th><th>การดำเนินการ</th></tr></thead>
+      <tbody>
+        <tr><td>Master ผู้ป่วย (HN, ข้อมูลพื้นฐาน)</td><td>HAIT Plus</td><td>มาก / ดี</td><td><span class="badge b-cfg">Config</span></td><td>6</td><td>map + ETL ตรง ๆ</td></tr>
+        <tr><td>ประวัติแพ้ยา</td><td>HAIT Plus</td><td>กลาง / ต้อง cleanse</td><td><span class="badge b-par">Partial</span></td><td>5</td><td>ทำความสะอาด + mapping รหัสยา</td></tr>
+        <tr><td>ประวัติการรักษาทันตกรรม (Dental Chart เดิม)</td><td>กระดาษ/ระบบเดิมบางส่วน</td><td>กระจัดกระจาย</td><td><span class="badge b-gap">Gap</span></td><td>15</td><td>กำหนดขอบเขตย้อนหลัง + key-in/scan</td></tr>
+        <tr><td>Master บุคลากร/นักศึกษา</td><td>WU-HRMS</td><td>ดี</td><td><span class="badge b-cfg">Config</span></td><td>3</td><td>sync ผ่าน API</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">รายละเอียดวิธีย้ายข้อมูล/การ reconcile อยู่ในเอกสารแผน Data Migration งวด M3</p>
+
+    <!-- 7 Gap Backlog -->
+    <h2 class="sec"><span class="n">7</span>รายการ Gap จัดลำดับและการตัดสินใจ (Gap Backlog · Build vs Config)</h2>
+    <p class="small muted">รวบรวมทุกรายการ Partial/Gap จัดลำดับความสำคัญ (MoSCoW) และระบุการตัดสินใจ Build (พัฒนาใหม่) หรือ Config (ตั้งค่า)</p>
+    <table>
+      <thead><tr><th style="width:9%">Gap ID</th><th style="width:26%">รายการ Gap</th><th style="width:10%">ลำดับ</th><th style="width:12%">ตัดสินใจ</th><th style="width:9%">Effort</th><th>เหตุผล / เงื่อนไข</th></tr></thead>
+      <tbody>
+        <tr><td>G-01</td><td>Dental Chart กราฟิก (MR-02)</td><td><span class="badge b-must">Must</span></td><td>Build</td><td>10</td><td>หัวใจของงานทันตกรรม ไม่มีในระบบเดิม</td></tr>
+        <tr><td>G-02</td><td>e-Consent + e-Signature (CS-01..03)</td><td><span class="badge b-must">Must</span></td><td>Build</td><td>20</td><td>ข้อกำหนด TOR 1.28 / กฎหมายความยินยอม</td></tr>
+        <tr><td>G-03</td><td>Recall engine (AP-02)</td><td><span class="badge b-must">Must</span></td><td>Build</td><td>14</td><td>จำเป็นต่อการดูแลต่อเนื่องผู้ป่วย</td></tr>
+        <tr><td>G-04</td><td>Drug Interaction check (PH-03)</td><td><span class="badge b-should">Should</span></td><td>Build/จัดหา</td><td>12</td><td>พิจารณาใช้ฐานข้อมูลสำเร็จรูป</td></tr>
+        <tr><td>G-05</td><td>Dental Lab Work Order + tracking (DL-01..02)</td><td><span class="badge b-should">Should</span></td><td>Build</td><td>18</td><td>เฉพาะทาง ไม่มีในเดิม</td></tr>
+        <tr><td>G-06</td><td>เชื่อม Drug Allergy Alert (PH-02)</td><td><span class="badge b-must">Must</span></td><td>Config+Build</td><td>5</td><td>ดึงฐานเดิม + สร้าง alert</td></tr>
+        <tr class="fillrow"><td>G-__</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <div class="tip"><b>เกณฑ์ Build vs Config:</b> หากระบบเดิมรองรับได้ด้วยการตั้งค่า → <b>Config</b> (เร็ว ความเสี่ยงต่ำ แต่พึ่งทีมเดิม) · หากเป็นงานทันตกรรมเฉพาะทาง/ไม่มีในเดิม → <b>Build</b> ใน DIS (ควบคุมได้เอง แต่ใช้ effort สูง)</div>
+
+    <!-- 8 ความเสี่ยง -->
+    <h2 class="sec"><span class="n">8</span>ความเสี่ยงจากการวิเคราะห์ (Risks)</h2>
+    <table>
+      <thead><tr><th style="width:34%">ความเสี่ยง</th><th style="width:10%">โอกาส</th><th style="width:10%">ผลกระทบ</th><th>การรับมือ</th></tr></thead>
+      <tbody>
+        <tr><td>Assumption เรื่อง Config ระบบเดิมไม่ถูกต้อง (ไม่มีผู้เชี่ยวชาญในทีม)</td><td>สูง</td><td>สูง</td><td>ยืนยันทุกข้อกับทีม HIS เดิมก่อนปิด Fit/Gap, ทำ PoC จุดเสี่ยง</td></tr>
+        <tr><td>ทีม HIS เดิมไม่ว่างตามคิว → Integration/Config ล่าช้า</td><td>สูง</td><td>สูง</td><td>จองคิวล่วงหน้า, batch consult, mock/stub API ระหว่างรอ</td></tr>
+        <tr><td>ขอบเขต Gap บานปลาย (Dental เฉพาะทางเยอะ)</td><td>กลาง</td><td>สูง</td><td>ล็อก scope ตาม TOR, ใช้ MoSCoW, จัดการ change request</td></tr>
+        <tr><td>คุณภาพข้อมูลเดิมต่ำกว่าคาด</td><td>กลาง</td><td>กลาง</td><td>สำรวจข้อมูลต้นทางเร็ว, กำหนดขอบเขตย้อนหลัง</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">9</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — System Analyst</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — ทีม HIS เดิม</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิง TOR ภาคผนวก ก ส่วนที่ 1–2
+  </div>
+</div>
+</body>
+</html>

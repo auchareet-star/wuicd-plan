@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-04 ข้อกำหนดความต้องการของระบบ (System Requirement Specification)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m2">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M2-03.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M2-05.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M2-04 · งวดที่ 2</span>
+    <h1>ข้อกำหนดความต้องการของระบบ</h1>
+    <div class="en">System Requirement Specification (SRS)</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-SRS-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">System Analyst</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">__________</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.x · ISO 29110 SI.2 (Requirements Analysis)</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: หลัง Fit/Gap — เป็นฐานอ้างอิงการออกแบบ/พัฒนา/ทดสอบ (UAT)</span>
+      <span class="chip who">เจ้าของ: System Analyst</span>
+      <span class="chip iso">ISO 29110: SI.2 Software Requirements Analysis</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> กำหนดความต้องการของระบบ DIS ทั้ง Functional และ Non-functional อย่างชัดเจน วัดผลได้ และสอบกลับได้ (traceable) เพื่อใช้เป็นข้อตกลงร่วมระหว่างผู้รับจ้างและเจ้าของงาน และเป็นเกณฑ์ในการออกแบบ พัฒนา และทดสอบยอมรับ (UAT) · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>SA</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 บทนำ/ขอบเขต -->
+    <h2 class="sec"><span class="n">1</span>บทนำและขอบเขต (Introduction &amp; Scope)</h2>
+    <p><strong>1.1 วัตถุประสงค์ของเอกสาร</strong> — <span class="muted">อธิบายว่าเอกสารนี้ระบุความต้องการของระบบ DIS เพื่อใช้เป็นฐานในการออกแบบและทดสอบ</span></p>
+    <p><strong>1.2 ขอบเขตระบบ</strong></p>
+    <ul>
+      <li>โมดูลหลัก: เวชระเบียน, Patient bank, ห้องยา/เภสัช, คลินิก, LIS, รังสี/PACS, Dental Lab, นัดหมาย/Recall, บัญชีลูกหนี้/เก็บเงิน, พัสดุคงคลัง, Consent, ระบบการเรียนการสอน และ Mobile 3 แอป (Patient/Student/Dentist)</li>
+      <li>การเชื่อมต่อ: HAIT Plus (HIS เดิม), SAP, PACS, LIS/RIS, WU-HRMS</li>
+      <li>มาตรฐาน: ISO 29110, HA (เน้น audit trail, การควบคุมสิทธิ์เข้าถึง, ความครบถ้วนของเวชระเบียน)</li>
+    </ul>
+    <p><strong>1.3 นิยามและคำย่อ</strong></p>
+    <table>
+      <thead><tr><th style="width:22%">คำย่อ</th><th>ความหมาย</th></tr></thead>
+      <tbody>
+        <tr><td>DIS</td><td>Dental Information System — ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม</td></tr>
+        <tr><td>FR / NFR</td><td>Functional Requirement / Non-functional Requirement</td></tr>
+        <tr><td>HIS</td><td>Hospital Information System (HAIT Plus เป็นระบบเดิม)</td></tr>
+        <tr class="fillrow"><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+    <p><strong>1.4 เอกสารอ้างอิง</strong> — <span class="muted">TOR ภาคผนวก ก, M2-02 รายงาน Fit/Gap, M2-03, มาตรฐาน ISO 29110, คู่มือ HA</span></p>
+
+    <!-- 2 ภาพรวมระบบ -->
+    <h2 class="sec"><span class="n">2</span>ภาพรวมระบบ (System Overview)</h2>
+    <p><span class="muted">อธิบายสถาปัตยกรรมเชิงตรรกะ ผู้ใช้งาน และความสัมพันธ์กับระบบรอบข้าง</span></p>
+    <p><strong>2.1 บทบาทผู้ใช้งาน (Actors)</strong></p>
+    <ul>
+      <li>ทันตแพทย์, นักศึกษาทันตแพทย์ (อยู่ภายใต้การกำกับของอาจารย์), เวชระเบียน, เภสัชกร, เจ้าหน้าที่การเงิน, ผู้ดูแลระบบ (Admin)</li>
+      <li>ผู้ป่วย (ผ่าน Mobile App) สำหรับนัดหมาย/Recall และ Consent</li>
+    </ul>
+    <p><strong>2.2 บริบทการเชื่อมต่อ (Context)</strong></p>
+    <div class="ascii">        +-----------+        +----------+
+        | HAIT Plus |        |   SAP    |
+        |  (HIS)    |        | (บัญชี)  |
+        +-----+-----+        +-----+----+
+              |  patient/visit    |  AR/billing
+              v                   v
+        +----------------------------------+
+        |        DIS (Dental Info Sys)      |
+        |  เวชระเบียน · คลินิก · ห้องยา     |
+        |  Dental Lab · นัด/Recall · Consent|
+        +----+-------------+-----------+----+
+             | lab result  | image     | mobile
+             v             v           v
+        +--------+    +--------+   +-----------+
+        |  LIS   |    |  PACS  |   | 3 Mobile  |
+        +--------+    +--------+   +-----------+</div>
+
+    <!-- 3 Functional Requirements -->
+    <h2 class="sec"><span class="n">3</span>ความต้องการเชิงหน้าที่ (Functional Requirements)</h2>
+    <p class="small muted">ระดับความสำคัญ (MoSCoW): <span class="badge b-must">Must</span> จำเป็น · <span class="badge b-should">Should</span> ควรมี · <span class="badge b-could">Could</span> มีได้ถ้าเอื้ออำนวย</p>
+    <table>
+      <thead><tr>
+        <th style="width:9%">FR-ID</th><th style="width:14%">โมดูล</th><th>รายละเอียดความต้องการ</th><th style="width:9%">Priority</th><th style="width:26%">เกณฑ์ยอมรับ (Acceptance)</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>FR-01</td><td>ห้องยา/เภสัช</td>
+          <td>ระบบต้องเตือนการแพ้ยา (Drug Allergy Alert) แบบ pop-up ก่อนสั่งจ่ายยา โดยตรวจสอบจากประวัติแพ้ยาของผู้ป่วยและ interaction พื้นฐาน</td>
+          <td><span class="badge b-must">Must</span></td>
+          <td>เมื่อสั่งยาที่ผู้ป่วยมีประวัติแพ้ ระบบแสดง alert บังคับให้ยืนยัน/ระบุเหตุผลก่อนดำเนินการต่อ และบันทึก log</td>
+        </tr>
+        <tr>
+          <td>FR-02</td><td>นัดหมาย/Recall</td>
+          <td>ระบบต้องจัดการนัดหมาย จองคิวตามเก้าอี้/แพทย์ และสร้างรายการ Recall อัตโนมัติตามแผนการรักษา พร้อมแจ้งเตือนผ่าน Mobile/SMS</td>
+          <td><span class="badge b-must">Must</span></td>
+          <td>สร้างนัด/Recall ได้ ไม่เกิดการจองซ้อน และผู้ป่วยได้รับการแจ้งเตือนล่วงหน้าตามรอบที่ตั้งค่า</td>
+        </tr>
+        <tr>
+          <td>FR-03</td><td>Consent</td>
+          <td>ระบบต้องบันทึกการให้ความยินยอม (Informed Consent) แบบอิเล็กทรอนิกส์ พร้อมลายเซ็นดิจิทัลและตราเวลา (timestamp) ผูกกับเวชระเบียน</td>
+          <td><span class="badge b-must">Must</span></td>
+          <td>เรียกดู Consent ย้อนหลังได้ครบถ้วน มี timestamp และไม่สามารถแก้ไขเอกสารที่ลงนามแล้ว</td>
+        </tr>
+        <tr>
+          <td>FR-04</td><td>คลินิก / เวชระเบียน</td>
+          <td>ระบบต้องบันทึก Dental Chart (ผังฟัน) แบบกราฟิก ระบุสภาพฟันรายซี่ หัตถการ และแผนการรักษา ตามมาตรฐานสัญลักษณ์ทางทันตกรรม</td>
+          <td><span class="badge b-must">Must</span></td>
+          <td>บันทึก/แก้ไขสถานะรายซี่ได้ แสดงประวัติย้อนหลังต่อซี่ และพิมพ์/ส่งออกผังฟันได้</td>
+        </tr>
+        <tr>
+          <td>FR-05</td><td>การเงิน/เก็บเงิน</td>
+          <td>ระบบต้องออกใบแจ้งหนี้/ใบเสร็จ คำนวณค่ารักษาตามรายการหัตถการ รองรับสิทธิ์การรักษา/ส่วนลด และบันทึกการรับชำระเงิน</td>
+          <td><span class="badge b-must">Must</span></td>
+          <td>ยอดเงินคำนวณถูกต้องตามรายการ ออกใบเสร็จได้ และยอดกระทบกับบัญชีลูกหนี้ (AR) ตรงกัน</td>
+        </tr>
+        <tr>
+          <td>FR-06</td><td>Integration</td>
+          <td>ระบบต้องเชื่อมต่อ HAIT Plus เพื่อดึงข้อมูลผู้ป่วย (HN, ข้อมูลทั่วไป, สิทธิ์การรักษา) แบบ Real-time/ใกล้เคียง โดยไม่ต้องลงทะเบียนซ้ำ</td>
+          <td><span class="badge b-must">Must</span></td>
+          <td>ค้นด้วย HN แล้วได้ข้อมูลผู้ป่วยจาก HAIT Plus ภายในเวลาที่กำหนด และข้อมูลตรงกับต้นทาง</td>
+        </tr>
+        <tr>
+          <td>FR-07</td><td>LIS / รังสี-PACS</td>
+          <td>ระบบต้องส่งคำสั่งตรวจ (Order) ไป LIS/RIS และแสดงผล Lab/ภาพรังสีจาก PACS ในหน้าจอเวชระเบียนของผู้ป่วย</td>
+          <td><span class="badge b-should">Should</span></td>
+          <td>สั่งตรวจและรับผลกลับมาแสดงในเวชระเบียนได้ เปิดดูภาพ PACS จากลิงก์ได้</td>
+        </tr>
+        <tr>
+          <td>FR-08</td><td>Dental Lab</td>
+          <td>ระบบต้องจัดการใบสั่งงานแล็บทันตกรรม ติดตามสถานะงาน (ส่ง/รับ/เสร็จ) และผูกกับผู้ป่วย/หัตถการ</td>
+          <td><span class="badge b-should">Should</span></td>
+          <td>สร้าง/ติดตามใบสั่งแล็บได้ครบวงจร และเห็นสถานะงานปัจจุบัน</td>
+        </tr>
+        <tr>
+          <td>FR-09</td><td>การเรียนการสอน</td>
+          <td>ระบบควรบันทึกการประเมินงานนักศึกษา ผูกเคสผู้ป่วยกับรายวิชา/เกณฑ์ และให้อาจารย์อนุมัติหัตถการของนักศึกษา</td>
+          <td><span class="badge b-could">Could</span></td>
+          <td>นักศึกษาบันทึกเคส อาจารย์ประเมิน/อนุมัติ และสรุปคะแนนตามเกณฑ์ได้</td>
+        </tr>
+        <tr class="fillrow"><td><span class="fill">FR-__</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 4 Non-functional Requirements -->
+    <h2 class="sec"><span class="n">4</span>ความต้องการที่ไม่ใช่เชิงหน้าที่ (Non-functional Requirements)</h2>
+    <table>
+      <thead><tr><th style="width:11%">NFR-ID</th><th style="width:18%">ด้าน</th><th>ข้อกำหนด</th><th style="width:24%">เป้าหมาย/เกณฑ์วัด</th></tr></thead>
+      <tbody>
+        <tr><td>NFR-01</td><td>Performance</td><td>เวลาตอบสนองของหน้าจอหลักและการดึงข้อมูลผู้ป่วย</td><td>≤ 3 วินาที ที่ผู้ใช้พร้อมกัน <span class="fill">__</span> คน</td></tr>
+        <tr><td>NFR-02</td><td>Security / HA</td><td>ควบคุมการเข้าถึงตามบทบาท (RBAC), เก็บ audit trail การเข้าถึง/แก้ไขเวชระเบียน, เข้ารหัสข้อมูลขณะส่งและจัดเก็บ</td><td>มี audit log ครบทุกธุรกรรมสำคัญ ตามแนวทาง HA</td></tr>
+        <tr><td>NFR-03</td><td>Usability</td><td>ใช้งานภาษาไทย หน้าจอสอดคล้องกัน เรียนรู้ได้เร็ว รองรับ Dental Chart แบบกราฟิก</td><td>ผู้ใช้ผ่านการฝึกอบรมใช้งานงานหลักได้โดยไม่ต้องพึ่งคู่มือทุกขั้นตอน</td></tr>
+        <tr><td>NFR-04</td><td>Availability</td><td>ระบบพร้อมใช้งานในเวลาทำการ มีการสำรองข้อมูลและแผนกู้คืน (DR)</td><td>Uptime ≥ <span class="fill">99.x%</span> ในเวลาทำการ, RPO/RTO ตามที่ตกลง</td></tr>
+        <tr><td>NFR-05</td><td>Compliance</td><td>สอดคล้อง ISO 29110, HA และข้อกำหนดคุ้มครองข้อมูลส่วนบุคคล (PDPA)</td><td>ผ่านการตรวจสอบตามรายการ checklist</td></tr>
+        <tr class="fillrow"><td><span class="fill">NFR-__</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 5 Interface Requirements -->
+    <h2 class="sec"><span class="n">5</span>ความต้องการด้านการเชื่อมต่อ (Interface Requirements)</h2>
+    <table>
+      <thead><tr><th style="width:11%">IF-ID</th><th style="width:20%">ระบบที่เชื่อม</th><th>วิธี/มาตรฐาน</th><th style="width:24%">ข้อมูลที่แลกเปลี่ยน</th></tr></thead>
+      <tbody>
+        <tr><td>IF-01</td><td>HAIT Plus (HIS)</td><td>API / HL7 / DB View <span class="fill">(ตกลงกับทีม HIS เดิม)</span></td><td>ข้อมูลผู้ป่วย, visit, สิทธิ์การรักษา</td></tr>
+        <tr><td>IF-02</td><td>SAP</td><td>Web Service / Interface file</td><td>บัญชีลูกหนี้ (AR), รายการเรียกเก็บ</td></tr>
+        <tr><td>IF-03</td><td>LIS/RIS</td><td>HL7 ORM/ORU</td><td>คำสั่งตรวจ, ผลตรวจทางห้องปฏิบัติการ</td></tr>
+        <tr><td>IF-04</td><td>PACS</td><td>DICOM / WADO link</td><td>ภาพรังสีทันตกรรม</td></tr>
+        <tr><td>IF-05</td><td>WU-HRMS</td><td>API <span class="fill">(ตกลงรูปแบบ)</span></td><td>ข้อมูลบุคลากร/ผู้ใช้งานสำหรับสิทธิ์เข้าถึง</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 6 Data Requirements -->
+    <h2 class="sec"><span class="n">6</span>ความต้องการด้านข้อมูล (Data Requirements)</h2>
+    <ul>
+      <li><strong>ข้อมูลหลัก (Master):</strong> ผู้ป่วย, บุคลากร, รหัสหัตถการ/ค่ารักษา, รายการยา, ผังฟันมาตรฐาน</li>
+      <li><strong>ข้อมูลธุรกรรม (Transaction):</strong> เวชระเบียน/visit, นัดหมาย/Recall, ใบสั่งยา, ผล Lab/รังสี, Consent, ใบเสร็จ/AR, ใบสั่งแล็บ</li>
+      <li><strong>ความครบถ้วนเวชระเบียน:</strong> ทุกธุรกรรมต้องผูก HN และมี audit trail (ใคร/เมื่อใด/ทำอะไร) ตามแนวทาง HA</li>
+      <li><strong>การเก็บรักษาและสำรองข้อมูล:</strong> ระยะเวลาเก็บตามระเบียบเวชระเบียน <span class="fill">__ ปี</span> และมีการ backup ตามรอบที่กำหนด</li>
+      <li><strong>การโยกย้ายข้อมูล (Migration):</strong> รายการข้อมูลเดิมที่ต้องนำเข้า + เกณฑ์ตรวจสอบความถูกต้อง (อ้างอิงเอกสาร Data Mapping M2-06)</li>
+    </ul>
+
+    <!-- 7 ข้อสมมุติ/ข้อจำกัด -->
+    <h2 class="sec"><span class="n">7</span>ข้อสมมุติฐานและข้อจำกัด (Assumptions &amp; Constraints)</h2>
+    <ul class="muted">
+      <li><span class="fill">ทีม HIS เดิมเปิด API/ช่องทางเชื่อมต่อ HAIT Plus ตามที่ตกลงและภายในกรอบเวลา</span></li>
+      <li><span class="fill">โครงสร้างพื้นฐานเครือข่าย/เซิร์ฟเวอร์พร้อมรองรับการเชื่อมต่อ Real-time</span></li>
+      <li><span class="fill">เจ้าของงานยืนยันรายการหัตถการ/อัตราค่ารักษาก่อนเริ่มออกแบบโมดูลการเงิน</span></li>
+      <li><span class="fill">ระบบต้องทำงานภายใต้กรอบเวลาโครงการ 300 วัน</span></li>
+    </ul>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">8</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — System Analyst</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิง ISO 29110 SI.2
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แผนกำลังคน (Resource Plan) — สำหรับคุยภายใน · DIS</title>
+<style>
+  :root{
+    --primary:#0d6e6e; --primary-dark:#0a5252; --accent:#e8743b;
+    --bg:#eef1f3; --card:#fff; --line:#d7dde2; --ink:#1f2d3d; --muted:#5b6b7b;
+    --peak:#d6453d; --warn-bg:#fff4e5; --warn-bd:#f0a14b;
+  }
+  *{box-sizing:border-box}
+  body{font-family:"Sarabun","Segoe UI Thai","Leelawadee UI","Tahoma",sans-serif;
+    margin:0; background:var(--bg); color:var(--ink); line-height:1.6; font-size:14.5px}
+  .wrap{max-width:1180px; margin:0 auto; padding:26px 20px 80px}
+  .topnav{margin-bottom:12px; font-size:13px}
+  .topnav a{color:var(--primary-dark); text-decoration:none; font-weight:700}
+  header.cover{background:linear-gradient(135deg,#334e68,#1f2d3d); color:#fff;
+    border-radius:16px; padding:26px 30px; box-shadow:0 10px 28px rgba(31,45,61,.25)}
+  header.cover .tag{font-size:12.5px; letter-spacing:1px; font-weight:800; opacity:.8}
+  header.cover h1{margin:5px 0 4px; font-size:24px}
+  header.cover .sub{font-size:14px; opacity:.9}
+  header.cover .pills{margin-top:14px; display:flex; flex-wrap:wrap; gap:8px}
+  header.cover .pill{background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.28);
+    padding:5px 12px; border-radius:999px; font-size:12.5px; font-weight:700}
+  section{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:20px 24px; margin-top:18px; box-shadow:0 2px 8px rgba(31,45,61,.05)}
+  h2{font-size:19px; color:var(--primary-dark); margin:2px 0 12px; padding-bottom:7px; border-bottom:2px solid var(--line)}
+  h2 .n{display:inline-block; background:var(--primary); color:#fff; border-radius:7px; min-width:28px;
+    text-align:center; padding:1px 8px; margin-right:9px; font-size:15px}
+  h3{color:var(--primary-dark); font-size:15.5px; margin:16px 0 6px}
+  p{margin:7px 0} ul,ol{margin:6px 0; padding-left:20px} li{margin:3px 0}
+  strong{color:var(--primary-dark)}
+  .lead{color:var(--muted); font-size:13.5px; margin:0 0 10px}
+  table{width:100%; border-collapse:collapse; margin:8px 0; font-size:13px}
+  th,td{border:1px solid var(--line); padding:7px 9px; text-align:left; vertical-align:top}
+  th{background:var(--primary); color:#fff; font-weight:600}
+  tbody tr:nth-child(even){background:#f7fafa}
+  /* heatmap */
+  .hmwrap{overflow-x:auto}
+  .hm{font-size:12px; min-width:880px}
+  .hm th{background:#2a6f6f; text-align:center; padding:6px 4px; font-size:11.5px}
+  .hm th.role{text-align:left; background:var(--primary); min-width:188px; position:sticky; left:0; z-index:2}
+  .hm th.peak{background:var(--peak)}
+  .hm td{text-align:center; padding:5px 3px; font-weight:700; letter-spacing:-1px}
+  .hm td.role{text-align:left; font-weight:600; background:#f3f7f7; position:sticky; left:0;
+    letter-spacing:normal; color:var(--ink); min-width:188px}
+  .hm td.role small{color:var(--muted); font-weight:400}
+  .l0{background:#f1f4f6; color:#c2cbd2}
+  .l1{background:#dcefe9; color:#3a8f7f}
+  .l2{background:#7fc4b4; color:#06453b}
+  .l3{background:#0d6e6e; color:#fff}
+  .hm tr.sum td{background:#fff4e5; font-weight:800; color:#b4651b}
+  .hm tr.sum td.role{background:#ffe9cc}
+  .hm tr.ext td.role{background:#fdeee5; color:#b4530f}
+  .hm col.peakcol{background:rgba(214,69,61,.05)}
+  .legend{display:flex; flex-wrap:wrap; gap:14px; font-size:12.5px; margin-top:8px; color:var(--muted)}
+  .legend b{display:inline-block; width:22px; text-align:center; border-radius:4px; margin-right:4px}
+  .warn{background:var(--warn-bg); border-left:4px solid var(--warn-bd); border-radius:9px; padding:12px 15px; font-size:13.5px; margin:12px 0}
+  .warn b{color:#b4651b}
+  .note{background:#eef7f7; border-left:4px solid var(--primary); border-radius:9px; padding:12px 15px; font-size:13.5px; margin:12px 0}
+  .grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:14px}
+  .pcard{border:1px solid var(--line); border-radius:11px; padding:13px 16px; background:#fafcfc}
+  .pcard h4{margin:0 0 4px; font-size:15px; color:var(--primary-dark)}
+  .pcard .when{font-size:12px; color:var(--accent); font-weight:700}
+  .pcard .lead2{font-size:12.5px; color:var(--muted); margin:5px 0 0}
+  .chk{list-style:none; padding-left:2px}
+  .chk li{padding-left:25px; position:relative; margin:6px 0}
+  .chk li::before{content:"☐"; position:absolute; left:0; color:var(--primary); font-size:15px}
+  .q{background:#fff7ef; border:1px solid #f0c089; border-radius:9px; padding:11px 15px; margin:8px 0; font-size:13.5px}
+  .q b{color:#b4530f}
+  footer{text-align:center; color:var(--muted); font-size:12.5px; margin-top:26px; padding-top:14px; border-top:1px solid var(--line)}
+  @media print{ body{background:#fff} section,header.cover{box-shadow:none} .topnav{display:none}
+    th,td,.hm td,header.cover{ -webkit-print-color-adjust:exact; print-color-adjust:exact} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topnav"><a href="index.html">🏠 หน้ารวม</a> · <a href="แผนดำเนินงาน-FitGap-Develop.html">🗺️ แผนดำเนินงาน</a> · <a href="เอกสารส่งมอบรายงวด.html">📋 เอกสารส่งมอบ</a></div>
+
+  <header class="cover">
+    <div class="tag">INTERNAL · สำหรับคุยภายในทีม (ไม่ใช่เอกสารยื่น TOR)</div>
+    <h1>แผนการใช้กำลังคน (Resource Plan)</h1>
+    <div class="sub">โครงการ Dental Information System · ม.วลัยลักษณ์ · 11/06/2026 → 07/04/2027 (300 วัน)</div>
+    <div class="pills">
+      <span class="pill">👥 ทีมเรา ~13 ตำแหน่ง</span>
+      <span class="pill">🤝 + ทีม HIS เดิม (ยืมเป็นช่วง)</span>
+      <span class="pill">🔴 2 ช่วง peak: ก.ย.–ต.ค. · ก.พ.–มี.ค.</span>
+    </div>
+  </header>
+
+  <!-- 1 ทีม -->
+  <section>
+    <h2><span class="n">1</span>ทีมงานและบทบาทย่อ</h2>
+    <p class="lead">อ้างตำแหน่งตาม TOR (ดูรายละเอียดเต็มใน <a href="templates/M1-10.html">M1-10 โครงสร้างทีม</a>) — ตารางนี้เน้น "ช่วงที่แต่ละคนถูกใช้งานจริง"</p>
+    <table>
+      <thead><tr><th style="width:25%">ตำแหน่ง</th><th style="width:8%">จำนวน</th><th>โฟกัสหลัก / ช่วงที่โหลดหนัก</th></tr></thead>
+      <tbody>
+        <tr><td>Project Manager (PM)</td><td>1</td><td>คุมทั้งโครงการทุกเดือน · หนักช่วง Milestone &amp; Cutover</td></tr>
+        <tr><td>Project Coordinator</td><td>1</td><td>ประสานงาน/เอกสาร/โลจิสติกส์อบรม · หนักช่วงอบรม (มี.ค.)</td></tr>
+        <tr><td>System Analyst (SA)</td><td>1</td><td>เก็บ requirement, Fit/Gap, ออกแบบ · หนัก ก.ค.–พ.ย.</td></tr>
+        <tr><td>UX Designer</td><td>1</td><td>ออกแบบประสบการณ์ผู้ใช้ · หนัก ส.ค.–พ.ย.</td></tr>
+        <tr><td>Graphic UI Designer</td><td>1</td><td>ออกแบบ/ทำหน้าจอ · หนัก ก.ย.–ธ.ค.</td></tr>
+        <tr><td>DB Analyst / Designer</td><td>1</td><td>Data mapping, schema, dictionary · หนัก ส.ค.–พ.ย.</td></tr>
+        <tr><td>Senior Data Engineer</td><td>1</td><td>Migration mapping + ETL + ย้ายข้อมูล · หนัก พ.ย.–มี.ค.</td></tr>
+        <tr><td>DBA</td><td>1</td><td>ตั้ง/ดูแลฐานข้อมูล · หนักช่วง Migration/Cutover</td></tr>
+        <tr><td>Senior Programmer</td><td>1</td><td>หัวหน้าทีมพัฒนา · หนัก พ.ย.–มี.ค.</td></tr>
+        <tr><td>Programmer</td><td>3</td><td>พัฒนา Gap + Integration + Mobile · หนัก พ.ย.–มี.ค.</td></tr>
+        <tr><td>System Engineer</td><td>1</td><td>Environment, Integration, Deploy, Infra · หนัก พ.ย.–เม.ย.</td></tr>
+        <tr><td>Software Tester / QA</td><td>1</td><td>เขียน test case → SIT/UAT/E2E · หนัก ม.ค.–มี.ค.</td></tr>
+        <tr class="ext-row" style="background:#fdeee5"><td><b>ทีม HIS เดิม</b> (ยืม)</td><td>—</td><td><b>ภายนอก</b> · จองเป็นช่วง: Fit/Gap, Interface/Migration, Cutover standby</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 2 heatmap -->
+  <section>
+    <h2><span class="n">2</span>Heatmap ภาระงานรายบทบาท × รายเดือน</h2>
+    <p class="lead">ระดับการใช้งานแต่ละคนในแต่ละเดือน — ใช้ดูว่า "เดือนไหนใครว่าง/ใครตึง" และวางคนให้พอดีงาน · <b style="color:var(--peak)">หัวคอลัมน์สีแดง = เดือน peak</b></p>
+    <div class="hmwrap">
+    <table class="hm">
+      <colgroup><col><col><col><col><col class="peakcol"><col class="peakcol"><col><col><col><col class="peakcol"><col class="peakcol"><col></colgroup>
+      <thead>
+        <tr>
+          <th class="role">บทบาท \ เดือน</th>
+          <th>มิ.ย.</th><th>ก.ค.</th><th>ส.ค.</th><th class="peak">ก.ย.</th><th class="peak">ต.ค.</th>
+          <th>พ.ย.</th><th>ธ.ค.</th><th>ม.ค.</th><th class="peak">ก.พ.</th><th class="peak">มี.ค.</th><th>เม.ย.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="role">PM</td><td class="l2">●●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l2">●●</td></tr>
+        <tr><td class="role">Project Coordinator</td><td class="l1">●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l1">●</td><td class="l1">●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l3">●●●</td><td class="l2">●●</td></tr>
+        <tr><td class="role">System Analyst</td><td class="l2">●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l2">●●</td><td class="l1">●</td><td class="l1">●</td><td class="l1">●</td><td class="l2">●●</td><td class="l1">●</td></tr>
+        <tr><td class="role">UX Designer</td><td class="l0">·</td><td class="l1">●</td><td class="l2">●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l2">●●</td><td class="l1">●</td><td class="l0">·</td><td class="l0">·</td><td class="l0">·</td><td class="l0">·</td></tr>
+        <tr><td class="role">Graphic UI Designer</td><td class="l0">·</td><td class="l0">·</td><td class="l1">●</td><td class="l2">●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l2">●●</td><td class="l1">●</td><td class="l1">●</td><td class="l1">●</td><td class="l0">·</td></tr>
+        <tr><td class="role">DB Analyst / Designer</td><td class="l0">·</td><td class="l1">●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l2">●●</td><td class="l1">●</td><td class="l1">●</td><td class="l1">●</td><td class="l1">●</td><td class="l0">·</td></tr>
+        <tr><td class="role">Senior Data Engineer</td><td class="l0">·</td><td class="l2">●●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l3">●●●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l1">●</td></tr>
+        <tr><td class="role">DBA</td><td class="l1">●</td><td class="l1">●</td><td class="l1">●</td><td class="l1">●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l2">●●</td></tr>
+        <tr><td class="role">Senior Programmer</td><td class="l0">·</td><td class="l1">●</td><td class="l1">●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l2">●●</td><td class="l1">●</td></tr>
+        <tr><td class="role">Programmer <small>(×3)</small></td><td class="l0">·</td><td class="l1">●</td><td class="l1">●</td><td class="l1">●</td><td class="l2">●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l2">●●</td><td class="l1">●</td></tr>
+        <tr><td class="role">System Engineer</td><td class="l2">●●</td><td class="l1">●</td><td class="l1">●</td><td class="l1">●</td><td class="l2">●●</td><td class="l3">●●●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l3">●●●</td></tr>
+        <tr><td class="role">Software Tester / QA</td><td class="l1">●</td><td class="l1">●</td><td class="l1">●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l3">●●●</td><td class="l2">●●</td></tr>
+        <tr class="ext"><td class="role">ทีม HIS เดิม <small>(ยืม)</small></td><td class="l0">·</td><td class="l1">●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l1">●</td><td class="l1">●</td><td class="l1">●</td><td class="l2">●●</td><td class="l2">●●</td><td class="l1">●</td></tr>
+        <tr class="sum"><td class="role">โหลดรวมทีม (≈%)</td><td>30</td><td>60</td><td>75</td><td>95</td><td>100</td><td>85</td><td>80</td><td>85</td><td>100</td><td>95</td><td>60</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="legend">
+      <span><b class="l3">●●●</b> เต็มเวลา</span>
+      <span><b class="l2">●●</b> ค่อนข้างมาก</span>
+      <span><b class="l1">●</b> เล็กน้อย/สนับสนุน</span>
+      <span><b class="l0">·</b> ว่าง/ยังไม่เริ่ม</span>
+      <span style="color:var(--peak)"><b style="background:var(--peak);color:#fff">!</b> เดือน peak</span>
+    </div>
+    <div class="warn"><b>อ่าน Heatmap:</b> แถวล่างคือโหลดรวม (ตรงกับกราฟ Resource Loading ในแผนหลัก) — เห็นชัดว่ามี <b>2 แนวตั้งสีแดง</b> ที่เกือบทุกบทบาททำงานพร้อมกัน คือ <b>ก.ย.–ต.ค. 2026</b> และ <b>ก.พ.–มี.ค. 2027</b></div>
+  </section>
+
+  <!-- 3 resource ราย phase -->
+  <section>
+    <h2><span class="n">3</span>กำลังคนที่ต้องใช้ — แยกตามช่วงเวลา</h2>
+    <div class="grid2">
+      <div class="pcard"><h4>Phase 0 · Setup</h4><div class="when">มิ.ย. 2026</div><div class="lead2"><b>นำ:</b> PM + System Engineer<br><b>ทำ:</b> kick-off, แผน 9 ฉบับ, ตั้ง environment, จองคิวทีม HIS เดิม · โหลดต่ำ (~30%) — โอกาสเตรียมงานล่วงหน้า</div></div>
+      <div class="pcard"><h4>Phase 1 · Discovery + Fit/Gap</h4><div class="when">ก.ค.–ต.ค. 2026</div><div class="lead2"><b>นำ:</b> System Analyst + DB Analyst<br><b>ต้องมี:</b> ทีม HIS เดิม (Sprint A–C) · Programmer ที่ยังว่างดึงมาช่วยทำ RTM/inventory ได้</div></div>
+      <div class="pcard"><h4>Phase 2 · Design (เอกสาร M2)</h4><div class="when">ก.ย.–พ.ย. 2026</div><div class="lead2"><b>นำ:</b> SA + UX + Graphic UI + DB Designer<br><b>ทับกับ Phase 1</b> → นี่คือเหตุที่ ก.ย.–ต.ค. เป็น peak</div></div>
+      <div class="pcard"><h4>Phase 3 · Build</h4><div class="when">พ.ย. 2026 – ก.พ. 2027</div><div class="lead2"><b>นำ:</b> Senior Programmer + Programmer×3 + System Engineer<br><b>ต้องมี:</b> ทีม HIS เดิม (Sprint D) · เริ่มดึง QA เขียน test case คู่ขนาน</div></div>
+      <div class="pcard"><h4>Phase 4 · Test/Train/Migrate</h4><div class="when">ม.ค.–มี.ค. 2027</div><div class="lead2"><b>นำ:</b> QA + Sr Data Engineer + Project Coordinator (อบรม)<br><b>ทับกับ Phase 3</b> → เหตุที่ ก.พ.–มี.ค. เป็น peak · Dev ยังปิดงานขณะ QA เริ่มแล้ว</div></div>
+      <div class="pcard"><h4>Phase 5 · Go-Live</h4><div class="when">มี.ค.–เม.ย. 2027</div><div class="lead2"><b>นำ:</b> System Engineer + DBA + PM<br><b>ต้องมี:</b> ทีม HIS เดิม standby ช่วง cutover · ทุกคน on-call ช่วง Hypercare</div></div>
+    </div>
+  </section>
+
+  <!-- 4 จัดการ peak -->
+  <section>
+    <h2><span class="n">4</span>จัดการ 2 ช่วง Peak (ข้อเสนอ)</h2>
+    <h3>🔴 Peak 1 — ก.ย.–ต.ค. 2026 (Fit/Gap ทับ Design)</h3>
+    <ul>
+      <li>ดัน RTM + inventory ระบบเดิมให้เริ่มตั้งแต่ ก.ค.–ส.ค. (ใช้ Programmer ที่ยังว่าง) เพื่อให้ Fit/Gap ไม่กระจุกปลายช่วง</li>
+      <li>แยก SA เป็น 2 หมวก: คนหนึ่งปิด Fit/Gap อีกคน (หรือ UX/DB Designer) เริ่ม Design คู่ขนาน</li>
+      <li><b>ล็อกคิวทีม HIS เดิม Sprint C (review Fit/Gap)</b> ให้ตรงต้น ต.ค. ห้ามเลื่อน — เป็นคอขวด</li>
+      <li>ห้ามทีมหลัก (SA, DB Designer, UX) ลาพักร้อนช่วงนี้</li>
+    </ul>
+    <h3>🔴 Peak 2 — ก.พ.–มี.ค. 2027 (Build ทับ Test/Train)</h3>
+    <ul>
+      <li>เริ่ม SIT ทีละโมดูลที่เสร็จก่อน (ไม่รอ build ครบ) เพื่อเกลี่ยงาน QA</li>
+      <li>เตรียมสื่อ/คู่มืออบรมตั้งแต่ ม.ค. เพื่อให้ มี.ค. โฟกัสจัดอบรมอย่างเดียว</li>
+      <li>วางแผน OT / คนเสริมชั่วคราวเฉพาะ Programmer + QA 4–6 สัปดาห์นี้</li>
+      <li><b>Migration sync กับทีม HIS เดิม (ก.พ.)</b> ต้องเสร็จก่อนเข้า rehearsal</li>
+    </ul>
+    <div class="note"><b>หลักเกลี่ยโหลด:</b> "ดึงงานที่ทำได้ล่วงหน้ามาทำตอนว่าง" — RTM/Test Case/UI prototype/สื่ออบรม ไม่ต้องรอให้ถึงเฟสของมัน เริ่มได้ทันทีที่มี input</div>
+  </section>
+
+  <!-- 5 ทีม HIS เดิม -->
+  <section>
+    <h2><span class="n">5</span>หน้าต่างการใช้ทีม HIS เดิม (ต้องจองล่วงหน้า)</h2>
+    <p class="lead">ทรัพยากรคอขวด — ต้องล็อกปฏิทินทั้ง 6 ช่วงใน MOU ตั้งแต่ Day 0 และจับคู่คนฝั่งเราให้ชัด</p>
+    <table>
+      <thead><tr><th>ช่วง</th><th>เวลา</th><th>เรื่อง</th><th>คนฝั่งเราที่จับคู่</th><th>ต้องเตรียมก่อนเข้า</th></tr></thead>
+      <tbody>
+        <tr><td>Sprint A</td><td>ก.ค. 2026</td><td>สถาปัตยกรรม/ข้อมูล HIS เดิม</td><td>SA, DB Analyst</td><td>อ่านเอกสาร/schema เดิม + ตั้งคำถามล่วงหน้า</td></tr>
+        <tr><td>Sprint B</td><td>ส.ค. 2026</td><td>Interface/API + Migration mapping</td><td>System Engineer, Sr Data Engineer</td><td>ร่าง API spec + รายการ field ที่ต้องถาม</td></tr>
+        <tr><td>Sprint C</td><td>ต้น ต.ค. 2026</td><td>review ผล Fit/Gap + ข้อสรุปเชื่อมต่อ</td><td>SA, PM</td><td>ร่าง Fit/Gap report ให้เสร็จ 80%</td></tr>
+        <tr><td>Sprint D</td><td>พ.ย.–ธ.ค. 2026</td><td>ช่วง Integration build</td><td>Programmer, System Engineer</td><td>ทำ mock/stub ไว้ก่อน เพื่อถามเฉพาะจุดติด</td></tr>
+        <tr><td>Migration sync</td><td>ก.พ. 2027</td><td>ยืนยัน ETL + ตรวจข้อมูล</td><td>Sr Data Engineer, DBA</td><td>Dry-run รอบแรก + รายการ reconciliation</td></tr>
+        <tr><td>Cutover standby</td><td>มี.ค.–เม.ย. 2027</td><td>เฝ้าระวังช่วงขึ้นระบบจริง</td><td>System Engineer, DBA, PM</td><td>Go-Live checklist + rollback plan</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>ความเสี่ยงอันดับ 1:</b> ถ้าทีม HIS เดิมไม่ว่างตรงจังหวะ Sprint C (ต.ค.) หรือ Cutover (มี.ค.–เม.ย.) งานสะดุดทั้งสาย → ต้องมีข้อตกลง lead time การจอง + ช่องทาง escalation ใน MOU</div>
+  </section>
+
+  <!-- 6 agenda -->
+  <section>
+    <h2><span class="n">6</span>ประเด็นสำหรับที่ประชุมภายใน (ต้องเคาะ)</h2>
+    <div class="q"><b>Q1 — ทีม HIS เดิม:</b> ตกลงโควตา (กี่วัน-คน/เดือน) และ lead time การจองได้หรือยัง? ใครเป็น SPOC สองฝั่ง?</div>
+    <div class="q"><b>Q2 — Peak 2 ช่วง:</b> จะรับมือ ก.ย.–ต.ค. และ ก.พ.–มี.ค. ด้วยวิธีไหน — OT / จ้างเสริมชั่วคราว / ห้ามลา / เกลี่ยงานล่วงหน้า?</div>
+    <div class="q"><b>Q3 — Programmer ช่วง มิ.ย.–ต.ค.:</b> ยังไม่เข้าเฟส build จะให้ทำอะไร (ช่วย RTM / prototype / เขียน test case) หรือเข้าโครงการทีหลังเพื่อประหยัด?</div>
+    <div class="q"><b>Q4 — Bus factor:</b> แต่ละบทบาทมี backup ไหม โดยเฉพาะ Sr Data Engineer และ System Engineer ที่อยู่บน critical path</div>
+    <div class="q"><b>Q5 — วันหยุดปีใหม่ (1 ม.ค.):</b> ตกกลางเฟส Build — จะปรับแผน sprint อย่างไรไม่ให้เสีย momentum?</div>
+    <div class="q"><b>Q6 — Environment/เครื่องมือ:</b> Dev/Test/repo/ALM พร้อมภายในเมื่อไร (ต้องเสร็จใน Phase 0)?</div>
+    <h3>สิ่งที่ต้องตัดสินใจออกจากห้องประชุม</h3>
+    <ul class="chk">
+      <li>ยืนยันตารางจองทีม HIS เดิม 6 ช่วง + ผู้รับผิดชอบจับคู่</li>
+      <li>แผนรับมือ Peak 2 ช่วง (เลือกวิธี + งบ OT/คนเสริม ถ้ามี)</li>
+      <li>มอบหมายงาน Programmer ช่วงต้นโครงการ</li>
+      <li>กำหนด backup รายบทบาทบน critical path</li>
+      <li>วันเริ่ม onboarding แต่ละตำแหน่ง (ไม่ต้องเข้าพร้อมกันหมด)</li>
+    </ul>
+  </section>
+
+  <footer>เอกสารภายใน · ใช้ประกอบการประชุมทีม · ตัวเลขโหลดเป็นการประมาณการเพื่อวางแผน ปรับตามจริงได้ · อ้างอิงแผนหลักและ M1-10 โครงสร้างทีม</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-07 ตารางกำหนดสิทธิ์ผู้ใช้งาน (User Authorization Matrix)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m2">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M2-06.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M2-08.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M2-07 · งวดที่ 2</span>
+    <h1>ตารางกำหนดสิทธิ์ผู้ใช้งาน</h1>
+    <div class="en">User Authorization Matrix</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-UAM-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">System Analyst + Security</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2026</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">__________</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.x · ISO 29110 · มาตรฐาน HA (Access Control)</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ระยะออกแบบ — เป็นฐานตั้งค่าสิทธิ์ (RBAC) และการตรวจสอบ (audit)</span>
+      <span class="chip who">เจ้าของ: System Analyst + Security</span>
+      <span class="chip iso">HA: การควบคุมการเข้าถึงข้อมูลผู้ป่วย</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> กำหนดสิทธิ์การเข้าถึงระบบ DIS ตามบทบาท (Role-Based Access Control) ในรูปแบบ Matrix C-R-U-D เพื่อรองรับมาตรฐาน HA ด้านการควบคุมการเข้าถึงข้อมูลผู้ป่วย ความลับ และการตรวจสอบย้อนหลัง (audit trail) · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2026</td><td>SA / Security</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 วัตถุประสงค์ -->
+    <h2 class="sec"><span class="n">1</span>วัตถุประสงค์</h2>
+    <ul>
+      <li>กำหนดสิทธิ์การเข้าถึงฟังก์ชันของระบบ DIS ตามบทบาทผู้ใช้งาน เพื่อรองรับมาตรฐาน <strong>HA</strong> ด้านการควบคุมการเข้าถึง</li>
+      <li>ป้องกันการเข้าถึงข้อมูลผู้ป่วยเกินความจำเป็น ตามหลัก <strong>Least Privilege</strong></li>
+      <li>กำหนดให้ทุกการเข้าถึง/แก้ไขข้อมูลสำคัญถูกบันทึก audit trail เพื่อการตรวจสอบย้อนหลัง</li>
+    </ul>
+
+    <!-- 2 รายการบทบาท -->
+    <h2 class="sec"><span class="n">2</span>รายการบทบาท (Roles)</h2>
+    <table>
+      <thead><tr><th style="width:18%">Role</th><th>คำอธิบาย/ขอบเขต</th></tr></thead>
+      <tbody>
+        <tr><td>ทันตแพทย์</td><td>ตรวจรักษา บันทึกเวชระเบียน/Dental chart สั่งยา สั่งตรวจ และอนุมัติงานนักศึกษา</td></tr>
+        <tr><td>นักศึกษาทันตแพทย์</td><td>บันทึกเคสภายใต้การกำกับ ต้องได้รับการอนุมัติจากอาจารย์ก่อนยืนยันหัตถการ</td></tr>
+        <tr><td>เวชระเบียน</td><td>ลงทะเบียน/ค้นผู้ป่วย จัดการนัดหมาย/Recall และจัดการเอกสารเวชระเบียน</td></tr>
+        <tr><td>เภสัชกร</td><td>ตรวจสอบ/จ่ายยา จัดการคลังยา และดูการเตือนแพ้ยา</td></tr>
+        <tr><td>การเงิน</td><td>ออกใบแจ้งหนี้/ใบเสร็จ รับชำระเงิน และกระทบยอดบัญชีลูกหนี้ (AR)</td></tr>
+        <tr><td>ผู้ดูแลระบบ (Admin)</td><td>จัดการผู้ใช้/สิทธิ์ ตั้งค่าระบบ และดูแล audit log (ไม่เข้าถึงเนื้อหาเวชระเบียนโดยไม่จำเป็น)</td></tr>
+        <tr class="fillrow"><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 3 Matrix CRUD -->
+    <h2 class="sec"><span class="n">3</span>ตารางสิทธิ์ C-R-U-D (Authorization Matrix)</h2>
+    <p class="small muted">สัญลักษณ์: <strong>C</strong>=สร้าง · <strong>R</strong>=อ่าน/ดู · <strong>U</strong>=แก้ไข · <strong>D</strong>=ลบ · <strong>A</strong>=อนุมัติ · <strong>—</strong>=ไม่มีสิทธิ์ · (R*)=ดูเฉพาะที่เกี่ยวข้องกับตน</p>
+    <table class="alt">
+      <thead><tr>
+        <th style="width:24%">ฟังก์ชัน</th><th>ทันตแพทย์</th><th>นักศึกษา</th><th>เวชระเบียน</th><th>เภสัช</th><th>การเงิน</th><th>แอดมิน</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>ลงทะเบียน/ค้นผู้ป่วย</td><td>R</td><td>R</td><td>C R U</td><td>R</td><td>R</td><td>R</td></tr>
+        <tr><td>เวชระเบียน / Dental chart</td><td>C R U</td><td>C R (U*)</td><td>R</td><td>R</td><td>—</td><td>R*</td></tr>
+        <tr><td>สั่งจ่ายยา (เตือนแพ้ยา)</td><td>C R</td><td>C R (รออนุมัติ)</td><td>—</td><td>R U (จ่าย)</td><td>—</td><td>—</td></tr>
+        <tr><td>นัดหมาย / Recall</td><td>R</td><td>R</td><td>C R U D</td><td>—</td><td>—</td><td>R</td></tr>
+        <tr><td>Consent (ความยินยอม)</td><td>C R</td><td>C R</td><td>C R</td><td>—</td><td>—</td><td>R*</td></tr>
+        <tr><td>สั่งตรวจ Lab / รังสี</td><td>C R</td><td>C R (รออนุมัติ)</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td>งานแล็บทันตกรรม</td><td>C R</td><td>C R</td><td>—</td><td>—</td><td>—</td><td>R</td></tr>
+        <tr><td>เรียกเก็บเงิน / ใบเสร็จ</td><td>R</td><td>—</td><td>R</td><td>—</td><td>C R U</td><td>R</td></tr>
+        <tr><td>บัญชีลูกหนี้ (AR/SAP)</td><td>—</td><td>—</td><td>—</td><td>—</td><td>R U</td><td>R</td></tr>
+        <tr><td>พัสดุคงคลัง (ยา/วัสดุ)</td><td>—</td><td>—</td><td>—</td><td>C R U</td><td>R</td><td>R U</td></tr>
+        <tr><td>อนุมัติงานนักศึกษา</td><td>A</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td>จัดการผู้ใช้/สิทธิ์</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>C R U D</td></tr>
+        <tr><td>ดู Audit Log</td><td>R*</td><td>—</td><td>—</td><td>—</td><td>—</td><td>R</td></tr>
+        <tr class="fillrow"><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td><td><span class="fill">&nbsp;</span></td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">หมายเหตุ: นักศึกษามีสิทธิ์บันทึกแต่ต้องผ่านการอนุมัติ (A) ของอาจารย์/ทันตแพทย์ก่อนถือเป็นรายการสมบูรณ์ · การเข้าถึงข้อมูลผู้ป่วยทุกครั้งถูกบันทึก audit log</p>
+
+    <!-- 4 Least Privilege -->
+    <h2 class="sec"><span class="n">4</span>หลักการสิทธิ์น้อยที่สุด &amp; การอนุมัติสิทธิ์พิเศษ</h2>
+    <ul>
+      <li><strong>Least Privilege:</strong> ผู้ใช้ได้รับสิทธิ์เท่าที่จำเป็นต่อหน้าที่เท่านั้น สิทธิ์เริ่มต้นเป็นแบบจำกัด (deny by default)</li>
+      <li><strong>Need-to-know:</strong> การเข้าถึงเวชระเบียนจำกัดเฉพาะผู้ที่เกี่ยวข้องกับการดูแลผู้ป่วยรายนั้น</li>
+      <li><strong>สิทธิ์พิเศษ (Privileged/Emergency access):</strong> เช่น break-glass ต้องผ่านการอนุมัติจากผู้มีอำนาจ ระบุเหตุผล มีกำหนดเวลา และบันทึก log ทุกครั้ง</li>
+      <li><strong>การแยกหน้าที่ (Segregation of Duties):</strong> แยกบทบาทผู้บันทึกข้อมูลออกจากผู้อนุมัติ/ผู้ดูแลสิทธิ์</li>
+    </ul>
+    <div class="warn"><b>⚠️ สิทธิ์พิเศษ:</b> ทุกการให้สิทธิ์เกินมาตรฐานต้องมีใบขออนุมัติ ระบุระยะเวลา และทบทวนเมื่อหมดความจำเป็น</div>
+
+    <!-- 5 การทบทวนสิทธิ์ -->
+    <h2 class="sec"><span class="n">5</span>การทบทวนสิทธิ์ (Access Review &amp; Audit)</h2>
+    <ul>
+      <li>ทบทวนสิทธิ์ผู้ใช้ทุก <span class="fill">__</span> เดือน และทุกครั้งที่มีการเปลี่ยนบทบาท/ลาออก/โอนย้าย</li>
+      <li>ระงับ/ปิดบัญชีทันทีเมื่อพ้นสภาพการเป็นผู้ใช้งาน</li>
+      <li>ตรวจสอบ audit log ย้อนหลังตามรอบ และเมื่อมีเหตุการณ์ผิดปกติ (anomaly)</li>
+      <li>เก็บหลักฐานการทบทวนเพื่อรองรับการตรวจประเมิน HA</li>
+    </ul>
+    <table>
+      <thead><tr><th style="width:26%">กิจกรรมทบทวน</th><th style="width:18%">ความถี่</th><th style="width:20%">ผู้รับผิดชอบ</th><th>ผลลัพธ์</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>ทบทวนสิทธิ์ตามบทบาท</td><td>ทุก <span class="fill">6</span> เดือน</td><td>Admin + หัวหน้าหน่วย</td><td>รายงานการทบทวน + การปรับสิทธิ์</td></tr>
+        <tr class="fillrow"><td>ตรวจสอบ audit log</td><td>รายเดือน</td><td>Security</td><td>รายงานเหตุผิดปกติ</td></tr>
+        <tr class="fillrow"><td>ทบทวนสิทธิ์พิเศษ</td><td>ทุกครั้งที่ใช้</td><td>ผู้อนุมัติ</td><td>บันทึกเหตุผล/ระยะเวลา</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">6</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — System Analyst / Security</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · รองรับมาตรฐาน HA (Access Control)
+  </div>
+</div>
+</body>
+</html>

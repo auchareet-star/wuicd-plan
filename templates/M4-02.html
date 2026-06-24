@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M4-02 เอกสารการติดตั้งระบบจริง (Deployment / Installation Document)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m4">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M4-01.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M4-03.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M4-02 · งวดที่ 4</span>
+    <h1>เอกสารการติดตั้งระบบจริง</h1>
+    <div class="en">Deployment / Installation Document</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-DEPLOY-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">System Engineer</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2027</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">__________</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.4 · งวด M4</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ติดตั้งระบบขึ้น Production — งวด M4</span>
+      <span class="chip who">เจ้าของ: System Engineer</span>
+      <span class="chip iso">ISO 29110: SI.6 Product Delivery</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> บันทึกขั้นตอนการติดตั้งระบบ DIS (Web + Mobile 3 แอป) ขึ้นสภาพแวดล้อมจริงแบบ <b>ทำซ้ำได้ (repeatable)</b> — สเปก Production, ขั้นตอน deploy, ค่า config, การตรวจสอบหลัง deploy, ขั้นตอน rollback และบันทึกการติดตั้ง · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2027</td><td>SE</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 สภาพแวดล้อม Production -->
+    <h2 class="sec"><span class="n">1</span>สภาพแวดล้อม Production (Production Environment)</h2>
+    <p class="small muted">ครุภัณฑ์ตามภาคผนวก ค (server + TV 3 ชุด) · กรอกสเปก/IP จริง</p>
+    <table>
+      <thead><tr><th style="width:20%">เครื่อง/บริการ</th><th>บทบาท</th><th style="width:18%">สเปก</th><th style="width:18%">IP / Hostname</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>App Server (Web/API)</td><td>รัน DIS Web + Backend API</td><td><span class="fill">CPU/RAM/Disk</span></td><td><span class="fill">10.x.x.x</span></td></tr>
+        <tr class="fillrow"><td>Database Server</td><td>ฐานข้อมูลหลัก DIS</td><td><span class="fill">__</span></td><td><span class="fill">10.x.x.x</span></td></tr>
+        <tr class="fillrow"><td>File/Storage</td><td>ไฟล์เอกสาร/ภาพ (เชื่อม PACS)</td><td><span class="fill">__</span></td><td><span class="fill">10.x.x.x</span></td></tr>
+        <tr class="fillrow"><td>Integration Gateway</td><td>เชื่อม HAIT Plus / SAP / LIS-RIS</td><td><span class="fill">__</span></td><td><span class="fill">10.x.x.x</span></td></tr>
+        <tr class="fillrow"><td>จอแสดงผล TV (3 ชุด)</td><td>แสดงคิว/บอร์ดข้อมูล (ภาคผนวก ค)</td><td><span class="fill">__</span></td><td><span class="fill">__</span></td></tr>
+      </tbody>
+    </table>
+    <table>
+      <thead><tr><th style="width:30%">รายการ Software</th><th style="width:35%">เวอร์ชันที่ใช้</th><th>หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>OS</td><td><span class="fill">__</span></td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>Web Server / Runtime</td><td><span class="fill">__</span></td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>Database Engine</td><td><span class="fill">__</span></td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>SSL Certificate</td><td><span class="fill">__ (วันหมดอายุ)</span></td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 2 ขั้นตอน Deploy -->
+    <h2 class="sec"><span class="n">2</span>ขั้นตอนการติดตั้ง (Deployment Steps — Repeatable)</h2>
+    <h3 class="sub">2.1 ระบบ Web + Backend</h3>
+    <ul class="chk">
+      <li>ดึง source/artifact เวอร์ชัน release ที่อนุมัติ (tag: <span class="fill">__</span>)</li>
+      <li>ตั้งค่าตัวแปรสภาพแวดล้อม/ไฟล์ config ตามข้อ 3</li>
+      <li>Build / Migrate schema ฐานข้อมูล (รัน DB script ตามลำดับ)</li>
+      <li>Deploy ขึ้น App Server + restart service</li>
+      <li>ตรวจ health check endpoint ตอบ 200 OK</li>
+    </ul>
+    <div class="ascii">$ git checkout release-vX.Y.Z
+$ cp .env.production .env        # ตั้งค่าตามข้อ 3
+$ ./scripts/db-migrate.sh        # รัน migration ตามลำดับ
+$ ./scripts/build.sh             # build artifact
+$ ./scripts/deploy.sh prod       # deploy + restart service
+$ curl -fsS https://dis.wu.ac.th/healthz   # คาดหวัง 200 OK</div>
+    <h3 class="sub">2.2 ระบบ Mobile (3 แอป: Patient / Student / Dentist)</h3>
+    <table>
+      <thead><tr><th style="width:22%">แอป</th><th>ช่องทางเผยแพร่</th><th style="width:18%">เวอร์ชัน/Build</th><th style="width:18%">สถานะ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>Patient App</td><td>App Store + Google Play</td><td><span class="fill">__</span></td><td>☐ ส่งรีวิว ☐ เผยแพร่</td></tr>
+        <tr class="fillrow"><td>Student App</td><td>App Store + Google Play</td><td><span class="fill">__</span></td><td>☐ ส่งรีวิว ☐ เผยแพร่</td></tr>
+        <tr class="fillrow"><td>Dentist App</td><td>App Store + Google Play</td><td><span class="fill">__</span></td><td>☐ ส่งรีวิว ☐ เผยแพร่</td></tr>
+      </tbody>
+    </table>
+    <ul class="chk">
+      <li>เซ็น build (iOS signing / Android keystore) ด้วย credential ที่ส่งมอบให้ รพ.</li>
+      <li>อัปโหลด App Store Connect + Google Play Console พร้อม release notes</li>
+      <li>ตั้ง endpoint API ชี้ Production + ตรวจ push notification</li>
+      <li>ผ่านการรีวิวของ store แล้วจึงเผยแพร่สู่ผู้ใช้</li>
+    </ul>
+
+    <!-- 3 Config -->
+    <h2 class="sec"><span class="n">3</span>ค่า Configuration ที่ตั้ง</h2>
+    <table>
+      <thead><tr><th style="width:30%">พารามิเตอร์</th><th style="width:30%">ค่าที่ตั้ง</th><th>คำอธิบาย</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>API_BASE_URL</td><td><span class="fill">https://dis.wu.ac.th/api</span></td><td>endpoint หลัก</td></tr>
+        <tr class="fillrow"><td>DB_HOST / DB_NAME</td><td><span class="fill">__</span></td><td>ฐานข้อมูล Production</td></tr>
+        <tr class="fillrow"><td>HAIT_PLUS_ENDPOINT</td><td><span class="fill">__</span></td><td>เชื่อม HIS เดิม</td></tr>
+        <tr class="fillrow"><td>SAP_ENDPOINT</td><td><span class="fill">__</span></td><td>การเงิน/พัสดุ</td></tr>
+        <tr class="fillrow"><td>PACS_ENDPOINT</td><td><span class="fill">__</span></td><td>ภาพรังสี</td></tr>
+        <tr class="fillrow"><td>LIS_RIS_ENDPOINT</td><td><span class="fill">__</span></td><td>ผลแลป/รังสี</td></tr>
+        <tr class="fillrow"><td>SMTP / NOTIFY</td><td><span class="fill">__</span></td><td>การแจ้งเตือน</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>⚠️ ความปลอดภัย:</b> Secret/รหัสผ่าน/Key ห้ามเก็บใน source — เก็บใน secret store/ไฟล์ env ที่เข้าถึงจำกัด และส่งมอบให้ IT รพ. แยกต่างหากตาม M4-03</div>
+
+    <!-- 4 ตรวจสอบหลัง Deploy -->
+    <h2 class="sec"><span class="n">4</span>การตรวจสอบหลัง Deploy (Smoke Test)</h2>
+    <ul class="chk">
+      <li>เปิดหน้าเข้าสู่ระบบ Web ได้ + login ผ่าน</li>
+      <li>ลงทะเบียนผู้ป่วยทดสอบ + ค้นหา patient bank ได้</li>
+      <li>สร้างนัดหมาย/คิวคลินิกทันตกรรมได้</li>
+      <li>สั่ง/จ่ายยา + ออกใบเสร็จ (เชื่อมการเงิน SAP) ได้</li>
+      <li>เรียกดูภาพรังสีจาก PACS + ส่ง/รับผล LIS-RIS ได้</li>
+      <li>ดึงข้อมูลจาก HAIT Plus (HIS เดิม) ถูกต้อง</li>
+      <li>Mobile 3 แอป login + เรียก API Production ได้</li>
+      <li class="star">ไม่มี error ระดับ Critical/High ใน log</li>
+    </ul>
+
+    <!-- 5 Rollback -->
+    <h2 class="sec"><span class="n">5</span>ขั้นตอนการถอยกลับ (Rollback)</h2>
+    <ul class="chk">
+      <li>หยุด service เวอร์ชันใหม่</li>
+      <li>กู้คืน artifact/เวอร์ชันก่อนหน้า (tag: <span class="fill">__</span>)</li>
+      <li>ย้อน DB migration / restore backup (ไฟล์: <span class="fill">__</span>)</li>
+      <li>ตั้ง config กลับเวอร์ชันเดิม + restart</li>
+      <li>ตรวจ smoke test เวอร์ชันเดิมผ่าน + แจ้งทีม</li>
+    </ul>
+    <p class="small muted">เวลา Rollback เป้าหมาย (RTO): <span class="fill">__ นาที</span> — ดูแผน Go-Live/Rollback ใน <a href="M4-01.html">M4-01</a></p>
+
+    <!-- 6 บันทึกการติดตั้ง -->
+    <h2 class="sec"><span class="n">6</span>บันทึกการติดตั้ง (Installation Log)</h2>
+    <table>
+      <thead><tr><th style="width:16%">วันที่/เวลา</th><th style="width:18%">รายการที่ติดตั้ง</th><th style="width:14%">เวอร์ชัน</th><th style="width:18%">ผู้ติดตั้ง</th><th>ผล / หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>__/__/2027 __:__</td><td>Web/API</td><td>&nbsp;</td><td>&nbsp;</td><td>☐ สำเร็จ ☐ rollback</td></tr>
+        <tr class="fillrow"><td>__/__/2027 __:__</td><td>Database</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>__/__/2027 __:__</td><td>Mobile (3 แอป)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">7</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้ติดตั้ง — System Engineer</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · งวด M4 Deployment
+  </div>
+</div>
+</body>
+</html>

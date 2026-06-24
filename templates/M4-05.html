@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M4-05 คู่มือผู้ดูแลระบบ (Administrator Manual)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m4">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M4-04.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M4-06.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M4-05 · งวดที่ 4</span>
+    <h1>คู่มือผู้ดูแลระบบ</h1>
+    <div class="en">Administrator Manual</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-ADM-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">System Engineer</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2027</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">System Architect</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.1.4 · ส่งมอบพร้อม Go-Live</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ส่งมอบ Go-Live (07/04/2027) — ใช้อ้างอิงตลอดช่วงประกัน 2 ปี</span>
+      <span class="chip who">เจ้าของ: System Engineer</span>
+      <span class="chip iso">ISO 29110: SI.O Operation Support</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> เป็นคู่มือสำหรับผู้ดูแลระบบ (Administrator) ของโรงพยาบาลทันตกรรม เพื่อใช้บริหารจัดการระบบ DIS หลัง Go-Live — ครอบคลุมการจัดการผู้ใช้/สิทธิ์ตาม role, การสำรอง/กู้คืนข้อมูล, การเฝ้าระวังระบบ, การจัดการ Master Data, การแก้ปัญหาเบื้องต้น, การ Update/Patch และความปลอดภัย · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2027</td><td>System Engineer</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 ภาพรวม/บทบาทผู้ดูแลระบบ -->
+    <h2 class="sec"><span class="n">1</span>ภาพรวมและบทบาทผู้ดูแลระบบ</h2>
+    <p><strong>1.1 ภาพรวมระบบ DIS</strong> — <span class="muted">ระบบ DIS เป็นระบบสารสนเทศด้านทันตกรรมแบบ Web + Mobile (3 แอป) เชื่อมต่อกับ HIS เดิม (HAIT Plus) และระบบเชื่อมโยงอื่น ๆ ผู้ดูแลระบบมีหน้าที่ดูแลให้ระบบพร้อมใช้งานอย่างต่อเนื่อง</span></p>
+    <p><strong>1.2 บทบาทและหน้าที่ของผู้ดูแลระบบ (Administrator)</strong></p>
+    <table>
+      <thead><tr><th style="width:30%">บทบาท</th><th>หน้าที่หลัก</th></tr></thead>
+      <tbody>
+        <tr><td>ผู้ดูแลระบบ (System Admin)</td><td>จัดการผู้ใช้/สิทธิ์, ดูแล Master Data, เฝ้าระวังระบบ, ประสานงาน Support</td></tr>
+        <tr><td>ผู้ดูแลฐานข้อมูล (DBA)</td><td>สำรอง/กู้คืนข้อมูล, ดูแลประสิทธิภาพฐานข้อมูล, ตรวจสอบ log</td></tr>
+        <tr class="fillrow"><td><span class="fill">ระบุชื่อ-สังกัด ผู้รับผิดชอบจริง</span></td><td><span class="fill">ระบุขอบเขตงาน</span></td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">role ผู้ใช้งานในระบบ: ทันตแพทย์ · นักศึกษา · เวชระเบียน · เภสัชกร · การเงิน · แอดมิน</p>
+
+    <!-- 2 การจัดการผู้ใช้และสิทธิ์ -->
+    <h2 class="sec"><span class="n">2</span>การจัดการผู้ใช้และสิทธิ์ (User &amp; Role Management)</h2>
+    <h3 class="sub">2.1 ขั้นตอนเพิ่ม / ลบ / แก้ไขผู้ใช้</h3>
+    <ol>
+      <li>เข้าเมนู <span class="fill">ตั้งค่า ▸ จัดการผู้ใช้</span> ด้วยบัญชีที่มีสิทธิ์ Admin</li>
+      <li>กด <b>เพิ่มผู้ใช้</b> ▸ กรอกข้อมูล (ชื่อ, รหัสพนักงาน/นักศึกษา, อีเมล, หน่วยงาน)</li>
+      <li>กำหนด role และผูกกับสิทธิ์ (Permission Group) ▸ บันทึก</li>
+      <li>การลบ/ระงับใช้งาน: เลือกผู้ใช้ ▸ <b>ระงับการใช้งาน</b> (แนะนำให้ระงับแทนการลบ เพื่อคง Audit log)</li>
+    </ol>
+    <h3 class="sub">2.2 ตารางสิทธิ์ตาม role (ตัวอย่าง — ปรับตามนโยบายจริง)</h3>
+    <table class="alt">
+      <thead><tr><th>เมนู / ฟังก์ชัน</th><th>ทันตแพทย์</th><th>นักศึกษา</th><th>เวชระเบียน</th><th>เภสัช</th><th>การเงิน</th><th>แอดมิน</th></tr></thead>
+      <tbody>
+        <tr><td>เวชระเบียน/บันทึกการรักษา</td><td>RW</td><td>RW*</td><td>RW</td><td>R</td><td>—</td><td>R</td></tr>
+        <tr><td>สั่งยา/ห้องยา</td><td>RW</td><td>RW*</td><td>—</td><td>RW</td><td>—</td><td>R</td></tr>
+        <tr><td>การเงิน/ลูกหนี้</td><td>R</td><td>—</td><td>R</td><td>—</td><td>RW</td><td>R</td></tr>
+        <tr><td>จัดการผู้ใช้/ตั้งค่าระบบ</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>RW</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">RW=อ่าน/เขียน, R=อ่านอย่างเดียว, —=ไม่มีสิทธิ์, * = นักศึกษาต้องผ่านการรับรอง (Co-sign) จากอาจารย์ทันตแพทย์</p>
+    <div class="warn"><b>⚠️ หลักการสิทธิ์ขั้นต่ำ (Least Privilege):</b> กำหนดสิทธิ์เท่าที่จำเป็นต่อหน้าที่ และทบทวนสิทธิ์ผู้ใช้อย่างน้อยทุก <span class="fill">6</span> เดือน</div>
+
+    <!-- 3 การสำรอง/กู้คืนข้อมูล -->
+    <h2 class="sec"><span class="n">3</span>การสำรองและกู้คืนข้อมูล (Backup &amp; Restore)</h2>
+    <h3 class="sub">3.1 นโยบายการสำรองข้อมูล</h3>
+    <table>
+      <thead><tr><th style="width:25%">ประเภท</th><th>ความถี่</th><th>เก็บรักษา (Retention)</th><th>ปลายทาง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>Full Backup</td><td>ทุกวัน เวลา <span class="fill">02:00</span></td><td><span class="fill">30</span> วัน</td><td><span class="fill">NAS / Cloud</span></td></tr>
+        <tr class="fillrow"><td>Incremental</td><td>ทุก <span class="fill">__</span> ชม.</td><td><span class="fill">7</span> วัน</td><td><span class="fill">NAS</span></td></tr>
+        <tr class="fillrow"><td>Off-site / Archive</td><td>ทุกสัปดาห์</td><td><span class="fill">1</span> ปี</td><td><span class="fill">ระบุ</span></td></tr>
+      </tbody>
+    </table>
+    <h3 class="sub">3.2 ขั้นตอนกู้คืน (Restore)</h3>
+    <ol>
+      <li>แจ้ง/ขออนุมัติการกู้คืนตามขั้นตอน (ระบุผู้มีอำนาจอนุมัติ)</li>
+      <li>เลือกชุดสำรองที่ต้องการ (ตรวจสอบวันที่/เวลา และความสมบูรณ์ของไฟล์)</li>
+      <li>กู้คืนลงระบบสำรอง (Staging) ก่อนเพื่อทดสอบ แล้วจึงนำขึ้น Production</li>
+      <li>ตรวจสอบความถูกต้องของข้อมูล (reconciliation) และบันทึกผลลงทะเบียน</li>
+    </ol>
+    <div class="note"><b>RPO / RTO:</b> RPO (ข้อมูลสูญหายได้สูงสุด) = <span class="fill">__</span> ชม. · RTO (เวลากู้คืน) = <span class="fill">__</span> ชม. · <b>ต้องทดสอบกู้คืนจริง (Restore Drill)</b> อย่างน้อยทุก <span class="fill">6</span> เดือน</div>
+
+    <!-- 4 การเฝ้าระวังระบบ -->
+    <h2 class="sec"><span class="n">4</span>การเฝ้าระวังระบบ (Monitoring &amp; Log)</h2>
+    <p>เฝ้าระวังสุขภาพระบบและจุดเชื่อมต่อ (Integration) กับ HAIT Plus อย่างต่อเนื่อง</p>
+    <table>
+      <thead><tr><th style="width:30%">สิ่งที่เฝ้าระวัง</th><th>เครื่องมือ/แดชบอร์ด</th><th>เกณฑ์แจ้งเตือน (Threshold)</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>CPU / Memory / Disk</td><td><span class="fill">Monitoring tool</span></td><td>&gt; <span class="fill">80</span>%</td></tr>
+        <tr class="fillrow"><td>สถานะบริการ/Service Up-time</td><td><span class="fill">Health check</span></td><td>Down &gt; <span class="fill">1</span> นาที</td></tr>
+        <tr class="fillrow"><td>Interface HAIT Plus (queue/error)</td><td><span class="fill">Integration log</span></td><td>Error &gt; <span class="fill">__</span> รายการ</td></tr>
+        <tr class="fillrow"><td>Login ล้มเหลว (Security)</td><td><span class="fill">Audit log</span></td><td>&gt; <span class="fill">__</span> ครั้ง/ผู้ใช้</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">ประเภท Log ที่ต้องเก็บ: Application log, System log, Audit log (ความปลอดภัย), Integration log · เก็บรักษาอย่างน้อย <span class="fill">90</span> วัน</p>
+
+    <!-- 5 การจัดการ Master Data -->
+    <h2 class="sec"><span class="n">5</span>การจัดการ Master Data</h2>
+    <p><span class="muted">Master Data คือข้อมูลตั้งต้นที่ใช้ร่วมกันทั้งระบบ การแก้ไขต้องระมัดระวังเพราะกระทบหลายโมดูล</span></p>
+    <table>
+      <thead><tr><th style="width:32%">ชุดข้อมูล (Master)</th><th>ตัวอย่าง</th><th>ผู้รับผิดชอบดูแล</th></tr></thead>
+      <tbody>
+        <tr><td>รายการหัตถการทันตกรรม</td><td>ICD-10-TM / รหัสหัตถการ, ค่าบริการ</td><td><span class="fill">ทันตแพทย์/การเงิน</span></td></tr>
+        <tr><td>บัญชียา (Drug Master)</td><td>รหัสยา, ขนาด, ราคา, คลัง</td><td><span class="fill">เภสัชกร</span></td></tr>
+        <tr><td>สิทธิการรักษา/กองทุน</td><td>เบิกได้, ประกันสังคม, เงินสด</td><td><span class="fill">การเงิน/เวชระเบียน</span></td></tr>
+        <tr class="fillrow"><td><span class="fill">เพิ่ม Master อื่น ๆ</span></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>⚠️ ก่อนแก้ไข Master Data:</b> สำรองข้อมูลชุดนั้นก่อนเสมอ และทดสอบในระบบ Staging — การลบรหัสที่มีรายการอ้างอิงอยู่อาจทำให้รายงานย้อนหลังผิดพลาด แนะนำให้ใช้สถานะ “ยกเลิกการใช้งาน” แทนการลบ</div>
+
+    <!-- 6 Troubleshooting -->
+    <h2 class="sec"><span class="n">6</span>ตารางการแก้ปัญหาเบื้องต้น (Troubleshooting)</h2>
+    <table>
+      <thead><tr><th style="width:30%">อาการ</th><th style="width:34%">สาเหตุที่เป็นไปได้</th><th>วิธีแก้เบื้องต้น</th></tr></thead>
+      <tbody>
+        <tr><td>ผู้ใช้ Login ไม่ได้</td><td>รหัสผ่านหมดอายุ / บัญชีถูกระงับ / สิทธิ์ผิด</td><td>รีเซ็ตรหัสผ่าน, ตรวจสถานะบัญชีและ role ในเมนูจัดการผู้ใช้</td></tr>
+        <tr><td>ระบบช้า / ค้าง</td><td>CPU/Memory สูง, Query หนัก, Disk เต็ม</td><td>ตรวจ Monitoring, เคลียร์พื้นที่, รีสตาร์ทบริการตามขั้นตอน, แจ้ง DBA</td></tr>
+        <tr><td>ข้อมูลผู้ป่วยจาก HAIT Plus ไม่ขึ้น</td><td>Interface ค้าง / queue ติด / token หมดอายุ</td><td>ตรวจ Integration log, รัน re-sync, หากแก้ไม่ได้แจ้งทีม HIS เดิม (ดู M4-07)</td></tr>
+        <tr><td>พิมพ์เอกสาร/ใบเสร็จไม่ออก</td><td>เครื่องพิมพ์ออฟไลน์ / ตั้งค่า template ผิด</td><td>ตรวจสถานะเครื่องพิมพ์และ driver, ตรวจการตั้งค่ารายงาน</td></tr>
+        <tr><td>รายงานการเงินไม่ตรง</td><td>Master ราคา/สิทธิ์ไม่อัปเดต</td><td>ตรวจ Master Data, ตรวจช่วงเวลาดึงรายงาน, แจ้งการเงิน</td></tr>
+        <tr class="fillrow"><td><span class="fill">เพิ่มอาการที่พบบ่อย</span></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">หากแก้เบื้องต้นไม่สำเร็จ ให้เปิด Ticket แจ้งผู้รับจ้างตาม SLA (ดู M4-07 และข้อ 9)</p>
+
+    <!-- 7 Update/Patch -->
+    <h2 class="sec"><span class="n">7</span>การ Update / Patch ระบบ</h2>
+    <ol>
+      <li>รับแจ้ง Patch/Update จากผู้รับจ้าง พร้อม Release Note และรายการเปลี่ยนแปลง</li>
+      <li>นัดหมายช่วงเวลานอกเวลาให้บริการ (Maintenance Window) และแจ้งผู้ใช้ล่วงหน้า</li>
+      <li>สำรองข้อมูล + สำรองเวอร์ชันปัจจุบัน (Rollback point) ก่อนติดตั้ง</li>
+      <li>ติดตั้งและทดสอบในระบบ Staging ก่อน แล้วจึงขึ้น Production</li>
+      <li>ทดสอบฟังก์ชันหลัง Patch (Smoke Test) และจุดเชื่อม HAIT Plus</li>
+      <li>บันทึกผลลงทะเบียนการเปลี่ยนแปลง (Change Log) และแจ้งปิดงาน</li>
+    </ol>
+    <div class="note"><b>หมายเหตุ:</b> การ Update/Patch ในช่วงประกัน 2 ปี อยู่ในขอบเขตบริการของผู้รับจ้างตามเอกสาร Warranty &amp; SLA (M4-07)</div>
+
+    <!-- 8 ความปลอดภัย -->
+    <h2 class="sec"><span class="n">8</span>ความปลอดภัย (Security)</h2>
+    <ul>
+      <li><b>Audit log:</b> ระบบบันทึกการเข้าถึง/แก้ไขข้อมูลสำคัญ (ใคร-ทำอะไร-เมื่อไร) ห้ามปิด และต้องเก็บอย่างน้อย <span class="fill">90</span> วัน</li>
+      <li><b>การจัดสิทธิ์:</b> ยึดหลักสิทธิ์ขั้นต่ำ, แยกหน้าที่ (Segregation of Duties), ทบทวนสิทธิ์เป็นระยะ</li>
+      <li><b>รหัสผ่าน:</b> กำหนดความซับซ้อน, อายุรหัสผ่าน, ล็อกบัญชีเมื่อใส่ผิดเกินกำหนด</li>
+      <li><b>ข้อมูลส่วนบุคคล (PDPA):</b> เข้าถึงข้อมูลผู้ป่วยตามหน้าที่เท่านั้น, mask ข้อมูลที่ไม่จำเป็น</li>
+      <li><b>บัญชีผู้ดูแล:</b> ใช้บัญชีเฉพาะบุคคล หลีกเลี่ยงบัญชีกลางร่วมกัน</li>
+    </ul>
+
+    <!-- 9 การติดต่อ Support -->
+    <h2 class="sec"><span class="n">9</span>การติดต่อ Support</h2>
+    <table>
+      <thead><tr><th style="width:30%">ช่องทาง</th><th>รายละเอียด</th><th>เวลาให้บริการ</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>โทรศัพท์ (Telephone)</td><td><span class="fill">0-XXXX-XXXX</span></td><td><span class="fill">จ.–ศ. 08:30–16:30</span></td></tr>
+        <tr class="fillrow"><td>Online (Email/Line/Ticket)</td><td><span class="fill">support@___ / Ticket system</span></td><td><span class="fill">24×7 (รับเรื่อง)</span></td></tr>
+        <tr class="fillrow"><td>Onsite</td><td><span class="fill">ตามเงื่อนไข SLA</span></td><td><span class="fill">ตามนัดหมาย</span></td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>SLA (ตาม TOR):</b> ปัญหาทั่วไป (General/Minor) ตอบรับภายใน 30 นาที แก้ไขภายใน 1 วัน · ปัญหารุนแรง (Severe/Major) ตอบรับภายใน 1 ชม. แก้ไขภายใน 24 ชม. · ช่องทาง Onsite / Online / Telephone · รายละเอียดเต็มดูที่ <a href="M4-07.html">M4-07 Warranty &amp; SLA</a></div>
+
+    <!-- ลงนาม -->
+    <h2 class="sec"><span class="n">10</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — System Engineer</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน — System Architect</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้รับมอบ (ผู้ดูแลระบบ เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · งวด M4 Go-Live (07/04/2027)
+  </div>
+</div>
+</body>
+</html>

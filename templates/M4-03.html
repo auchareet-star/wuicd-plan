@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M4-03 เอกสารส่งมอบซอร์สโค้ด (Source Code Handover)</title>
+<link rel="stylesheet" href="doc.css">
+</head>
+<body class="m4">
+<div class="page">
+
+  <div class="toolbar">
+    <a href="../เอกสารส่งมอบรายงวด.html">◂ กลับหน้าสารบัญเอกสาร</a>
+    <span class="nav">
+      <a href="M4-02.html">◂ เอกสารก่อนหน้า</a>
+      <a href="M4-04.html">เอกสารถัดไป ▸</a>
+      <button class="btn-print" onclick="window.print()">🖨 พิมพ์ / บันทึก PDF</button>
+    </span>
+  </div>
+
+  <div class="dochead">
+    <span class="code">M4-03 · งวดที่ 4</span>
+    <h1>เอกสารส่งมอบซอร์สโค้ด</h1>
+    <div class="en">Source Code Handover</div>
+    <div class="proj">โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) · คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม มหาวิทยาลัยวลัยลักษณ์</div>
+  </div>
+
+  <div class="ctrl">
+    <div class="ctrl-h">ข้อมูลควบคุมเอกสาร (Document Control)</div>
+    <div class="meta-grid">
+      <div><b>รหัสเอกสาร:</b> <span class="fill">DIS-SRC-001</span></div>
+      <div><b>เวอร์ชัน:</b> <span class="fill">0.1 (ร่าง)</span></div>
+      <div><b>ผู้จัดทำ:</b> <span class="fill">Dev Lead</span></div>
+      <div><b>วันที่จัดทำ:</b> <span class="fill">__ /__ /2027</span></div>
+      <div><b>ผู้สอบทาน:</b> <span class="fill">__________</span></div>
+      <div><b>ผู้อนุมัติ:</b> <span class="fill">__________</span></div>
+      <div><b>สถานะ:</b> <span class="fill">ร่าง / รออนุมัติ / อนุมัติแล้ว</span></div>
+      <div><b>อ้างอิง TOR:</b> ข้อ 6.3 (ส่งมอบ Source Code)</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="meta">
+      <span class="chip when">ใช้ตอน: ส่งมอบงวดสุดท้าย — งวด M4</span>
+      <span class="chip who">เจ้าของ: Dev Lead</span>
+      <span class="chip iso">TOR ข้อ 6.3 · ISO 29110 SI.6</span>
+    </div>
+    <div class="note"><b>วัตถุประสงค์ของเอกสาร:</b> เป็นหลักฐานการส่งมอบ Source Code ระบบ DIS (Web + Mobile 3 แอป) พร้อมสคริปต์ฐานข้อมูล, ตาราง config, คำแนะนำ build/deploy และเอกสาร API ให้แก่ รพ. ตาม TOR ข้อ 6.3 พร้อมระบุสิทธิ์/License และใบรับมอบ · <span class="hint">ข้อความสีเหลืองคือช่องที่ต้องกรอก/ปรับ</span></div>
+
+    <!-- 0 ประวัติการแก้ไข -->
+    <h2 class="sec"><span class="n">0</span>ประวัติการแก้ไขเอกสาร (Revision History)</h2>
+    <table>
+      <thead><tr><th style="width:12%">เวอร์ชัน</th><th style="width:16%">วันที่</th><th style="width:24%">ผู้แก้ไข</th><th>รายละเอียดการเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>0.1</td><td>__/__/2027</td><td>Dev Lead</td><td>ร่างฉบับแรก</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 1 รายการ Source -->
+    <h2 class="sec"><span class="n">1</span>รายการซอร์สโค้ดที่ส่งมอบ (Deliverable Items)</h2>
+    <p class="small muted">ตาม TOR ข้อ 6.3 — ตรวจครบทุกรายการก่อนส่งมอบ</p>
+    <ul class="chk">
+      <li><b>Source Code — Web (Frontend + Backend/API)</b> ครบทุก repository</li>
+      <li><b>Source Code — Mobile 3 แอป:</b> Patient / Student / Dentist</li>
+      <li><b>Database Script</b> — schema, migration, seed/master data, stored procedure</li>
+      <li><b>Config Table / ตารางค่าตั้งค่า</b> — รายการพารามิเตอร์ + ค่าตัวอย่าง (ไม่รวม secret จริง)</li>
+      <li><b>Build / Deploy Instruction</b> — สคริปต์และคู่มือทำซ้ำได้ (อ้างอิง M4-02)</li>
+      <li><b>เอกสาร API</b> — API spec / OpenAPI / Postman collection</li>
+      <li class="star">รายการ dependency + เวอร์ชัน (lock file) ครบ</li>
+    </ul>
+    <table>
+      <thead><tr><th style="width:36%">รายการ</th><th style="width:22%">เวอร์ชัน/Tag</th><th>ที่อยู่ (Repo/Path)</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>dis-web (frontend)</td><td><span class="fill">__</span></td><td><span class="fill">__</span></td></tr>
+        <tr class="fillrow"><td>dis-api (backend)</td><td><span class="fill">__</span></td><td><span class="fill">__</span></td></tr>
+        <tr class="fillrow"><td>dis-mobile-patient</td><td><span class="fill">__</span></td><td><span class="fill">__</span></td></tr>
+        <tr class="fillrow"><td>dis-mobile-student</td><td><span class="fill">__</span></td><td><span class="fill">__</span></td></tr>
+        <tr class="fillrow"><td>dis-mobile-dentist</td><td><span class="fill">__</span></td><td><span class="fill">__</span></td></tr>
+        <tr class="fillrow"><td>db-scripts</td><td><span class="fill">__</span></td><td><span class="fill">__</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 2 รูปแบบ/สื่อส่งมอบ -->
+    <h2 class="sec"><span class="n">2</span>รูปแบบและสื่อการส่งมอบ (Delivery Media)</h2>
+    <table>
+      <thead><tr><th style="width:26%">ช่องทาง</th><th style="width:14%">เลือก</th><th>รายละเอียด / จำนวนชุด</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td>Git Repository</td><td>☐</td><td>ส่งมอบสิทธิ์ owner ให้ รพ. + URL: <span class="fill">__</span></td></tr>
+        <tr class="fillrow"><td>External Storage (HDD/SSD/USB)</td><td>☐</td><td>จำนวน <span class="fill">__</span> ชุด · เข้ารหัส ☐</td></tr>
+        <tr class="fillrow"><td>แผ่น/สื่อบันทึก</td><td>☐</td><td>จำนวน <span class="fill">__</span> ชุด</td></tr>
+      </tbody>
+    </table>
+    <ul class="chk">
+      <li>แนบ checksum (SHA-256) ของ archive แต่ละชุดเพื่อตรวจความครบถ้วน</li>
+      <li>ส่งมอบ secret/credential แยกช่องทางที่ปลอดภัย (ไม่อยู่ใน repo)</li>
+    </ul>
+
+    <!-- 3 License -->
+    <h2 class="sec"><span class="n">3</span>License และสิทธิ์ (License &amp; Rights)</h2>
+    <ul>
+      <li><b>3.1 กรรมสิทธิ์ Source Code:</b> <span class="muted">ระบุความเป็นเจ้าของตาม TOR — โอนสิทธิ์ให้ รพ./มหาวิทยาลัย</span> <span class="fill">__________</span></li>
+      <li><b>3.2 Third-party / Open Source:</b> รายการ component พร้อม license (MIT/Apache/ฯลฯ) และข้อจำกัด</li>
+      <li><b>3.3 License เชิงพาณิชย์:</b> <span class="muted">หากมี — ระบุจำนวน, อายุ, การต่ออายุ</span></li>
+    </ul>
+    <table>
+      <thead><tr><th style="width:40%">Component / Library</th><th style="width:24%">License</th><th>หมายเหตุ/ข้อจำกัด</th></tr></thead>
+      <tbody>
+        <tr class="fillrow"><td><span class="fill">__</span></td><td><span class="fill">__</span></td><td>&nbsp;</td></tr>
+        <tr class="fillrow"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 4 คำแนะนำ Build/Deploy -->
+    <h2 class="sec"><span class="n">4</span>คำแนะนำ Build / Deploy</h2>
+    <p class="small muted">สรุปขั้นตอนสำหรับให้ทีม รพ. สร้างและติดตั้งระบบเองได้ (รายละเอียดเต็มอยู่ใน M4-02)</p>
+    <div class="ascii"># Web / API
+$ git clone &lt;repo-url&gt; &amp;&amp; cd dis-api
+$ cp .env.example .env            # กรอกค่าตามตาราง config (M4-02 ข้อ 3)
+$ &lt;install deps&gt;                  # ตามไฟล์ lock
+$ &lt;run db migrate&gt;
+$ &lt;build&gt; &amp;&amp; &lt;deploy&gt;
+
+# Mobile (ต่อแอป)
+$ cd dis-mobile-patient
+$ &lt;install&gt; &amp;&amp; &lt;build android/ios&gt;
+$ # ตั้ง API endpoint = Production แล้วส่ง App Store / Google Play</div>
+    <ul class="chk">
+      <li>ระบุ prerequisite (เวอร์ชัน toolchain/SDK) ครบ</li>
+      <li>ทดสอบ build จากเครื่องสะอาดสำเร็จก่อนส่งมอบ</li>
+    </ul>
+
+    <!-- 5 ใบรับมอบ -->
+    <h2 class="sec"><span class="n">5</span>ใบรับมอบซอร์สโค้ด (Handover Receipt)</h2>
+    <p>ข้าพเจ้าได้รับมอบซอร์สโค้ดและสื่อทั้งหมดตามรายการข้อ 1–2 ครบถ้วน วันที่ <span class="fill">__ /__ /2027</span></p>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้ส่งมอบ — Dev Lead (ผู้รับจ้าง)</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้รับมอบ — IT โรงพยาบาลทันตกรรม</span></div>
+    </div>
+
+    <!-- 6 ลงนามอนุมัติ -->
+    <h2 class="sec"><span class="n">6</span>การอนุมัติเอกสาร</h2>
+    <div class="signs">
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้จัดทำ — Dev Lead</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้สอบทาน</span></div>
+      <div class="sign"><div class="line"></div>(<span class="blank">&nbsp;</span>)<br><span class="role">ผู้อนุมัติ (เจ้าของงาน)</span></div>
+    </div>
+  </div>
+
+  <div class="docfoot">
+    เอกสารต้นแบบ (Template) — โครงการ DIS ม.วลัยลักษณ์ · ปรับ/กรอกให้ตรงข้อมูลจริงก่อนใช้ · อ้างอิง TOR ข้อ 6.3
+  </div>
+</div>
+</body>
+</html>

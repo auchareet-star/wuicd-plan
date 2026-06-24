@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เอกสารส่งมอบรายงวด + มาตรฐานบังคับ — Dental Information System</title>
+<style>
+  :root{
+    --primary:#0d6e6e; --primary-dark:#0a5252; --accent:#e8743b;
+    --bg:#f4f6f8; --card:#ffffff; --line:#dfe4e8; --ink:#1f2d3d; --muted:#5b6b7b;
+    --warn-bg:#fff4e5; --warn-bd:#f0a14b; --note-bg:#eef7f7; --note-bd:#0d6e6e;
+    --m1:#3b82c4; --m2:#0d6e6e; --m3:#e0a800; --m4:#d6453d;
+  }
+  *{box-sizing:border-box}
+  body{font-family:"Sarabun","Segoe UI Thai","Leelawadee UI","Tahoma",sans-serif;
+    margin:0; background:var(--bg); color:var(--ink); line-height:1.7; font-size:15px}
+  .wrap{max-width:1040px; margin:0 auto; padding:32px 20px 80px}
+  header.cover{background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff; border-radius:16px; padding:34px 32px; margin-bottom:26px;
+    box-shadow:0 10px 30px rgba(13,110,110,.25)}
+  header.cover h1{margin:0 0 6px; font-size:24px}
+  header.cover .sub{font-size:15px; opacity:.95}
+  header.cover a{color:#cdeaea}
+  section{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:22px 26px; margin-bottom:20px; box-shadow:0 2px 8px rgba(31,45,61,.04)}
+  h2{font-size:20px; margin:4px 0 14px; padding-bottom:8px; border-bottom:2px solid var(--line)}
+  h2 .num{display:inline-block; color:#fff; border-radius:8px; min-width:30px; text-align:center;
+    padding:2px 10px; margin-right:10px; font-size:15px}
+  .h-m1 .num{background:var(--m1)} .h-m2 .num{background:var(--m2)}
+  .h-m3 .num{background:var(--m3)} .h-m4 .num{background:var(--m4)}
+  .h-m1 h2{color:var(--m1)} .h-m2 h2{color:var(--m2)} .h-m3 h2{color:var(--m3)} .h-m4 h2{color:var(--m4)}
+  h3{color:var(--primary-dark); font-size:16px; margin:18px 0 8px}
+  table{width:100%; border-collapse:collapse; margin:10px 0; font-size:13.5px}
+  th,td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  th{background:var(--primary); color:#fff; font-weight:600}
+  tbody tr:nth-child(even){background:#f7fafa}
+  ul,ol{margin:6px 0; padding-left:22px} li{margin:3px 0}
+  strong{color:var(--primary-dark)}
+  .note,.warn{border-radius:10px; padding:12px 16px; margin:12px 0; font-size:14px}
+  .note{background:var(--note-bg); border-left:4px solid var(--note-bd)}
+  .warn{background:var(--warn-bg); border-left:4px solid var(--warn-bd)}
+  /* document card */
+  .doc{border:1px solid var(--line); border-radius:12px; margin:16px 0; overflow:hidden}
+  .doc>summary{list-style:none; cursor:pointer; padding:12px 16px; background:#f3f7f7;
+    display:flex; align-items:center; gap:10px; font-weight:700; color:var(--primary-dark)}
+  .doc>summary::-webkit-details-marker{display:none}
+  .doc>summary::before{content:"▸"; color:var(--accent); font-size:14px; transition:.2s}
+  .doc[open]>summary::before{transform:rotate(90deg)}
+  .doc .code{background:var(--primary); color:#fff; border-radius:6px; font-size:12px;
+    padding:1px 8px; font-weight:700}
+  .doc .body{padding:14px 18px}
+  .meta{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px}
+  .chip{font-size:12px; padding:3px 10px; border-radius:999px; font-weight:600}
+  .chip.when{background:#fff4e5; color:#b4651b; border:1px solid #f0c089}
+  .chip.who{background:#eef2ff; color:#3b4fb5; border:1px solid #c7d0f5}
+  .chip.iso{background:#e7f5ee; color:#1d7a47; border:1px solid #a8dcc0}
+  .sample{background:#0f1f24; color:#dceaea; border-radius:8px; padding:12px 14px;
+    font-family:"Cascadia Code","Consolas",monospace; font-size:12px; overflow-x:auto;
+    white-space:pre; line-height:1.5; margin-top:8px}
+  .sample-label{font-size:12px; color:var(--accent); font-weight:700; margin:10px 0 2px}
+  .smtbl{font-size:12.5px; margin-top:6px}
+  .smtbl th{background:#2a6f6f}
+  .smtbl a.dl{color:var(--primary-dark); font-weight:700; text-decoration:none; border-bottom:1px dashed var(--primary)}
+  .smtbl a.dl:hover{color:var(--accent); border-bottom-color:var(--accent)}
+  .smtbl a.dl::after{content:" ▸"; color:var(--accent); font-weight:700}
+  .opendoc{display:inline-block; margin-top:10px; background:var(--primary); color:#fff;
+    text-decoration:none; border-radius:7px; padding:6px 14px; font-size:13px; font-weight:700}
+  .opendoc:hover{background:var(--accent)}
+  .badge{display:inline-block; padding:1px 7px; border-radius:5px; font-size:11.5px; font-weight:700; color:#fff}
+  .b-fit{background:#2e9e5b}.b-cfg{background:#3b82c4}.b-par{background:#e0a800}.b-gap{background:#d6453d}
+  .legend{font-size:13px; color:var(--muted); margin:6px 0 2px}
+  .toc{background:#f7fafa; border:1px dashed var(--line); border-radius:10px; padding:14px 18px; font-size:14px}
+  .toc a{color:var(--primary-dark); text-decoration:none} .toc a:hover{text-decoration:underline}
+  .pill{display:inline-block; background:var(--accent); color:#fff; border-radius:6px; padding:1px 8px; font-size:12px; font-weight:700}
+  footer{text-align:center; color:var(--muted); font-size:13px; margin-top:24px; padding:16px}
+  @media print{.doc{break-inside:avoid} .doc>summary::before{display:none}
+    .doc:not([open]) .body{display:block!important}
+    body{font-size:11.5px} .wrap{padding:0}
+    th{ -webkit-print-color-adjust:exact; print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <h1>เอกสารส่งมอบรายงวด + มาตรฐานบังคับ</h1>
+  <div class="sub">ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม (Dental Information System) — ม.วลัยลักษณ์<br>
+  <a href="index.html">🏠 หน้ารวม</a> · <a href="แผนดำเนินงาน-FitGap-Develop.html">แผนดำเนินงาน Fit/Gap + Develop</a> · <b>คลิกชื่อเอกสารในตารางแต่ละงวดเพื่อเปิด template เต็ม (38 ฉบับ)</b> · การ์ดด้านล่างคลิกกางดู “ตัวอย่างย่อ”</div>
+</header>
+
+<section>
+  <div class="toc">
+    <strong>สารบัญ</strong> ·
+    <a href="#std">① มาตรฐานบังคับ (อธิบาย)</a> &nbsp;|&nbsp;
+    <a href="#m1">② งวด M1 — แผนบริหารโครงการ 9 ฉบับ</a> &nbsp;|&nbsp;
+    <a href="#m2">③ งวด M2 — วิเคราะห์/ออกแบบ</a> &nbsp;|&nbsp;
+    <a href="#m3">④ งวด M3 — ทดสอบ/อบรม</a> &nbsp;|&nbsp;
+    <a href="#m4">⑤ งวด M4 — Go-Live/ส่งมอบ</a>
+  </div>
+</section>
+
+<!-- ===================== STANDARDS ===================== -->
+<section id="std">
+  <h2><span class="num" style="background:var(--accent)">①</span>มาตรฐานบังคับ — อธิบายว่าคืออะไร / ต้องทำ/ยื่นอะไร</h2>
+  <p class="legend">TOR กำหนด 4 อย่างนี้เป็นเงื่อนไข ทั้ง “คุณสมบัติผู้เสนอราคา” และ “คุณภาพงาน” — มีผลต่อทั้งการยื่นซองและรูปแบบเอกสารส่งมอบ</p>
+  <table>
+    <tbody>
+      <tr><th style="width:16%">มาตรฐาน</th><th style="width:34%">คืออะไร</th><th>เราต้องทำ / ยื่นอะไร · ใช้ตอนไหน</th></tr>
+      <tr>
+        <td><strong>ISO/IEC 29110</strong><br><span class="chip iso">Software Process</span></td>
+        <td>มาตรฐานวิศวกรรมซอฟต์แวร์สำหรับองค์กรขนาดเล็กมาก (VSE) ครอบคลุม 2 กระบวนการ: <strong>Project Management (PM)</strong> และ <strong>Software Implementation (SI)</strong> — กำหนด “work products” ที่ต้องผลิตทุกขั้น</td>
+        <td>• ยื่น <strong>ใบรับรอง ISO 29110</strong> ตอนเสนอราคา (คุณสมบัติผู้เสนอราคา)<br>• เอกสารส่งมอบทุกงวด <strong>ต้อง map กับ work products ของ 29110</strong> (Statement of Work, Project Plan, Requirements Spec, Architecture &amp; Design, Test Cases, Traceability, Product Delivery, Verification/Validation records)<br>• <span class="pill">ใช้ตลอดโครงการ</span> เป็นกรอบของชุดเอกสารทั้งหมดด้านล่าง</td>
+      </tr>
+      <tr>
+        <td><strong>HA</strong><br>Healthcare Accreditation<br><span class="chip iso">คุณภาพ รพ.</span></td>
+        <td>มาตรฐานโรงพยาบาลของสถาบันรับรองคุณภาพสถานพยาบาล (สรพ.) เน้นความปลอดภัยผู้ป่วย, ความครบถ้วน/สืบค้นได้ของเวชระเบียน, การควบคุมการเข้าถึงข้อมูล</td>
+        <td>• แปลงข้อกำหนด HA เป็น <strong>requirement</strong> ใน SRS (เช่น audit trail, สิทธิ์การเข้าถึง, ความครบถ้วนเวชระเบียน, การยืนยันตัวตน)<br>• ออกแบบให้ระบบ <strong>ตรวจสอบย้อนกลับได้</strong> (log/version)<br>• <span class="pill">ใช้ตั้งแต่ M2 (ออกแบบ)</span> และพิสูจน์ใน UAT (M3)</td>
+      </tr>
+      <tr>
+        <td><strong>Made in Thailand</strong><br>(MiT)<br><span class="chip iso">นโยบายจัดซื้อ</span></td>
+        <td>สินค้า/บริการที่ขึ้นทะเบียน MiT กับสภาอุตสาหกรรมแห่งประเทศไทย (ส.อ.ท.) ตามกฎกระทรวงจัดซื้อจัดจ้างภาครัฐ ที่กำหนดให้หน่วยงานรัฐต้องอุดหนุนสินค้าไทย</td>
+        <td>• ยื่น <strong>หลักฐานการขึ้นทะเบียน Made in Thailand</strong> ของผลิตภัณฑ์/ซอฟต์แวร์ ตอนเสนอราคา<br>• <span class="pill">ใช้ตอนยื่นซอง + ส่งมอบครุภัณฑ์ (ภาคผนวก ค)</span></td>
+      </tr>
+      <tr>
+        <td><strong>แต้มต่อ SME</strong><br>(THAI SME-GP)<br><span class="chip iso">สิทธิประโยชน์</span></td>
+        <td>ผู้ประกอบการ SME ที่ขึ้นทะเบียนระบบ THAI SME-GP ของ สสว. ได้ “แต้มต่อด้านราคา” — เสนอราคาสูงกว่ารายต่ำสุดได้ไม่เกิน 10% ก็ยังชนะได้</td>
+        <td>• ยื่น <strong>หนังสือรับรอง SME</strong> (ขึ้นทะเบียน THAI SME-GP) ตอนเสนอราคา เพื่อรับแต้มต่อ<br>• <span class="pill">ใช้ตอนยื่นซองเสนอราคา</span> (ไม่บังคับถ้าไม่ใช่ SME แต่เสียสิทธิ์แต้มต่อ)</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="warn"><b>สรุปผลต่อแผน:</b> ISO 29110 + HA เป็น “ตัวกำหนดรูปแบบและเนื้อหา” ของเอกสารส่งมอบทุกงวดด้านล่าง · Made in Thailand + SME เป็น “เอกสารคุณสมบัติ” ที่ต้องเตรียมยื่นตั้งแต่ตอนประมูล ไม่ใช่งานส่งมอบรายงวด</div>
+</section>
+
+<!-- ===================== M1 ===================== -->
+<section id="m1" class="h-m1">
+  <h2><span class="num">②</span>งวด M1 — เตรียมความพร้อม <small style="color:var(--muted);font-weight:400">(ส่งภายใน 11/07/2026 · 20%)</small></h2>
+  <p class="legend">TOR ข้อ 6.1 — แผนบริหารโครงการ <strong>9 ฉบับ</strong> + โครงสร้างทีม · ใช้เป็น “สัญญาภายใน” ที่ทุกฝ่ายตกลงวิธีทำงานก่อนลงมือ</p>
+  <table class="smtbl">
+    <tbody>
+      <tr><th>รหัส</th><th>เอกสาร (คลิกเพื่อเปิด template เต็ม)</th><th>ใช้ตอนไหน / ทำไม</th></tr>
+      <tr><td>M1-01</td><td><a class="dl" href="templates/M1-01.html">แผนดำเนินงานโครงการภาพรวม (Project Management Plan)</a></td><td>ตั้งต้นทั้งโครงการ — scope, schedule, ทีม, การสื่อสาร, ความเสี่ยง</td></tr>
+      <tr><td>M1-02</td><td><a class="dl" href="templates/M1-02.html">แผนการสำรวจและออกแบบระบบ</a></td><td>ก่อนเข้า M2 — กำหนดวิธีเก็บ requirement + ตาราง workshop</td></tr>
+      <tr><td>M1-03</td><td><a class="dl" href="templates/M1-03.html">แผนการโอนย้ายข้อมูล (Database Migration)</a></td><td>วางแนวทางย้ายข้อมูลเดิม → ใหม่ ตั้งแต่ต้น</td></tr>
+      <tr><td>M1-04</td><td><a class="dl" href="templates/M1-04.html">แผนการติดตั้งระบบ</a></td><td>กำหนด environment Dev/Test/Prod และขั้นตอนติดตั้ง</td></tr>
+      <tr><td>M1-05</td><td><a class="dl" href="templates/M1-05.html">แผนการพัฒนาและส่งมอบระบบ (Implementation)</a></td><td>ลำดับการ build/ส่งมอบรายโมดูล</td></tr>
+      <tr><td>M1-06</td><td><a class="dl" href="templates/M1-06.html">แผนการทดสอบ (Test/Simulation Plan)</a></td><td>กำหนดระดับ/เกณฑ์ผ่านการทดสอบ ใช้คุมคุณภาพ</td></tr>
+      <tr><td>M1-07</td><td><a class="dl" href="templates/M1-07.html">แผนการฝึกอบรมและถ่ายทอด</a></td><td>วางหลักสูตร 4 กลุ่มผู้ใช้ก่อนถึง M3</td></tr>
+      <tr><td>M1-08</td><td><a class="dl" href="templates/M1-08.html">แผนการกู้คืนระบบ + การจัดทำคู่มือ (Backup/DR)</a></td><td>กำหนด RPO/RTO, ตารางสำรองข้อมูล</td></tr>
+      <tr><td>M1-09</td><td><a class="dl" href="templates/M1-09.html">แผนการบริหารการเปลี่ยนแปลง (Change Management)</a></td><td>คุม scope creep — ทุกการเปลี่ยนต้องผ่าน CR</td></tr>
+      <tr><td>M1-10</td><td><a class="dl" href="templates/M1-10.html">โครงสร้างทีมงาน (Project Team Organization)</a></td><td>พิสูจน์ว่ามีทีมครบตามที่ TOR กำหนด</td></tr>
+    </tbody>
+  </table>
+
+  <details class="doc"><summary><span class="code">M1-01</span> แผนดำเนินงานโครงการภาพรวม (Project Management Plan)</summary>
+    <div class="body">
+      <div class="meta"><span class="chip when">ใช้: เริ่มโครงการ — เป็นแม่บท</span><span class="chip who">ผู้จัดทำ: PM</span><span class="chip iso">ISO 29110: PM.1 Project Plan</span></div>
+      <strong>วัตถุประสงค์:</strong> เอกสารแม่ที่อ้างอิงตลอดโครงการ — กำหนดขอบเขต, แผนเวลา, ทีม, การสื่อสาร, การติดตามงาน
+      <div class="sample-label">ตัวอย่างโครงสร้าง (Table of Contents) + ตาราง Milestone</div>
+      <div class="sample">1. บทนำ &amp; วัตถุประสงค์โครงการ
+2. ขอบเขตงาน (Scope) / นอกขอบเขต (Out of scope)
+3. โครงสร้างทีม &amp; RACI
+4. แผนเวลา (Master Schedule) + Milestone
+5. แผนการสื่อสาร (ความถี่ประชุม / รายงาน)
+6. การบริหารความเสี่ยง / ปัญหา
+7. เกณฑ์การส่งมอบ &amp; ตรวจรับแต่ละงวด
+
+ตาราง Milestone:
+┌──────┬──────────────┬────────────┬───────┐
+│ งวด  │ ส่งมอบ        │ กำหนด      │ % เงิน │
+├──────┼──────────────┼────────────┼───────┤
+│ M1   │ แผน 9 ฉบับ    │ 11/07/2026 │ 20%   │
+│ M2   │ Fit/Gap+ออกแบบ│ 08/11/2026 │ 20%   │
+│ M3   │ ทดสอบ+อบรม    │ 18/03/2027 │ 40%   │
+│ M4   │ Go-Live       │ 07/04/2027 │ 20%   │
+└──────┴──────────────┴────────────┴───────┘</div>
+    </div>
+  </details>
+
+  <details class="doc"><summary><span class="code">M1-06</span> แผนการทดสอบ (Test / Simulation Plan)</summary>
+    <div class="body">
+      <div class="meta"><span class="chip when">ใช้: เป็นกรอบก่อนถึงงาน test (M3)</span><span class="chip who">ผู้จัดทำ: QA Lead</span><span class="chip iso">ISO 29110: SI Test</span></div>
+      <strong>วัตถุประสงค์:</strong> นิยามระดับการทดสอบและ “เกณฑ์ผ่าน/ไม่ผ่าน” ล่วงหน้า เพื่อให้การตรวจรับ M3 มีมาตรฐานชัด
+      <div class="sample-label">ตัวอย่างตารางระดับการทดสอบ + เกณฑ์</div>
+      <table class="smtbl">
+        <tbody>
+          <tr><th>ระดับ</th><th>ใครทดสอบ</th><th>เกณฑ์ผ่าน (Exit)</th></tr>
+          <tr><td>Unit Test</td><td>Developer</td><td>โค้ดผ่าน case ที่กำหนด ≥ 100% ของ critical path</td></tr>
+          <tr><td>SIT (Integration)</td><td>QA</td><td>ทุก interface (HAIT Plus/SAP/PACS/LIS) ส่ง-รับข้อมูลถูกต้อง</td></tr>
+          <tr><td>UAT</td><td>Process Owner</td><td>ไม่เหลือ defect ระดับ Critical/High, ลงนามยอมรับ</td></tr>
+          <tr><td>E2E</td><td>QA + ผู้ใช้</td><td>เดินครบ flow ผู้ป่วยตั้งแต่ลงทะเบียน→จ่ายยา→เก็บเงิน</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <details class="doc"><summary><span class="code">M1-09</span> แผนบริหารการเปลี่ยนแปลง (Change Management Plan)</summary>
+    <div class="body">
+      <div class="meta"><span class="chip when">ใช้: ทุกครั้งที่มีการขอเปลี่ยน scope</span><span class="chip who">ผู้จัดทำ: PM</span></div>
+      <strong>วัตถุประสงค์:</strong> ป้องกัน scope creep — กำหนดให้ทุกการเปลี่ยนแปลงผ่านแบบฟอร์ม CR และการอนุมัติ (อ้าง TOR ข้อ 6.3.7)
+      <div class="sample-label">ตัวอย่างแบบฟอร์ม Change Request (CR)</div>
+      <div class="sample">CR No.: CR-2026-001            วันที่: ____/____/____
+ผู้ขอ: ____________  โมดูล: ระบบนัดหมาย
+รายละเอียดการเปลี่ยน: เพิ่มการแจ้งเตือนนัดผ่าน LINE
+เหตุผล/ผลกระทบ: เพิ่ม effort 5 man-day, กระทบ M3
+การวิเคราะห์: [ ] อยู่ในขอบเขตเดิม  [✔] นอกขอบเขต
+มติ CAB: [ ] อนุมัติ  [ ] ปฏิเสธ  [ ] เลื่อน
+ลงนาม: เจ้าของงาน______ / ผู้รับจ้าง______</div>
+    </div>
+  </details>
+  <p class="legend">✅ แผนทั้ง 10 ฉบับมี template เต็มแยกไฟล์แล้ว — คลิกชื่อในตารางด้านบนเพื่อเปิด (การ์ดข้างบนแสดงเฉพาะตัวอย่างย่อ 3 ฉบับ)</p>
+</section>
+
+<!-- ===================== M2 ===================== -->
+<section id="m2" class="h-m2">
+  <h2><span class="num">③</span>งวด M2 — วิเคราะห์/ออกแบบ (System Requirement) <small style="color:var(--muted);font-weight:400">(ส่งภายใน 08/11/2026 · 20%)</small></h2>
+  <p class="legend">TOR ข้อ 8 งวด 2 — งวดที่หนักที่สุดด้านเอกสาร และเป็นที่อยู่ของ <strong>Fit/Gap</strong> · ใช้เป็น “พิมพ์เขียว” ก่อนลงมือ build</p>
+  <table class="smtbl">
+    <tbody>
+      <tr><th>รหัส</th><th>เอกสาร (คลิกเพื่อเปิด template เต็ม)</th><th>ใช้ตอนไหน / ทำไม</th></tr>
+      <tr><td>M2-01</td><td><a class="dl" href="templates/M2-01.html"><strong>Fit/Gap Analysis Report</strong> (เพิ่มจากบริบทเรา)</a></td><td>สรุปว่า HIS เดิมตอบ TOR แค่ไหน → ตัดสินใจ Config/Develop</td></tr>
+      <tr><td>M2-02</td><td><a class="dl" href="templates/M2-02.html">Requirement Traceability Matrix (RTM)</a></td><td>สอบทานว่าทุกข้อ TOR ถูกออกแบบ→สร้าง→ทดสอบครบ</td></tr>
+      <tr><td>M2-03</td><td><a class="dl" href="templates/M2-03.html">Workflow Diagram (As-is / To-be)</a></td><td>เห็นกระบวนการก่อน-หลังเปลี่ยนระบบ</td></tr>
+      <tr><td>M2-04</td><td><a class="dl" href="templates/M2-04.html">System Requirement Specification (SRS)</a></td><td>รายการ requirement ทั้งหมด ใช้เป็นฐานพัฒนา/ทดสอบ</td></tr>
+      <tr><td>M2-05</td><td><a class="dl" href="templates/M2-05.html">Business Process Mapping (BPM)</a></td><td>ผูก requirement กับกระบวนการธุรกิจจริง</td></tr>
+      <tr><td>M2-06</td><td><a class="dl" href="templates/M2-06.html">Data Mapping</a></td><td>จับคู่ field ระหว่างระบบที่เชื่อมกัน</td></tr>
+      <tr><td>M2-07</td><td><a class="dl" href="templates/M2-07.html">User Authorization Matrix</a></td><td>กำหนดสิทธิ์ใคร-ทำอะไรได้ (รองรับ HA)</td></tr>
+      <tr><td>M2-08</td><td><a class="dl" href="templates/M2-08.html">API Specification</a></td><td>สัญญา interface กับ HAIT Plus/SAP/PACS/LIS</td></tr>
+      <tr><td>M2-09</td><td><a class="dl" href="templates/M2-09.html">Migration Data Mapping</a></td><td>แผนที่ field ข้อมูลเดิม → โครงสร้างใหม่</td></tr>
+      <tr><td>M2-10</td><td><a class="dl" href="templates/M2-10.html">Technical Specification</a></td><td>สเปกเทคนิค (OS/DB/security) ตามภาคผนวก ข</td></tr>
+      <tr><td>M2-11</td><td><a class="dl" href="templates/M2-11.html">Data Dictionary</a></td><td>นิยามทุก field — ชนิด/ความหมาย/ค่าที่ยอมรับ</td></tr>
+      <tr><td>M2-12</td><td><a class="dl" href="templates/M2-12.html">System Architecture</a></td><td>ภาพสถาปัตยกรรมรวม + การเชื่อมต่อ</td></tr>
+      <tr><td>M2-13</td><td><a class="dl" href="templates/M2-13.html">Database Schema Design</a></td><td>โครงสร้างตาราง/ความสัมพันธ์ (ERD)</td></tr>
+    </tbody>
+  </table>
+
+  <details class="doc" open><summary><span class="code">M2-01</span> Fit/Gap Analysis Report ★</summary>
+    <div class="body">
+      <div class="meta"><span class="chip when">ใช้: หลัง Fit/Gap Workshop — ตัดสินใจ Config vs Develop</span><span class="chip who">ผู้จัดทำ: System Analyst + ทีม HIS เดิม</span></div>
+      <strong>วัตถุประสงค์:</strong> เอกสารหัวใจของบริบทเรา — เทียบ requirement TOR กับความสามารถ HIS เดิม จัดประเภทผล แล้วประเมิน effort
+      <p class="legend">ผล: <span class="badge b-fit">Fit</span> มีอยู่แล้ว · <span class="badge b-cfg">Config</span> ตั้งค่าได้ · <span class="badge b-par">Partial</span> มีบางส่วน · <span class="badge b-gap">Gap</span> ต้องสร้างใหม่</p>
+      <div class="sample-label">ตัวอย่างตาราง Fit/Gap</div>
+      <table class="smtbl">
+        <tbody>
+          <tr><th>Req ID</th><th>ความต้องการ (TOR)</th><th>ระบบเดิมทำได้?</th><th>ผล</th><th>Effort</th><th>การดำเนินการ</th></tr>
+          <tr><td>1.1.1</td><td>ลงทะเบียนผู้ป่วยใหม่ + ออก HN</td><td>มีครบ</td><td><span class="badge b-fit">Fit</span></td><td>-</td><td>ทดสอบยืนยัน</td></tr>
+          <tr><td>1.2.6</td><td>คัดกรอง Recall ผู้ป่วยทันตกรรม 3/6 เดือน</td><td>มีระบบนัด แต่ไม่มี logic Recall</td><td><span class="badge b-par">Partial</span></td><td>8 md</td><td>ต่อยอด rule engine</td></tr>
+          <tr><td>1.11.x</td><td>แจ้งเตือนนัดผ่าน LINE/SMS</td><td>ไม่มี</td><td><span class="badge b-gap">Gap</span></td><td>15 md</td><td>พัฒนาใหม่ + เชื่อม API</td></tr>
+          <tr><td>ผนวก ก-Consent</td><td>e-Consent ลายเซ็นดิจิทัล</td><td>ไม่มี</td><td><span class="badge b-gap">Gap</span></td><td>20 md</td><td>พัฒนาโมดูลใหม่</td></tr>
+          <tr><td>ผนวก ข</td><td>รองรับ PostgreSQL</td><td>เดิมใช้ได้ ตั้งค่าได้</td><td><span class="badge b-cfg">Config</span></td><td>2 md</td><td>ปรับ config</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <details class="doc"><summary><span class="code">M2-04</span> System Requirement Specification (SRS)</summary>
+    <div class="body">
+      <div class="meta"><span class="chip when">ใช้: ฐานของการ build + test ทั้งหมด</span><span class="chip who">ผู้จัดทำ: System Analyst</span><span class="chip iso">ISO 29110: SI.2 Requirements</span></div>
+      <strong>วัตถุประสงค์:</strong> รวบรวม requirement ทั้งหมด (Functional + Non-functional) ให้ทดสอบได้และอ้างอิงได้
+      <div class="sample-label">ตัวอย่างรายการ Functional Requirement</div>
+      <table class="smtbl">
+        <tbody>
+          <tr><th>FR-ID</th><th>โมดูล</th><th>รายละเอียด</th><th>Priority</th><th>เกณฑ์ยอมรับ</th></tr>
+          <tr><td>FR-OPD-012</td><td>ผู้ป่วยนอก</td><td>ระบบต้องแสดงประวัติแพ้ยาเป็น Pop-up สีแดงก่อนสั่งยา</td><td>Must</td><td>เมื่อเปิดเวชระเบียนผู้แพ้ยา → แสดงเตือนทุกครั้ง</td></tr>
+          <tr><td>FR-APPT-003</td><td>นัดหมาย</td><td>ระบบต้องแจ้งเตือนล่วงหน้า 24 ชม. ผ่าน SMS/LINE</td><td>Should</td><td>ส่งสำเร็จ ≥ 95% ภายในเวลาที่กำหนด</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <details class="doc"><summary><span class="code">M2-07</span> User Authorization Matrix (รองรับ HA)</summary>
+    <div class="body">
+      <div class="meta"><span class="chip when">ใช้: ออกแบบสิทธิ์ก่อน build + ใช้ตรวจ HA</span><span class="chip who">ผู้จัดทำ: SA + Security</span><span class="chip iso">HA: การควบคุมการเข้าถึง</span></div>
+      <strong>วัตถุประสงค์:</strong> กำหนดว่า role ไหนเข้าถึง/ทำอะไรได้ (C-R-U-D) — ป้องกันการเข้าถึงข้อมูลผู้ป่วยเกินสิทธิ์
+      <div class="sample-label">ตัวอย่าง Matrix (C=สร้าง R=อ่าน U=แก้ D=ลบ)</div>
+      <table class="smtbl">
+        <tbody>
+          <tr><th>ฟังก์ชัน</th><th>ทันตแพทย์</th><th>นักศึกษา</th><th>เวชระเบียน</th><th>เภสัช</th><th>การเงิน</th></tr>
+          <tr><td>เวชระเบียนผู้ป่วย</td><td>R,U</td><td>R</td><td>C,R,U</td><td>R</td><td>R</td></tr>
+          <tr><td>สั่งยา/ใบสั่งยา</td><td>C,R,U</td><td>C (รอ approve)</td><td>-</td><td>R,U</td><td>-</td></tr>
+          <tr><td>เก็บเงิน/ใบเสร็จ</td><td>-</td><td>-</td><td>-</td><td>-</td><td>C,R,U</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <details class="doc"><summary><span class="code">M2-08</span> API Specification (เชื่อม HAIT Plus / SAP / PACS / LIS)</summary>
+    <div class="body">
+      <div class="meta"><span class="chip when">ใช้: ก่อนพัฒนา Integration (M3) — ต้อง sync ทีม HIS เดิม</span><span class="chip who">ผู้จัดทำ: System Engineer + ทีม HIS เดิม</span></div>
+      <strong>วัตถุประสงค์:</strong> สัญญา (contract) ของแต่ละ interface — ระบุ endpoint, parameter, รูปแบบข้อมูล เพื่อให้ build/test ได้แม้ทีมเดิมไม่ว่าง (ทำ mock ได้)
+      <div class="sample-label">ตัวอย่างสเปก endpoint</div>
+      <div class="sample">GET /api/v1/patient/{hn}          (ดึงข้อมูลผู้ป่วยจาก HAIT Plus)
+Header: Authorization: Bearer &lt;token&gt;
+Response 200:
+{
+  "hn": "0000123456",
+  "name": "นายทดสอบ ระบบ",
+  "allergies": ["Penicillin"],
+  "lastVisit": "2026-05-30"
+}
+Error: 404 = ไม่พบ HN, 401 = token ไม่ถูกต้อง
+SLA: ตอบกลับ &lt; 2 วินาที, Auth: OAuth2</div>
+    </div>
+  </details>
+
+  <details class="doc"><summary><span class="code">M2-09</span> Migration Data Mapping</summary>
+    <div class="body">
+      <div class="meta"><span class="chip when">ใช้: ก่อนสร้าง ETL (M3) — ต้อง sync ทีม HIS เดิม</span><span class="chip who">ผู้จัดทำ: Sr. Data Engineer + ทีม HIS เดิม</span></div>
+      <strong>วัตถุประสงค์:</strong> แผนที่ field จากฐานข้อมูลเดิม → โครงสร้างใหม่ พร้อมกฎการแปลง เพื่อย้ายข้อมูลไม่ตกหล่น
+      <div class="sample-label">ตัวอย่างตาราง Mapping</div>
+      <table class="smtbl">
+        <tbody>
+          <tr><th>ตาราง/Field เดิม</th><th>→ Field ใหม่</th><th>กฎการแปลง</th><th>หมายเหตุ</th></tr>
+          <tr><td>PATIENT.HN (char 7)</td><td>patient.hn (varchar 10)</td><td>เติม 0 ข้างหน้าให้ครบ 10 หลัก</td><td>คีย์หลัก</td></tr>
+          <tr><td>PATIENT.SEX (1/2)</td><td>patient.gender (M/F)</td><td>1→M, 2→F</td><td>map ค่า</td></tr>
+          <tr><td>VISIT.DATE (DD/MM/พ.ศ.)</td><td>visit.visit_date (ISO)</td><td>แปลง พ.ศ.→ค.ศ., format ISO</td><td>ระวังปีไทย</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <details class="doc"><summary><span class="code">M2-11</span> Data Dictionary</summary>
+    <div class="body">
+      <div class="meta"><span class="chip when">ใช้: คู่กับ DB Schema — อ้างอิงตลอด build/บำรุงรักษา</span><span class="chip who">ผู้จัดทำ: DB Analyst</span></div>
+      <strong>วัตถุประสงค์:</strong> นิยามทุก field ให้ทีมเข้าใจตรงกัน ลดความผิดพลาดตอนพัฒนา/migrate
+      <div class="sample-label">ตัวอย่าง</div>
+      <table class="smtbl">
+        <tbody>
+          <tr><th>ตาราง</th><th>Field</th><th>ชนิด</th><th>Null?</th><th>ความหมาย / ค่าที่ยอมรับ</th></tr>
+          <tr><td>patient</td><td>hn</td><td>varchar(10)</td><td>No</td><td>เลขประจำตัวผู้ป่วย (Primary Key)</td></tr>
+          <tr><td>patient</td><td>gender</td><td>char(1)</td><td>No</td><td>M = ชาย, F = หญิง</td></tr>
+          <tr><td>appointment</td><td>status</td><td>varchar(15)</td><td>No</td><td>booked / confirmed / cancelled / done</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <details class="doc"><summary><span class="code">M2-13</span> Database Schema Design (ERD)</summary>
+    <div class="body">
+      <div class="meta"><span class="chip when">ใช้: ก่อนสร้างฐานข้อมูลจริง</span><span class="chip who">ผู้จัดทำ: DB Designer</span></div>
+      <strong>วัตถุประสงค์:</strong> โครงสร้างตารางและความสัมพันธ์ — ฐานของการสร้าง DB และ migrate
+      <div class="sample-label">ตัวอย่าง ERD (text)</div>
+      <div class="sample">patient (hn PK, name, gender, birthdate, phone)
+   │ 1
+   │
+   │ N
+visit (visit_id PK, hn FK→patient, visit_date, clinic_id)
+   │ 1
+   │ N
+treatment (tx_id PK, visit_id FK→visit, tooth_no, dx_code, fee)
+   │ N
+   │ 1
+appointment (appt_id PK, hn FK→patient, appt_date, status)</div>
+    </div>
+  </details>
+  <p class="legend">✅ เอกสาร M2 ทั้ง 13 ฉบับมี template เต็มแยกไฟล์แล้ว — คลิกชื่อในตารางด้านบนเพื่อเปิด (การ์ดข้างบนแสดงเฉพาะตัวอย่างย่อบางฉบับ)</p>
+</section>
+
+<!-- ===================== M3 ===================== -->
+<section id="m3" class="h-m3">
+  <h2><span class="num">④</span>งวด M3 — ทดสอบ + ฝึกอบรม <small style="color:var(--muted);font-weight:400">(ส่งภายใน 18/03/2027 · 40%)</small></h2>
+  <p class="legend">TOR ข้อ 8 งวด 3 + ข้อ 7 (อบรม) — เอกสารพิสูจน์ว่า “ระบบใช้งานได้จริงและคนใช้เป็น”</p>
+  <table class="smtbl">
+    <tbody>
+      <tr><th>รหัส</th><th>เอกสาร (คลิกเพื่อเปิด template เต็ม)</th><th>ใช้ตอนไหน / ทำไม</th></tr>
+      <tr><td>M3-01</td><td><a class="dl" href="templates/M3-01.html">Test Cases / Test Scripts</a></td><td>ใช้รันทดสอบจริง อ้างกลับไป SRS/RTM</td></tr>
+      <tr><td>M3-02</td><td><a class="dl" href="templates/M3-02.html">SIT Report (Integration)</a></td><td>พิสูจน์ทุก interface ทำงาน</td></tr>
+      <tr><td>M3-03</td><td><a class="dl" href="templates/M3-03.html">UAT Plan + ใบลงนามยอมรับ (Sign-off)</a></td><td>Process Owner ยอมรับ → เงื่อนไขเบิกงวด</td></tr>
+      <tr><td>M3-04</td><td><a class="dl" href="templates/M3-04.html">Master Data Setup Document</a></td><td>บันทึกค่า master ที่ตั้ง (สิทธิ, คลินิก, รายการยา)</td></tr>
+      <tr><td>M3-05</td><td><a class="dl" href="templates/M3-05.html">Data Migration Result / Reconciliation Report</a></td><td>ยืนยันย้ายข้อมูลครบถ้วน-ถูกต้อง</td></tr>
+      <tr><td>M3-06</td><td><a class="dl" href="templates/M3-06.html">คู่มือผู้ใช้ (User Manual) รายบทบาท</a></td><td>ส่งมอบ + ใช้อบรม 4 กลุ่ม</td></tr>
+      <tr><td>M3-07</td><td><a class="dl" href="templates/M3-07.html">เอกสารฝึกอบรม + ใบลงทะเบียนผู้เข้าอบรม</a></td><td>หลักฐานอบรมครบตาม TOR ข้อ 7.6</td></tr>
+      <tr><td>M3-08</td><td><a class="dl" href="templates/M3-08.html">E2E Test Report</a></td><td>พิสูจน์ flow ครบตั้งแต่ต้นจนจบ</td></tr>
+    </tbody>
+  </table>
+
+  <details class="doc"><summary><span class="code">M3-01</span> Test Case / Test Script</summary>
+    <div class="body">
+      <div class="meta"><span class="chip when">ใช้: ตอนรันทดสอบ SIT/UAT</span><span class="chip who">ผู้จัดทำ: QA</span></div>
+      <strong>วัตถุประสงค์:</strong> ขั้นตอนทดสอบที่ทำซ้ำได้ + ผลคาดหวัง อ้างกลับ FR-ID เพื่อปิด RTM
+      <div class="sample-label">ตัวอย่าง Test Case</div>
+      <div class="sample">TC-OPD-012-01   อ้างอิง: FR-OPD-012 (เตือนแพ้ยา)
+Pre-condition: ผู้ป่วย HN 0000123456 มีประวัติแพ้ Penicillin
+ขั้นตอน:
+  1) เปิดเวชระเบียน HN 0000123456
+  2) สั่งยา Amoxicillin
+ผลคาดหวัง: แสดง Pop-up สีแดง "ผู้ป่วยแพ้ยากลุ่ม Penicillin"
+ผลจริง: __________   สถานะ: [ ] Pass [ ] Fail
+Defect (ถ้ามี): ____________________________</div>
+    </div>
+  </details>
+
+  <details class="doc"><summary><span class="code">M3-03</span> UAT Sign-off (ใบลงนามยอมรับ — Process Owner)</summary>
+    <div class="body">
+      <div class="meta"><span class="chip when">ใช้: ปิดงวด M3 — เป็นเงื่อนไขเบิกเงิน 40%</span><span class="chip who">ลงนาม: Business Process Owner</span></div>
+      <strong>วัตถุประสงค์:</strong> หลักฐานว่าเจ้าของกระบวนการทดสอบแล้วยอมรับ — กันข้อโต้แย้งตอนตรวจรับ
+      <div class="sample-label">ตัวอย่างแบบฟอร์ม</div>
+      <div class="sample">รายงานผล UAT — โมดูล: ระบบผู้ป่วยนอก
+จำนวน Test Case: 120   Pass: 118   Fail: 2
+Defect คงเหลือ: Critical 0 | High 0 | Medium 2 (ยอมรับได้)
+สรุป: [✔] ยอมรับ  [ ] ยอมรับมีเงื่อนไข  [ ] ไม่ยอมรับ
+ลงนาม Process Owner: ________  วันที่: __/__/____
+ลงนามผู้รับจ้าง: ____________</div>
+    </div>
+  </details>
+
+  <details class="doc"><summary><span class="code">M3-05</span> Data Migration Reconciliation Report</summary>
+    <div class="body">
+      <div class="meta"><span class="chip when">ใช้: หลัง migrate (rehearsal &amp; final)</span><span class="chip who">ผู้จัดทำ: Data Engineer</span></div>
+      <strong>วัตถุประสงค์:</strong> พิสูจน์ว่าข้อมูลย้ายครบ (นับ record) และถูกต้อง (sampling) ก่อน Go-Live
+      <div class="sample-label">ตัวอย่างตารางกระทบยอด</div>
+      <table class="smtbl">
+        <tbody>
+          <tr><th>ตาราง</th><th>เดิม (record)</th><th>ย้ายได้</th><th>ตกหล่น</th><th>ผล</th></tr>
+          <tr><td>patient</td><td>152,340</td><td>152,340</td><td>0</td><td><span class="badge b-fit">ผ่าน</span></td></tr>
+          <tr><td>visit</td><td>1,204,556</td><td>1,204,556</td><td>0</td><td><span class="badge b-fit">ผ่าน</span></td></tr>
+          <tr><td>treatment</td><td>3,560,120</td><td>3,560,118</td><td>2</td><td><span class="badge b-par">ตรวจซ้ำ</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <details class="doc"><summary><span class="code">M3-06</span> คู่มือผู้ใช้ (User Manual) รายบทบาท</summary>
+    <div class="body">
+      <div class="meta"><span class="chip when">ใช้: ส่งมอบ + ใช้อบรม 4 กลุ่ม</span><span class="chip who">ผู้จัดทำ: ทีมโครงการ</span></div>
+      <strong>วัตถุประสงค์:</strong> ให้ผู้ใช้แต่ละบทบาทใช้งานเองได้ + ใช้เป็นสื่ออบรม (ผู้บริหาร/Key-user/End-user/Process Owner)
+      <div class="sample-label">ตัวอย่างสารบัญคู่มือ (ทันตแพทย์)</div>
+      <div class="sample">1. เข้าสู่ระบบ &amp; การยืนยันตัวตน
+2. ค้นหา/เปิดเวชระเบียนผู้ป่วย
+3. บันทึกการตรวจ &amp; แผนการรักษา (Dental Chart)
+4. สั่งยา / สั่ง Lab / สั่ง X-ray
+5. การนัดหมาย &amp; Recall
+6. การออกใบรับรอง/เอกสาร
+ภาคผนวก: รหัสข้อผิดพลาด &amp; การติดต่อ Support</div>
+    </div>
+  </details>
+</section>
+
+<!-- ===================== M4 ===================== -->
+<section id="m4" class="h-m4">
+  <h2><span class="num">⑤</span>งวด M4 — ติดตั้งใช้งานจริง (Go-Live) <small style="color:var(--muted);font-weight:400">(ส่งภายใน 07/04/2027 · 20%)</small></h2>
+  <p class="legend">TOR ข้อ 8 งวด 4 — เอกสารปิดโครงการ + ส่งมอบทรัพย์สิน</p>
+  <table class="smtbl">
+    <tbody>
+      <tr><th>รหัส</th><th>เอกสาร (คลิกเพื่อเปิด template เต็ม)</th><th>ใช้ตอนไหน / ทำไม</th></tr>
+      <tr><td>M4-01</td><td><a class="dl" href="templates/M4-01.html">Go-Live / Cutover Plan &amp; Checklist</a></td><td>คุมขั้นตอนวันขึ้นระบบจริง (rollback ได้)</td></tr>
+      <tr><td>M4-02</td><td><a class="dl" href="templates/M4-02.html">Deployment / Installation Document</a></td><td>บันทึกการติดตั้ง Production (ทำซ้ำได้)</td></tr>
+      <tr><td>M4-03</td><td><a class="dl" href="templates/M4-03.html">Source Code + เอกสารส่งมอบ Source</a></td><td>ส่งมอบกรรมสิทธิ์ตาม TOR ข้อ 6.3</td></tr>
+      <tr><td>M4-04</td><td><a class="dl" href="templates/M4-04.html">As-built / System Documentation</a></td><td>เอกสารระบบตามที่ติดตั้งจริง ใช้บำรุงรักษา</td></tr>
+      <tr><td>M4-05</td><td><a class="dl" href="templates/M4-05.html">คู่มือผู้ดูแลระบบ (Admin Manual)</a></td><td>ให้ทีม IT รพ. ดูแลระบบต่อเองได้</td></tr>
+      <tr><td>M4-06</td><td><a class="dl" href="templates/M4-06.html">ใบส่งมอบงาน / ใบตรวจรับ (Acceptance)</a></td><td>ปิดงวด — เงื่อนไขเบิกเงินงวดสุดท้าย</td></tr>
+      <tr><td>M4-07</td><td><a class="dl" href="templates/M4-07.html">เอกสารการรับประกัน + SLA</a></td><td>เริ่มนับ warranty 2 ปี</td></tr>
+    </tbody>
+  </table>
+
+  <details class="doc"><summary><span class="code">M4-01</span> Go-Live / Cutover Checklist</summary>
+    <div class="body">
+      <div class="meta"><span class="chip when">ใช้: วันขึ้นระบบจริง — ทีม HIS เดิม standby</span><span class="chip who">ผู้จัดทำ: PM + System Engineer</span></div>
+      <strong>วัตถุประสงค์:</strong> รายการขั้นตอน cutover ที่ติ๊กได้ พร้อมจุดตัดสินใจ Go/No-Go และแผนถอย (rollback)
+      <div class="sample-label">ตัวอย่าง Checklist</div>
+      <div class="sample">[ ] T-1: Backup ระบบเดิมครบถ้วน + ตรวจสอบ
+[ ] T-0: ปิดระบบเดิม / freeze ข้อมูล
+[ ] Migrate ข้อมูลรอบสุดท้าย + reconciliation ผ่าน
+[ ] Smoke test 10 ฟังก์ชันหลัก ผ่าน
+[ ] เปิดให้ผู้ใช้ (จุดลงทะเบียน/ห้องยา/การเงิน)
+[ ] ★ Go/No-Go Decision: ลงนาม PM + เจ้าของงาน
+[ ] Rollback plan: ถ้าล้มเหลว → กลับระบบเดิมภายใน 2 ชม.</div>
+    </div>
+  </details>
+
+  <details class="doc"><summary><span class="code">M4-03</span> รายการส่งมอบ Source Code</summary>
+    <div class="body">
+      <div class="meta"><span class="chip when">ใช้: ส่งมอบปิดโครงการ</span><span class="chip who">ผู้จัดทำ: Dev Lead</span></div>
+      <strong>วัตถุประสงค์:</strong> ส่งมอบกรรมสิทธิ์ซอฟต์แวร์ตาม TOR — ให้ รพ. นำไปดูแล/พัฒนาต่อได้
+      <div class="sample-label">ตัวอย่างรายการส่งมอบ</div>
+      <div class="sample">[ ] Source code ทั้งหมด (web + mobile 3 apps) + repository
+[ ] Configuration Table + Config Document
+[ ] Database script (schema + master data)
+[ ] Build/Deploy instruction
+[ ] เอกสาร API / Integration
+[ ] License/สิทธิ์ที่เกี่ยวข้อง
+ส่งมอบบน: [ ] Storage  [ ] Git  จำนวน ___ ชุด
+ลงนามผู้รับมอบ (IT รพ.): __________</div>
+    </div>
+  </details>
+
+  <details class="doc"><summary><span class="code">M4-06</span> ใบส่งมอบงาน / ใบตรวจรับ (Acceptance)</summary>
+    <div class="body">
+      <div class="meta"><span class="chip when">ใช้: ปิดงวดสุดท้าย — เบิกเงิน 20%</span><span class="chip who">ลงนาม: คณะกรรมการตรวจรับ</span></div>
+      <strong>วัตถุประสงค์:</strong> เอกสารทางการรับรองว่างานครบถ้วนตามสัญญา → เริ่มนับประกัน 2 ปี
+      <div class="sample-label">ตัวอย่างแบบฟอร์ม</div>
+      <div class="sample">ใบส่งมอบงานงวดที่ 4 (สุดท้าย)
+โครงการ: ระบบจัดเก็บข้อมูลสารสนเทศด้านทันตกรรม
+รายการส่งมอบ: [✔] ระบบ Go-Live [✔] Source code
+              [✔] คู่มือ [✔] เอกสาร As-built
+ผลตรวจรับ: [ ] ครบถ้วน  [ ] มีข้อแก้ไข
+เริ่มประกัน: 08/04/2027  สิ้นสุด: 07/04/2029
+ลงนามผู้รับจ้าง: _______ / ประธานกรรมการตรวจรับ: _______</div>
+    </div>
+  </details>
+</section>
+
+<footer>
+  หมายเหตุ: ตัวอย่างในเอกสารนี้เป็น “โครงร่าง/sample” เพื่อให้เห็นหน้าตาเอกสารจริง — ตัวเลข/ฟิลด์เป็นการสมมุติ ·
+  ก่อนใช้จริงควรปรับให้ตรง template มาตรฐานของหน่วยงานและทาน requirement กับ TOR ต้นฉบับอีกครั้ง
+</footer>
+
+</div>
+</body>
+</html>
