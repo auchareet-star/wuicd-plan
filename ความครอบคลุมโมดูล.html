@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module Coverage — ฐานมหิดล Phase 1 vs Phase 2 (ไม่มีฐาน) · DIS วลัยลักษณ์</title>
+<style>
+  :root{
+    --primary:#0d6e6e; --primary-dark:#0a5252; --accent:#e8743b;
+    --bg:#eef1f3; --card:#fff; --line:#d7dde2; --ink:#1f2d3d; --muted:#5b6b7b;
+    --a:#2e9e5b; --b:#d6453d; --warn:#c79500;
+  }
+  *{box-sizing:border-box}
+  body{font-family:"Sarabun","Segoe UI Thai","Leelawadee UI","Tahoma",sans-serif;
+    margin:0; background:var(--bg); color:var(--ink); line-height:1.6; font-size:14.5px}
+  .wrap{max-width:1120px; margin:0 auto; padding:26px 20px 80px}
+  .topnav{margin-bottom:12px; font-size:13px}
+  .topnav a{color:var(--primary-dark); text-decoration:none; font-weight:700}
+  header.cover{background:linear-gradient(135deg,#a8332c,#6f1f1a); color:#fff;
+    border-radius:16px; padding:26px 30px; box-shadow:0 10px 28px rgba(168,51,44,.28)}
+  header.cover .tag{font-size:12.5px; letter-spacing:1px; font-weight:800; opacity:.85}
+  header.cover h1{margin:5px 0 5px; font-size:23px}
+  header.cover .sub{font-size:14px; opacity:.93}
+  section{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:20px 24px; margin-top:18px; box-shadow:0 2px 8px rgba(31,45,61,.05)}
+  h2{font-size:18px; color:var(--primary-dark); margin:2px 0 12px; padding-bottom:7px; border-bottom:2px solid var(--line)}
+  h2 .n{display:inline-block; background:var(--primary); color:#fff; border-radius:7px; min-width:26px;
+    text-align:center; padding:1px 8px; margin-right:9px; font-size:14px}
+  h3{font-size:15.5px; margin:16px 0 6px}
+  .lead{color:var(--muted); font-size:13.5px; margin:0 0 10px}
+  p{margin:7px 0} ul,ol{margin:6px 0; padding-left:20px} li{margin:4px 0}
+  strong{color:var(--primary-dark)}
+  table{width:100%; border-collapse:collapse; margin:8px 0; font-size:13px}
+  th,td{border:1px solid var(--line); padding:7px 9px; text-align:left; vertical-align:top}
+  th{background:var(--primary); color:#fff; font-weight:600}
+  tbody tr:nth-child(even){background:#f7fafa}
+  .grpA th{background:var(--a)} .grpB th{background:var(--b)}
+  .star{color:var(--accent); font-weight:800}
+  .badge{display:inline-block; padding:1px 8px; border-radius:5px; font-size:11px; font-weight:700; color:#fff; white-space:nowrap}
+  .ba{background:var(--a)}.bb{background:var(--b)}.bv{background:var(--warn)}
+  .sum{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; margin:6px 0}
+  .sc{border:1px solid var(--line); border-radius:12px; padding:15px 16px; background:#fafcfc}
+  .sc .big{font-size:30px; font-weight:800; line-height:1}
+  .sc .lab{font-size:12.5px; color:var(--muted); margin-top:5px}
+  .sc.ta{border-top:4px solid var(--a)} .sc.ta .big{color:var(--a)}
+  .sc.tb{border-top:4px solid var(--b)} .sc.tb .big{color:var(--b)}
+  .bad{background:#fdecea; border-left:4px solid var(--b); border-radius:9px; padding:12px 15px; font-size:13.5px; margin:12px 0}
+  .bad b{color:#b3372e}
+  .warnbox{background:#fff4e5; border-left:4px solid #f0a14b; border-radius:9px; padding:12px 15px; font-size:13.5px; margin:12px 0}
+  .warnbox b{color:#b4651b}
+  .note{background:#eef7f7; border-left:4px solid var(--primary); border-radius:9px; padding:12px 15px; font-size:13.5px; margin:12px 0}
+  .opt{border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:9px; padding:12px 16px; margin:10px 0; background:#fffaf6}
+  .opt h4{margin:0 0 4px; font-size:14.5px; color:#b4530f}
+  footer{text-align:center; color:var(--muted); font-size:12.5px; margin-top:26px; padding-top:14px; border-top:1px solid var(--line)}
+  @media print{body{background:#fff} section,header.cover{box-shadow:none} .topnav{display:none}
+    th,td,.badge,header.cover,.sc{ -webkit-print-color-adjust:exact; print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topnav"><a href="index.html">🏠 หน้ารวม</a> · <a href="ปรับแผน-Dependency-มหิดล.html">⚠️ แผนปรับ Dependency</a> · <a href="แผนดำเนินงาน-FitGap-Develop.html">🗺️ แผนเดิม</a></div>
+
+  <header class="cover">
+    <div class="tag">SCOPE / MODULE COVERAGE · ฐานมหิดล Phase 1 vs Phase 2</div>
+    <h1>โมดูลที่ TOR วลัยลักษณ์ต้องส่ง — มี/ไม่มีฐานมหิดลให้ Fit/Gap</h1>
+    <div class="sub">Phase 2 ของมหิดล (ทำไม่ทัน + ยังไม่วางแผน) หลายตัวเป็นของบังคับใน TOR วลัยลักษณ์ → ไม่มีฐานให้ต่อยอด</div>
+  </header>
+
+  <!-- สรุป -->
+  <section>
+    <h2><span class="n">1</span>ใจความ: ส่วนหนึ่งของ scope “ไม่มีฐานให้ Fit/Gap”</h2>
+    <div class="bad"><b>🔴 ปัญหาใหม่:</b> โมเดล “เอา HIS มหิดลมา Fit/Gap แล้วปรับ” ใช้ได้เฉพาะโมดูลที่อยู่ใน <b>มหิดล Phase 1 (มีฐาน)</b> เท่านั้น · โมดูลใน <b>มหิดล Phase 2</b> (จุลชีววิทยา, พยาธิวิทยา, Dental Lab, ผ่าตัด+วิสัญญี, หอผู้ป่วยใน, เวชภัณฑ์ปลอดเชื้อ, ควบคุมการติดเชื้อ, MIS, ติดตามตัวชี้วัด, ประชาสัมพันธ์, Mobile) <b>ยังทำไม่เสร็จและยังไม่ได้วางแผน</b> → <b>ไม่มีฐานให้ต่อยอดเลย</b> ทั้งที่ TOR วลัยลักษณ์บังคับให้ส่ง</div>
+    <div class="sum">
+      <div class="sc ta"><div class="big">~20</div><div class="lab">โมดูล <b>Track A</b><br>มีฐาน Phase 1 → Fit/Gap ได้</div></div>
+      <div class="sc tb"><div class="big">11</div><div class="lab">โมดูล <b>Track B</b><br>ไม่มีฐาน → ต้อง Build ใหม่ / เจรจา</div></div>
+      <div class="sc tb"><div class="big">2</div><div class="lab">ในนั้นเป็น <b>หัวใจ</b><br>Dental Lab + Mobile 3 แอป</div></div>
+    </div>
+    <div class="warnbox"><b>⚠️ ผลต่อความพยายาม:</b> Track B = งานพัฒนาใหม่ (greenfield) ไม่ใช่ Fit/Gap — โดยทีม Dev 3 คนที่ยังไม่รู้สถาปัตยกรรมฐานมหิดล ภายใน deadline เดิม → <b>น่าจะเกินกำลัง</b> ต้องเพิ่มคน/เจรจาขอบเขต</div>
+  </section>
+
+  <!-- Track B (ไม่มีฐาน) -->
+  <section>
+    <h2><span class="n">2</span>Track B — โมดูลที่ “ไม่มีฐาน” (มหิดล Phase 2)</h2>
+    <p class="lead">ต้องตัดสินใจแนวทางทุกตัว — ค่าเริ่มต้นที่แนะนำคือ <b>Build ใหม่</b> เพราะรอ Mahidol Phase 2 (ยังไม่วางแผน) เสี่ยงเกินไปกับ deadline ที่ตายตัว</p>
+    <table>
+      <thead class="grpB"><tr><th style="width:24%">โมดูล</th><th style="width:11%">TOR ข้อ</th><th style="width:13%">ฐานมหิดล</th><th style="width:15%">แนวทางแนะนำ</th><th>หมายเหตุ / ความเสี่ยง</th></tr></thead>
+      <tbody>
+        <tr><td><span class="star">★</span> Dental Lab (ห้องปฏิบัติการทันตกรรม)</td><td>6.2.1 (8)</td><td><span class="badge bb">ไม่มี</span></td><td>Build ใหม่</td><td><b>หัวใจของ รพ.ทันตกรรม</b> — descope แทบไม่ได้ ต้องมีให้ทัน</td></tr>
+        <tr><td>จุลชีววิทยา (Microbiology)</td><td>6.2.1 (9)</td><td><span class="badge bb">ไม่มี</span></td><td>Build ใหม่ / เจรจา</td><td>เชื่อมกับ LIS — ต้องออกแบบ flow แลปใหม่</td></tr>
+        <tr><td>พยาธิวิทยา (Pathology)</td><td>6.2.1 (10)</td><td><span class="badge bb">ไม่มี</span></td><td>Build ใหม่ / เจรจา</td><td>เชื่อมกับ LIS</td></tr>
+        <tr><td>หน่วยเวชภัณฑ์ปลอดเชื้อ (CSSD)</td><td>6.2.1 (16)</td><td><span class="badge bb">ไม่มี</span></td><td>Build ใหม่ / เจรจา</td><td>—</td></tr>
+        <tr><td>ควบคุมการติดเชื้อ (IC)</td><td>6.2.1 (19)</td><td><span class="badge bb">ไม่มี</span></td><td>Build ใหม่ / เจรจา</td><td>ผูกกับ HA</td></tr>
+        <tr><td>ระบบติดตามตัวชี้วัด (KPI)</td><td>6.2.1 (20)</td><td><span class="badge bb">ไม่มี</span></td><td>Build ใหม่ / เจรจา</td><td>ผูกกับ HA / MIS</td></tr>
+        <tr><td>แจ้งข่าวสาร/ประชาสัมพันธ์ (PR)</td><td>6.2.1 (22)</td><td><span class="badge bb">ไม่มี</span></td><td>Build ใหม่</td><td>โมดูลเล็ก ทำใหม่ไม่ยาก</td></tr>
+        <tr><td>สารสนเทศเพื่อการบริหาร (MIS)</td><td>6.2.1 (25)</td><td><span class="badge bb">ไม่มี</span></td><td>Build ใหม่</td><td>ต้องรอข้อมูลจากโมดูลอื่นครบก่อน</td></tr>
+        <tr><td><span class="star">★</span> Mobile App (Patient/Student/Dentist)</td><td>6.2.3</td><td><span class="badge bb">ไม่มี</span></td><td>Build ใหม่</td><td><b>TOR บังคับ 3 แอป</b> — งานใหญ่ ต้องมีคนทำ mobile</td></tr>
+        <tr><td>ผ่าตัด + วิสัญญี (OR + Anesthesia)</td><td><span class="badge bv">ทาน TOR</span></td><td><span class="badge bb">ไม่มี</span></td><td>เจรจา / ยืนยัน scope</td><td>ยังไม่เห็นในรายการ 6.2.1 ที่อ่าน — ต้องทานว่าอยู่ในขอบเขตวลัยลักษณ์ไหม</td></tr>
+        <tr><td>หอผู้ป่วยใน (IPD)</td><td><span class="badge bv">ทาน TOR</span></td><td><span class="badge bb">ไม่มี</span></td><td>เจรจา / ยืนยัน scope</td><td>TOR เน้นผู้ป่วยนอก — ต้องทานว่ามี IPD ในขอบเขตไหม</td></tr>
+      </tbody>
+    </table>
+    <div class="warnbox"><b>หมายเหตุการ map:</b> 9 ตัวแรกยืนยันแล้วว่าอยู่ใน TOR วลัยลักษณ์ (ข้อ 6.2.1/6.2.3) · 2 ตัวล่าง (ผ่าตัด+วิสัญญี, หอผู้ป่วยใน) <b>ต้องทานกับ TOR ต้นฉบับ</b> ว่าอยู่ในขอบเขตหรือไม่ (ผมยังไม่เห็นชัดในรายการที่อ่าน)</div>
+  </section>
+
+  <!-- Track A -->
+  <section>
+    <h2><span class="n">3</span>Track A — โมดูลที่ “มีฐาน” Phase 1 (Fit/Gap ได้)</h2>
+    <p class="lead">โมดูลที่ (สันนิษฐานว่า) อยู่ในมหิดล Phase 1 → ใช้แนวทาง Fit/Gap ตาม baseline 11 พ.ย. 2026 ได้</p>
+    <table>
+      <thead class="grpA"><tr><th>โมดูล (TOR 6.2.1)</th><th>โมดูล (ต่อ)</th></tr></thead>
+      <tbody>
+        <tr><td>(1) เวชระเบียน</td><td>(14) ศูนย์สิทธิประโยชน์</td></tr>
+        <tr><td>(2) Patient bank + ติดตามการรักษา</td><td>(15) ศูนย์ส่งต่อผู้ป่วย</td></tr>
+        <tr><td>(3) ห้องจ่ายยา/ผู้ป่วยนอก</td><td>(17) คลังสินค้า/พัสดุ (Inventory)</td></tr>
+        <tr><td>(4) คลินิกทั่วไป</td><td>(18) บัญชีลูกหนี้</td></tr>
+        <tr><td>(5) การเงินผู้ป่วยนอก</td><td>(21) จัดการเรียกคิว</td></tr>
+        <tr><td>(6) ค่าตอบแทนแพทย์ (DF)</td><td>(23) Data Interface (เชื่อมระบบ)</td></tr>
+        <tr><td>(7) รังสีวิทยา</td><td>(24) บริหารบุคลากร</td></tr>
+        <tr><td>(11) นัดหมาย</td><td>(26) IAM (ตัวตน/สิทธิ์เข้าถึง)</td></tr>
+        <tr><td>(12) จัดตารางปฏิบัติงานแพทย์</td><td>(27) ขออนุมัติ (Request-Approve)</td></tr>
+        <tr><td>(13) เวชระเบียนอิเล็กทรอนิกส์/ภาพ</td><td>(28) ขอความยินยอม (Consent)</td></tr>
+      </tbody>
+    </table>
+    <div class="bad"><b>⚠️ ต้องยืนยัน:</b> รายการ Track A นี้เป็นการ <b>สันนิษฐาน</b> (เพราะไม่อยู่ในรายการ “ทำไม่ทัน” ของคุณ) — <b>ต้องขอ “รายการโมดูลที่อยู่ใน Phase 1 baseline จริง” จากทีมมหิดลเป็นลายลักษณ์</b> เพราะบางตัวอาจยังไม่เสร็จเหมือนกัน</div>
+  </section>
+
+  <!-- กลยุทธ์ 2 Track -->
+  <section>
+    <h2><span class="n">4</span>กลยุทธ์: แบ่ง scope เป็น 2 Track</h2>
+    <table>
+      <thead><tr><th style="width:14%">Track</th><th style="width:20%">แนวทาง</th><th>รายละเอียด</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge ba">Track A</span></td><td>Fit/Gap บนฐาน Phase 1</td><td>ทำตามแผนปรับ Dependency (Paper Fit/Gap → System Fit/Gap หลัง baseline 11 พ.ย.) — ดู <a href="ปรับแผน-Dependency-มหิดล.html">แผนปรับ</a></td></tr>
+        <tr><td><span class="badge bb">Track B</span></td><td>Build ใหม่ (greenfield)</td><td>ออกแบบ+พัฒนาเองตั้งแต่ต้น · <b>เริ่มออกแบบได้เลยไม่ต้องรอมหิดล</b> (เพราะไม่มีฐานอยู่แล้ว) · แต่ต้องการกำลัง Dev/Mobile เพิ่ม</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>ข้อสังเกตเชิงบวกของ Track B:</b> เพราะ “ไม่มีฐาน” อยู่แล้ว จึง <b>ไม่ติด dependency กับ baseline มหิดล</b> — ออกแบบ/เริ่ม build ได้ทันทีคู่ขนานกับ Track A · ปัญหาคือ “กำลังคน + เวลา” ไม่ใช่ “รอของ”</div>
+  </section>
+
+  <!-- ตัวเลือกตัดสินใจ -->
+  <section>
+    <h2><span class="n">5</span>ตัวเลือกที่ต้องเคาะกับวลัยลักษณ์ (Track B)</h2>
+    <div class="opt"><h4>ตัวเลือก 1 — Build เองทั้งหมดในกรอบเวลาเดิม</h4>
+      ต้อง <b>เพิ่มกำลัง Dev + คนทำ Mobile</b> อย่างมีนัยสำคัญ · เสี่ยงคุณภาพ/เวลาเพราะทีมไม่รู้ฐานเดิม · เหมาะถ้าเพิ่มทรัพยากรได้จริง</div>
+    <div class="opt"><h4>ตัวเลือก 2 — เจรจาส่งมอบเป็นเฟส (Phased delivery)</h4>
+      ส่ง Track A + Dental Lab + Mobile (หัวใจ) ก่อนตามกำหนด · โมดูลรอง (Micro/Patho/CSSD/IC/KPI/PR/MIS) เลื่อนเป็นเฟสถัดไป · <b>ต้องแก้ไข/ตกลงในสัญญา</b></div>
+    <div class="opt"><h4>ตัวเลือก 3 — ผูกกับ Mahidol Phase 2</h4>
+      ขอให้มหิดลวางแผน Phase 2 ให้เสร็จทันวลัยลักษณ์ · <b>เสี่ยงสูงสุด</b> เพราะ Phase 2 ยังไม่วางแผน + มหิดลยังติด Phase 1 — ไม่แนะนำให้พึ่งเป็นทางหลัก</div>
+    <div class="warnbox"><b>คำแนะนำ:</b> ผสม <b>ตัวเลือก 1 (สำหรับหัวใจ: Dental Lab + Mobile) + ตัวเลือก 2 (เจรจาเฟสสำหรับโมดูลรอง)</b> — และยกเรื่องนี้เข้า escalation memo คู่กับเรื่อง baseline date</div>
+  </section>
+
+  <!-- next -->
+  <section>
+    <h2><span class="n">6</span>สิ่งที่ต้องทำต่อทันที</h2>
+    <ol>
+      <li><b>ขอรายการ “Phase 1 baseline modules” จริงจากมหิดล</b> เป็นลายลักษณ์ → ยืนยัน Track A/B ให้แน่ (ตอนนี้ Track A ยังเป็นการสันนิษฐาน)</li>
+      <li><b>ทาน TOR ต้นฉบับ</b> ว่า “ผ่าตัด+วิสัญญี” และ “หอผู้ป่วยใน” อยู่ในขอบเขตวลัยลักษณ์หรือไม่</li>
+      <li><b>เพิ่มประเด็น Track B เข้า escalation memo</b> (คู่กับ baseline date) — แจ้งว่าส่วนนี้ไม่มีฐาน ต้อง build ใหม่ + ขอตัดสินใจทรัพยากร/เฟส</li>
+      <li><b>ประเมิน effort Track B</b> (โดยเฉพาะ Dental Lab + Mobile 3 แอป) เพื่อรู้ว่าต้องเพิ่มคนกี่คน</li>
+      <li><b>เริ่มออกแบบ Track B คู่ขนานได้เลย</b> (ไม่ต้องรอ baseline) — ใช้ req วลัยลักษณ์ตรงๆ</li>
+    </ol>
+  </section>
+
+  <footer>เอกสารวิเคราะห์ scope ภายใน · รายการ Track A เป็นการสันนิษฐาน—ต้องยืนยันกับมหิดล · ทานรายการโมดูล + ขอบเขตกับ TOR ต้นฉบับ (ไฟล์สแกน) ก่อนใช้จริง</footer>
+</div>
+</body>
+</html>
