@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สอบทานเอกสารส่งมอบ ↔ TOR (Traceability) · DIS</title>
+<style>
+  :root{
+    --primary:#0d6e6e; --primary-dark:#0a5252; --accent:#e8743b;
+    --bg:#eef1f3; --card:#fff; --line:#d7dde2; --ink:#1f2d3d; --muted:#5b6b7b;
+    --tor:#2e9e5b; --base:#d98c00; --add:#8e44ad;
+    --m1:#3b82c4; --m2:#0d6e6e; --m3:#c79500; --m4:#d6453d;
+  }
+  *{box-sizing:border-box}
+  body{font-family:"Sarabun","Segoe UI Thai","Leelawadee UI","Tahoma",sans-serif;
+    margin:0; background:var(--bg); color:var(--ink); line-height:1.6; font-size:14.5px}
+  .wrap{max-width:1080px; margin:0 auto; padding:26px 20px 80px}
+  .topnav{margin-bottom:12px; font-size:13px}
+  .topnav a{color:var(--primary-dark); text-decoration:none; font-weight:700}
+  header.cover{background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:#fff;
+    border-radius:16px; padding:26px 30px; box-shadow:0 10px 28px rgba(13,110,110,.25)}
+  header.cover .tag{font-size:12.5px; letter-spacing:1px; font-weight:800; opacity:.85}
+  header.cover h1{margin:5px 0 5px; font-size:24px}
+  header.cover .sub{font-size:14px; opacity:.92}
+  section{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:20px 24px; margin-top:18px; box-shadow:0 2px 8px rgba(31,45,61,.05)}
+  h2{font-size:18px; color:var(--primary-dark); margin:2px 0 10px; padding-bottom:7px; border-bottom:2px solid var(--line)}
+  h2 .mtag{display:inline-block; color:#fff; border-radius:6px; padding:1px 10px; margin-right:9px; font-size:14px}
+  .mt1{background:var(--m1)}.mt2{background:var(--m2)}.mt3{background:var(--m3)}.mt4{background:var(--m4)}
+  .lead{color:var(--muted); font-size:13.5px; margin:0 0 12px}
+  table{width:100%; border-collapse:collapse; margin:4px 0; font-size:13px}
+  th,td{border:1px solid var(--line); padding:7px 9px; text-align:left; vertical-align:top}
+  th{background:var(--primary); color:#fff; font-weight:600}
+  tbody tr:nth-child(even){background:#f7fafa}
+  td.code{font-family:"Cascadia Code","Consolas",monospace; font-size:11.5px; white-space:nowrap; font-weight:700}
+  td.code a{color:var(--primary-dark); text-decoration:none; border-bottom:1px dashed var(--primary)}
+  td.code a:hover{color:var(--accent)}
+  .src{display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:700; color:#fff; white-space:nowrap}
+  .s-tor{background:var(--tor)}.s-base{background:var(--base)}.s-add{background:var(--add)}
+  .torref{font-family:"Cascadia Code","Consolas",monospace; font-size:11.5px; color:#b4530f; font-weight:700}
+  /* summary */
+  .sum{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:6px 0 4px}
+  .sc{border:1px solid var(--line); border-radius:11px; padding:14px 16px; text-align:center; background:#fafcfc}
+  .sc .big{font-size:30px; font-weight:800; line-height:1}
+  .sc .lab{font-size:12.5px; color:var(--muted); margin-top:5px}
+  .sc.t-tor{border-top:4px solid var(--tor)} .sc.t-tor .big{color:var(--tor)}
+  .sc.t-base{border-top:4px solid var(--base)} .sc.t-base .big{color:var(--base)}
+  .sc.t-add{border-top:4px solid var(--add)} .sc.t-add .big{color:var(--add)}
+  .sc.t-all{border-top:4px solid var(--primary)} .sc.t-all .big{color:var(--primary-dark)}
+  .legend{display:flex; flex-wrap:wrap; gap:16px; font-size:12.5px; color:var(--muted); margin-top:10px}
+  .legend b{font-weight:700}
+  .warn{background:#fff4e5; border-left:4px solid #f0a14b; border-radius:9px; padding:12px 15px; font-size:13.5px; margin:14px 0}
+  .warn b{color:#b4651b}
+  .note{background:#eef7f7; border-left:4px solid var(--primary); border-radius:9px; padding:12px 15px; font-size:13.5px; margin:12px 0}
+  footer{text-align:center; color:var(--muted); font-size:12.5px; margin-top:26px; padding-top:14px; border-top:1px solid var(--line)}
+  @media print{body{background:#fff} section,header.cover{box-shadow:none} .topnav{display:none}
+    th,td,.src,header.cover,.sc{ -webkit-print-color-adjust:exact; print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topnav"><a href="index.html">🏠 หน้ารวม</a> · <a href="เอกสารส่งมอบรายงวด.html">📋 เอกสารส่งมอบ</a> · <a href="แผนดำเนินงาน-FitGap-Develop.html">🗺️ แผนดำเนินงาน</a></div>
+
+  <header class="cover">
+    <div class="tag">TRACEABILITY · สอบทานที่มาของเอกสาร</div>
+    <h1>เอกสารส่งมอบ 38 ฉบับ ↔ อ้างอิง TOR</h1>
+    <div class="sub">โครงการ Dental Information System · ม.วลัยลักษณ์ — ตอบคำถาม "อันไหนมาจาก TOR / อันไหนเพิ่มเอง"</div>
+  </header>
+
+  <section>
+    <h2>สรุปภาพรวม</h2>
+    <div class="sum">
+      <div class="sc t-all"><div class="big">38</div><div class="lab">เอกสารทั้งหมด</div></div>
+      <div class="sc t-tor"><div class="big">26</div><div class="lab">มาจาก TOR ตรงๆ<br>(ระบุชื่อ/กำหนดชัด)</div></div>
+      <div class="sc t-base"><div class="big">10</div><div class="lab">อิง TOR<br>(แตกจากกิจกรรม/ข้อกำหนด)</div></div>
+      <div class="sc t-add"><div class="big">2</div><div class="lab">เพิ่มเอง<br>(ไม่อยู่ใน TOR)</div></div>
+    </div>
+    <div class="legend">
+      <span><span class="src s-tor">มาจาก TOR</span> = TOR ระบุชื่อเอกสาร/กำหนดชัด</span>
+      <span><span class="src s-base">อิง TOR</span> = TOR กำหนดเป็นกิจกรรม/ข้อกำหนด ผมแตกเป็นเอกสาร</span>
+      <span><span class="src s-add">เพิ่มเอง</span> = ไม่อยู่ใน TOR (ตามบริบท/แนวปฏิบัติที่ดี)</span>
+    </div>
+    <div class="warn"><b>⚠️ สำคัญ:</b> ตาราง "ที่มา" นี้หมายถึง <b>รายชื่อเอกสาร</b> เท่านั้น — ส่วน <b>เนื้อหาข้างในทุกฉบับ</b> (หัวข้อ ตาราง ช่องกรอก ข้อมูลตัวอย่าง) ผมร่างเป็น template เอง <b>TOR ไม่ได้ให้รูปแบบ/เนื้อหามา</b> · อนึ่ง TOR เป็นไฟล์สแกนอ่านด้วย OCR — เลขข้ออ้างอิงควรทานกับต้นฉบับอีกครั้ง</div>
+  </section>
+
+  <!-- M1 -->
+  <section>
+    <h2><span class="mtag mt1">M1</span>เตรียมความพร้อม — TOR ข้อ 6.1 + ข้อ 8 งวด 1</h2>
+    <p class="lead">TOR ข้อ 6.1.1–6.1.9 ระบุชื่อ "แผนบริหารโครงการ 9 ฉบับ" ครบถ้วน → มาจาก TOR ตรงๆ</p>
+    <table>
+      <thead><tr><th style="width:9%">รหัส</th><th style="width:30%">เอกสาร</th><th style="width:15%">ที่มา</th><th style="width:14%">อ้าง TOR</th><th>หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr><td class="code"><a href="templates/M1-01.html">M1-01</a></td><td>แผนดำเนินงานโครงการภาพรวม (PMP)</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">6.1.1</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M1-02.html">M1-02</a></td><td>แผนการสำรวจและออกแบบระบบ</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">6.1.2</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M1-03.html">M1-03</a></td><td>แผนการโอนย้ายข้อมูล (Database Migration)</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">6.1.3</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M1-04.html">M1-04</a></td><td>แผนการติดตั้งระบบ</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">6.1.4</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M1-05.html">M1-05</a></td><td>แผนการพัฒนา/ส่งมอบ (Implementation)</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">6.1.5</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M1-06.html">M1-06</a></td><td>แผนการทดสอบ (Simulation)</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">6.1.6</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M1-07.html">M1-07</a></td><td>แผนการฝึกอบรมและถ่ายทอด</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">6.1.7</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M1-08.html">M1-08</a></td><td>แผนการกู้คืนระบบ + คู่มือ (Backup/DR)</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">6.1.8</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M1-09.html">M1-09</a></td><td>แผนการบริหารการเปลี่ยนแปลง (Change Mgmt)</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">6.1.9</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M1-10.html">M1-10</a></td><td>โครงสร้างทีมงาน</td><td><span class="src s-base">อิง TOR</span></td><td class="torref">ข้อ 6</td><td>TOR กำหนด "ทีม" ไว้ ผมทำเป็นเอกสารส่งมอบแยก</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- M2 -->
+  <section>
+    <h2><span class="mtag mt2">M2</span>วิเคราะห์/ออกแบบ — TOR ข้อ 8 งวด 2</h2>
+    <p class="lead">TOR ข้อ 8 (งวด 2) ระบุชื่อเอกสาร System Requirement 11 ฉบับครบ → มาจาก TOR ตรงๆ · ส่วน Fit/Gap + RTM ผมเพิ่มเองตามบริบท (มี HIS เดิม)</p>
+    <table>
+      <thead><tr><th style="width:9%">รหัส</th><th style="width:30%">เอกสาร</th><th style="width:15%">ที่มา</th><th style="width:14%">อ้าง TOR</th><th>หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr><td class="code"><a href="templates/M2-01.html">M2-01</a></td><td>Fit/Gap Analysis Report ★</td><td><span class="src s-add">เพิ่มเอง</span></td><td class="torref">—</td><td><b>ไม่อยู่ใน TOR</b> — เพิ่มเพราะมี HIS เดิมต้อง Fit/Gap ก่อน</td></tr>
+        <tr><td class="code"><a href="templates/M2-02.html">M2-02</a></td><td>Requirement Traceability Matrix (RTM)</td><td><span class="src s-add">เพิ่มเอง</span></td><td class="torref">—</td><td><b>ไม่อยู่ใน TOR</b> — แนวปฏิบัติที่ดี (สอบทาน req ครบ)</td></tr>
+        <tr><td class="code"><a href="templates/M2-03.html">M2-03</a></td><td>Workflow Diagram (As-is/To-be)</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">ข้อ 8 ง.2</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M2-04.html">M2-04</a></td><td>System Requirement Specification (SRS)</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">ข้อ 8 ง.2</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M2-05.html">M2-05</a></td><td>Business Process Mapping (BPM)</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">ข้อ 8 ง.2</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M2-06.html">M2-06</a></td><td>Data Mapping</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">ข้อ 8 ง.2</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M2-07.html">M2-07</a></td><td>User Authorization Matrix</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">ข้อ 8 ง.2</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M2-08.html">M2-08</a></td><td>API Specification</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">ข้อ 8 ง.2</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M2-09.html">M2-09</a></td><td>Migration Data Mapping</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">ข้อ 8 ง.2</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M2-10.html">M2-10</a></td><td>Technical Specification</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">ข้อ 8 ง.2 + ภ.ข</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M2-11.html">M2-11</a></td><td>Data Dictionary</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">ข้อ 8 ง.2</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M2-12.html">M2-12</a></td><td>System Architecture</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">ข้อ 8 ง.2</td><td>—</td></tr>
+        <tr><td class="code"><a href="templates/M2-13.html">M2-13</a></td><td>Database Schema Design</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">ข้อ 8 ง.2</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- M3 -->
+  <section>
+    <h2><span class="mtag mt3">M3</span>ทดสอบ/ฝึกอบรม — TOR ข้อ 8 งวด 3 + ข้อ 7</h2>
+    <p class="lead">TOR งวด 3 เขียนเป็น "กิจกรรม" (ติดตั้ง / Master Data / UAT โดย Process Owner / E2E / Migrate) + ข้อ 7.6 (อบรม 4 กลุ่ม) → บางฉบับตรง บางฉบับผมแตกเป็นเอกสาร</p>
+    <table>
+      <thead><tr><th style="width:9%">รหัส</th><th style="width:30%">เอกสาร</th><th style="width:15%">ที่มา</th><th style="width:14%">อ้าง TOR</th><th>หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr><td class="code"><a href="templates/M3-01.html">M3-01</a></td><td>Test Cases / Test Scripts</td><td><span class="src s-base">อิง TOR</span></td><td class="torref">ข้อ 8 ง.3 / 6.1.6</td><td>TOR ระบุ "ทดสอบ" ผมแตกเป็นเอกสาร test case</td></tr>
+        <tr><td class="code"><a href="templates/M3-02.html">M3-02</a></td><td>SIT Report (Integration)</td><td><span class="src s-base">อิง TOR</span></td><td class="torref">ข้อ 8 ง.3</td><td>แตกจากกิจกรรมทดสอบการเชื่อมต่อ</td></tr>
+        <tr><td class="code"><a href="templates/M3-03.html">M3-03</a></td><td>UAT Plan + Sign-off</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">ข้อ 8 ง.3</td><td>TOR ระบุ "UAT โดย Process Owner" ชัด</td></tr>
+        <tr><td class="code"><a href="templates/M3-04.html">M3-04</a></td><td>Master Data Setup Document</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">ข้อ 8 ง.3</td><td>TOR ระบุ "Set up Master Data" ชัด</td></tr>
+        <tr><td class="code"><a href="templates/M3-05.html">M3-05</a></td><td>Data Migration Reconciliation</td><td><span class="src s-base">อิง TOR</span></td><td class="torref">ข้อ 8 ง.3 / 6.1.3</td><td>แตกจากกิจกรรม Migrate (รายงานกระทบยอด)</td></tr>
+        <tr><td class="code"><a href="templates/M3-06.html">M3-06</a></td><td>คู่มือผู้ใช้ (User Manual)</td><td><span class="src s-base">อิง TOR</span></td><td class="torref">6.1.8 / ข้อ 7</td><td>TOR กำหนด "คู่มือ" ผมทำเป็นเอกสาร</td></tr>
+        <tr><td class="code"><a href="templates/M3-07.html">M3-07</a></td><td>เอกสารฝึกอบรม + ทะเบียน</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">ข้อ 7.6</td><td>TOR ระบุอบรม 4 กลุ่ม (End-user ≥20)</td></tr>
+        <tr><td class="code"><a href="templates/M3-08.html">M3-08</a></td><td>End-to-End Test Report</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">ข้อ 8 ง.3</td><td>TOR ระบุ "E2E test" ชัด</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- M4 -->
+  <section>
+    <h2><span class="mtag mt4">M4</span>Go-Live/ส่งมอบ — TOR ข้อ 8 งวด 4 + 6.3 + 10–11</h2>
+    <p class="lead">TOR งวด 4 ระบุ Go-Live + ส่งมอบ · ข้อ 6.3 ส่งมอบ Source Code · ข้อ 10–11 ประกัน 2 ปี/SLA</p>
+    <table>
+      <thead><tr><th style="width:9%">รหัส</th><th style="width:30%">เอกสาร</th><th style="width:15%">ที่มา</th><th style="width:14%">อ้าง TOR</th><th>หมายเหตุ</th></tr></thead>
+      <tbody>
+        <tr><td class="code"><a href="templates/M4-01.html">M4-01</a></td><td>Go-Live / Cutover Checklist</td><td><span class="src s-base">อิง TOR</span></td><td class="torref">ข้อ 8 ง.4</td><td>แตกจากกิจกรรมติดตั้งใช้งานจริง</td></tr>
+        <tr><td class="code"><a href="templates/M4-02.html">M4-02</a></td><td>Deployment / Installation Document</td><td><span class="src s-base">อิง TOR</span></td><td class="torref">ข้อ 8 ง.4 / 6.1.4</td><td>บันทึกการติดตั้ง Production</td></tr>
+        <tr><td class="code"><a href="templates/M4-03.html">M4-03</a></td><td>Source Code Handover</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">ข้อ 6.3</td><td>TOR ระบุส่งมอบ Source Code ชัด</td></tr>
+        <tr><td class="code"><a href="templates/M4-04.html">M4-04</a></td><td>As-built / System Documentation</td><td><span class="src s-base">อิง TOR</span></td><td class="torref">ข้อ 8 ง.4</td><td>เอกสารระบบตามติดตั้งจริง (แนวปฏิบัติที่ดี)</td></tr>
+        <tr><td class="code"><a href="templates/M4-05.html">M4-05</a></td><td>คู่มือผู้ดูแลระบบ (Admin Manual)</td><td><span class="src s-base">อิง TOR</span></td><td class="torref">6.1.8</td><td>TOR กำหนด "คู่มือ" ผมแยกเป็นคู่มือแอดมิน</td></tr>
+        <tr><td class="code"><a href="templates/M4-06.html">M4-06</a></td><td>ใบส่งมอบ / ตรวจรับ (Acceptance)</td><td><span class="src s-base">อิง TOR</span></td><td class="torref">ข้อ 8 / ข้อ 13</td><td>แตกจากการตรวจรับ/จ่ายเงินรายงวด</td></tr>
+        <tr><td class="code"><a href="templates/M4-07.html">M4-07</a></td><td>การรับประกัน + SLA (2 ปี)</td><td><span class="src s-tor">มาจาก TOR</span></td><td class="torref">ข้อ 10–11</td><td>TOR ระบุประกัน 2 ปี + ตาราง SLA ชัด</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="note"><b>อ่านสรุป:</b> เอกสาร <b>26/38 มาจาก TOR ตรงๆ</b> (โดยเฉพาะ M1 ทั้ง 9 + M2 อีก 11), <b>10 ฉบับอิง TOR</b> (TOR เขียนเป็นกิจกรรม ผมแตกเป็นเอกสารให้ครบวงจร), และ <b>2 ฉบับเพิ่มเอง</b> (Fit/Gap + RTM ตามบริบทที่มี HIS เดิม) — ทั้งหมดยังอยู่ในกรอบงานที่ TOR ต้องการ ไม่มีฉบับไหนเกินขอบเขตสัญญา</div>
+  </section>
+
+  <footer>เอกสารสอบทาน (Traceability) · ที่มาหมายถึง "รายชื่อเอกสาร" เท่านั้น — เนื้อหา/รูปแบบเป็น template ที่จัดทำเพิ่ม · ทานเลขข้อ TOR กับต้นฉบับ (ไฟล์สแกน) ก่อนใช้จริง</footer>
+</div>
+</body>
+</html>
