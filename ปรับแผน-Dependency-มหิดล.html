@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ปรับแผนตาม Dependency ฐานมหิดล · DIS วลัยลักษณ์</title>
+<style>
+  :root{
+    --primary:#0d6e6e; --primary-dark:#0a5252; --accent:#e8743b;
+    --bg:#eef1f3; --card:#fff; --line:#d7dde2; --ink:#1f2d3d; --muted:#5b6b7b;
+    --mahidol:#c79500; --good:#2e9e5b; --risk:#d6453d; --blue:#3b82c4;
+  }
+  *{box-sizing:border-box}
+  body{font-family:"Sarabun","Segoe UI Thai","Leelawadee UI","Tahoma",sans-serif;
+    margin:0; background:var(--bg); color:var(--ink); line-height:1.6; font-size:14.5px}
+  .wrap{max-width:1180px; margin:0 auto; padding:26px 20px 80px}
+  .topnav{margin-bottom:12px; font-size:13px}
+  .topnav a{color:var(--primary-dark); text-decoration:none; font-weight:700}
+  header.cover{background:linear-gradient(135deg,#a8332c,#6f1f1a); color:#fff;
+    border-radius:16px; padding:26px 30px; box-shadow:0 10px 28px rgba(168,51,44,.28)}
+  header.cover .tag{font-size:12.5px; letter-spacing:1px; font-weight:800; opacity:.85}
+  header.cover h1{margin:5px 0 5px; font-size:24px}
+  header.cover .sub{font-size:14px; opacity:.93}
+  section{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:20px 24px; margin-top:18px; box-shadow:0 2px 8px rgba(31,45,61,.05)}
+  h2{font-size:18px; color:var(--primary-dark); margin:2px 0 12px; padding-bottom:7px; border-bottom:2px solid var(--line)}
+  h2 .n{display:inline-block; background:var(--primary); color:#fff; border-radius:7px; min-width:26px;
+    text-align:center; padding:1px 8px; margin-right:9px; font-size:14px}
+  h3{color:var(--primary-dark); font-size:15px; margin:16px 0 6px}
+  p{margin:7px 0} ul,ol{margin:6px 0; padding-left:20px} li{margin:4px 0}
+  strong{color:var(--primary-dark)}
+  .lead{color:var(--muted); font-size:13.5px; margin:0 0 10px}
+  table{width:100%; border-collapse:collapse; margin:8px 0; font-size:13px}
+  th,td{border:1px solid var(--line); padding:7px 9px; text-align:left; vertical-align:top}
+  th{background:var(--primary); color:#fff; font-weight:600}
+  tbody tr:nth-child(even){background:#f7fafa}
+  .hl-red{background:#fdeceb!important}
+  .warn{background:#fff4e5; border-left:4px solid #f0a14b; border-radius:9px; padding:12px 15px; font-size:13.5px; margin:12px 0}
+  .warn b{color:#b4651b}
+  .bad{background:#fdecea; border-left:4px solid var(--risk); border-radius:9px; padding:12px 15px; font-size:13.5px; margin:12px 0}
+  .bad b{color:#b3372e}
+  .good{background:#eaf7ef; border-left:4px solid var(--good); border-radius:9px; padding:12px 15px; font-size:13.5px; margin:12px 0}
+  .good b{color:#1d7a47}
+  .note{background:#eef7f7; border-left:4px solid var(--primary); border-radius:9px; padding:12px 15px; font-size:13.5px; margin:12px 0}
+  .badge{display:inline-block; padding:1px 8px; border-radius:5px; font-size:11.5px; font-weight:700; color:#fff}
+  /* ===== Gantt ===== */
+  .gantt{position:relative; border:1px solid var(--line); border-radius:10px; overflow:hidden; font-size:12px; margin:8px 0}
+  .grow{display:grid; grid-template-columns:215px 1fr; align-items:stretch}
+  .glabel{padding:6px 10px; border-right:1px solid var(--line); border-bottom:1px solid #eef1f3; line-height:1.3}
+  .glabel small{color:var(--muted)}
+  .gtrack{position:relative; min-height:32px; border-bottom:1px solid #eef1f3}
+  .ghead{height:34px}
+  .gantt .grid{position:absolute; left:215px; right:0; top:34px; bottom:0; pointer-events:none}
+  .gantt .grid i{position:absolute; top:0; bottom:0; width:1px; background:#e9edf0}
+  .gantt .grid i.m2{background:var(--risk); width:2px; opacity:.7}
+  .gantt .grid i.base{background:var(--mahidol); width:2px; opacity:.8}
+  .gtrack .mlabel{position:absolute; top:9px; transform:translateX(-50%); font-size:10.5px; color:var(--muted)}
+  .bar{position:absolute; top:6px; height:20px; border-radius:5px; color:#fff; font-size:11px;
+    line-height:20px; padding:0 8px; white-space:nowrap; overflow:visible; box-shadow:0 1px 2px rgba(0,0,0,.15)}
+  .b-mah{background:var(--mahidol)} .b-mahl{background:#e3c074} .b-good{background:var(--good)}
+  .b-teal{background:#0d6e6e} .b-risk{background:var(--risk)} .b-blue{background:var(--blue)}
+  .b-gray{background:#6b7b8c} .b-amber{background:#c79500}
+  .grow.sechead .glabel{background:#fbeede; font-weight:700; color:#9c6a00; border-bottom:1px solid var(--line)}
+  .grow.sechead.wl .glabel{background:#e9f3f3; color:var(--primary-dark)}
+  .grow.sechead .gtrack{border-bottom:1px solid var(--line)}
+  .grow.sechead.mah .gtrack{background:#fbeede} .grow.sechead.wl .gtrack{background:#e9f3f3}
+  .dia{position:absolute; top:5px; width:13px; height:13px; transform:translateX(-50%) rotate(45deg); border:2px solid #fff}
+  .dia.ms{background:var(--accent); box-shadow:0 0 0 1px var(--accent)}
+  .star{position:absolute; top:3px; transform:translateX(-50%); color:var(--mahidol); font-size:18px; text-shadow:0 0 2px #fff}
+  .mk-lab{position:absolute; top:1px; transform:translateX(-50%); font-size:10px; font-weight:800; white-space:nowrap}
+  .glegend{display:flex; flex-wrap:wrap; gap:13px; font-size:12px; color:var(--muted); margin-top:8px; align-items:center}
+  .glegend i{width:13px;height:11px;border-radius:3px;display:inline-block;vertical-align:-1px;margin-right:4px}
+  .glegend .ln{width:16px;border-top:2px solid var(--risk);display:inline-block;vertical-align:4px;margin-right:4px}
+  /* memo */
+  .memo{border:1px solid #cfd6db; border-radius:10px; padding:20px 24px; background:#fcfdfd; font-size:13.5px}
+  .memo h4{margin:0 0 2px; font-size:16px; color:var(--ink)}
+  .memo .row{margin:3px 0}
+  .memo .lbl{display:inline-block; width:70px; color:var(--muted); font-weight:700}
+  .memo ol{padding-left:20px} .memo li{margin:6px 0}
+  .sign2{display:flex; gap:30px; margin-top:22px; flex-wrap:wrap}
+  .sign2 div{flex:1; min-width:180px; text-align:center; font-size:12.5px}
+  .sign2 .ln{border-top:1px dotted #555; margin:40px 10px 5px}
+  footer{text-align:center; color:var(--muted); font-size:12.5px; margin-top:26px; padding-top:14px; border-top:1px solid var(--line)}
+  @media print{body{background:#fff} section,header.cover{box-shadow:none} .topnav{display:none}
+    .bar,.dia,th,td,header.cover,.grow.sechead .glabel,.grow.sechead .gtrack,.gantt .grid i.m2,.gantt .grid i.base{ -webkit-print-color-adjust:exact; print-color-adjust:exact}}
+  @media(max-width:640px){.gantt{font-size:10px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topnav"><a href="index.html">🏠 หน้ารวม</a> · <a href="แผนดำเนินงาน-FitGap-Develop.html">🗺️ แผนเดิม</a> · <a href="แผนกำลังคนภายใน.html">👥 แผนกำลังคน</a></div>
+
+  <header class="cover">
+    <div class="tag">STRATEGIC ADJUSTMENT · ปรับแผนตาม Dependency ฐานมหิดล</div>
+    <h1>วลัยลักษณ์ DIS ต่อยอดจาก HIS ฐานมหิดล — ผลกระทบ &amp; แผนที่ปรับใหม่</h1>
+    <div class="sub">ฐานมหิดลยังไม่นิ่ง (baseline ~11 พ.ย. 2026) · ทีมมหิดลติด UAT · ทีมเรา 7 คนไม่มีใครรู้ระบบมหิดล</div>
+  </header>
+
+  <!-- สรุปการชน -->
+  <section>
+    <h2><span class="n">1</span>ใจความ: M2 ของเรา ชนกับ baseline มหิดลพอดี</h2>
+    <div class="bad"><b>🔴 ปัญหาแกนกลาง:</b> baseline ของฐานมหิดล (Go-live ระลอก 2) = <b>~11 พ.ย. 2026</b> — มา <b>หลัง</b> กำหนดส่ง M2 ของวลัยลักษณ์ (Fit/Gap + ออกแบบ) = <b>8 พ.ย. 2026</b> อยู่ 3 วัน → <b>การ Fit/Gap กับ “ระบบจริงที่นิ่งแล้ว” ให้เสร็จทัน M2 เป็นไปไม่ได้</b></div>
+    <table>
+      <thead><tr><th style="width:20%">ช่วงเวลา</th><th>HIS มหิดล (ฐาน)</th><th>วลัยลักษณ์ (เรา)</th></tr></thead>
+      <tbody>
+        <tr><td>มิ.ย. 2026 (ตอนนี้)</td><td>Migration setup + เริ่ม UAT</td><td>Phase 0 + เริ่มเก็บ req</td></tr>
+        <tr><td>~5 ต.ค. 2026</td><td>Go-live ระลอก 1 (บางส่วนนิ่ง)</td><td>กำลัง Paper Fit/Gap + Design</td></tr>
+        <tr class="hl-red"><td><b>8 พ.ย. 2026</b></td><td>ยังไม่ครบ (Pilot ถึง 6 พ.ย.)</td><td><b>← M2 deadline (ต้องส่ง Fit/Gap+ออกแบบ)</b></td></tr>
+        <tr class="hl-red"><td><b>11 พ.ย. 2026</b></td><td><b>★ Go-live ระลอก 2 = baseline ครบ</b></td><td>เริ่ม Build</td></tr>
+        <tr><td>พ.ย. 26 → เป็นต้นไป</td><td>ทีมมหิดลเริ่มว่าง + ระบบนิ่ง</td><td>Build + Integration (ใช้ทีมมหิดลได้)</td></tr>
+      </tbody>
+    </table>
+    <div class="good"><b>🟢 จุดบวก:</b> มหิดล go-live กลาง พ.ย. = <b>ตรงกับที่เราเริ่ม Build พอดี</b> → ทีมมหิดล + baseline จะ “ว่างและนิ่ง” ตอนที่เราต้องใช้จริง (Integration/Migration) — ถ้าไม่เลื่อน นี่คือหน้าต่างทองที่ต้องจองทันที</div>
+  </section>
+
+  <!-- Gantt ซ้อน -->
+  <section>
+    <h2><span class="n">2</span>Gantt ซ้อน 2 โครงการ (มหิดล ↔ วลัยลักษณ์)</h2>
+    <p class="lead">เส้นแดง = M2 (8 พ.ย.) · เส้นทอง = baseline มหิดล (11 พ.ย.) — สังเกตว่าทั้งคู่อยู่ชิดกันที่ ~50% และงาน <b>System Fit/Gap (แดง) ตกหลังเส้น M2</b></p>
+    <div class="gantt">
+      <div class="grid">
+        <i style="left:6.7%"></i><i style="left:17%"></i><i style="left:27.3%"></i><i style="left:37.3%"></i>
+        <i style="left:47.7%"></i><i style="left:57.7%"></i><i style="left:68%"></i><i style="left:78.3%"></i><i style="left:87.7%"></i><i style="left:98%"></i>
+        <i class="m2" style="left:50%"></i><i class="base" style="left:51%"></i>
+      </div>
+      <!-- header -->
+      <div class="grow"><div class="glabel" style="font-weight:700;color:var(--primary-dark)">งาน \ เดือน (2026–2027)</div>
+        <div class="gtrack ghead">
+          <div class="mlabel" style="left:0%">มิ.ย.</div><div class="mlabel" style="left:6.7%">ก.ค.</div><div class="mlabel" style="left:17%">ส.ค.</div>
+          <div class="mlabel" style="left:27.3%">ก.ย.</div><div class="mlabel" style="left:37.3%">ต.ค.</div><div class="mlabel" style="left:47.7%">พ.ย.</div>
+          <div class="mlabel" style="left:57.7%">ธ.ค.</div><div class="mlabel" style="left:68%">ม.ค.</div><div class="mlabel" style="left:78.3%">ก.พ.</div>
+          <div class="mlabel" style="left:87.7%">มี.ค.</div><div class="mlabel" style="left:98%">เม.ย.</div>
+        </div>
+      </div>
+      <!-- milestones row -->
+      <div class="grow"><div class="glabel">📍 หมุดสำคัญ</div><div class="gtrack" style="min-height:30px">
+        <div class="dia ms" style="left:10%"></div><div class="mk-lab" style="left:10%;color:var(--accent)">M1</div>
+        <div class="dia ms" style="left:50%"></div><div class="mk-lab" style="left:50%;color:var(--risk)">M2 · 8 พ.ย.</div>
+        <div class="star" style="left:51%">★</div>
+        <div class="dia ms" style="left:93.33%"></div><div class="mk-lab" style="left:93.33%;color:var(--accent)">M3</div>
+        <div class="dia ms" style="left:100%"></div>
+      </div></div>
+
+      <!-- มหิดล -->
+      <div class="grow sechead mah"><div class="glabel">🟠 HIS มหิดล (ฐาน)</div><div class="gtrack"></div></div>
+      <div class="grow"><div class="glabel"><small>›</small> UAT + Pilot + Stabilization</div><div class="gtrack"><div class="bar b-mah" style="left:3.67%;width:45.66%">UAT / Pilot</div></div></div>
+      <div class="grow"><div class="glabel"><small>›</small> SAP Interface (IAM)</div><div class="gtrack"><div class="bar b-mahl" style="left:6.67%;width:35%">SAP IAM (แม่แบบเชื่อม)</div></div></div>
+      <div class="grow"><div class="glabel"><small>›</small> ★ Baseline พร้อม (Go-live ระลอก2)</div><div class="gtrack"><div class="star" style="left:51%">★</div><div class="mk-lab" style="left:51%;top:14px;color:var(--mahidol)">11 พ.ย.</div></div></div>
+      <div class="grow"><div class="glabel"><small>›</small> ทีมมหิดลเริ่มว่าง</div><div class="gtrack"><div class="bar b-good" style="left:51%;width:49%">ว่าง + ระบบนิ่ง → ขอความรู้/เชื่อมต่อได้</div></div></div>
+
+      <!-- วลัยลักษณ์ -->
+      <div class="grow sechead wl"><div class="glabel">🟢 วลัยลักษณ์ (ปรับใหม่)</div><div class="gtrack"></div></div>
+      <div class="grow"><div class="glabel"><small>›</small> Phase 0 · Setup</div><div class="gtrack"><div class="bar b-gray" style="left:0%;width:10%">Setup</div></div></div>
+      <div class="grow"><div class="glabel"><small>›</small> เก็บ req วลัยลักษณ์ (To-be)</div><div class="gtrack"><div class="bar b-teal" style="left:6.67%;width:23.33%">เก็บ req (ไม่ต้องรอมหิดล)</div></div></div>
+      <div class="grow"><div class="glabel"><small>›</small> Paper Fit/Gap (req↔req) ✅</div><div class="gtrack"><div class="bar b-good" style="left:11.67%;width:28.33%">Paper Fit/Gap — ทำได้เลย</div></div></div>
+      <div class="grow"><div class="glabel"><small>›</small> ออกแบบ M2 (provisional)</div><div class="gtrack"><div class="bar b-teal" style="left:30%;width:20%">Design (รออัปเดต)</div></div></div>
+      <div class="grow"><div class="glabel"><small>›</small> ⚠️ System Fit/Gap (vs ระบบจริง)</div><div class="gtrack"><div class="bar b-risk" style="left:51%;width:17.33%">หลัง baseline เท่านั้น</div></div></div>
+      <div class="grow"><div class="glabel"><small>›</small> Build (Config+Develop)</div><div class="gtrack"><div class="bar b-blue" style="left:51.67%;width:31.66%">Build</div></div></div>
+      <div class="grow"><div class="glabel"><small>›</small> Integration + Migration</div><div class="gtrack"><div class="bar b-blue" style="left:55%;width:28.33%">ใช้ทีมมหิดล (ว่างแล้ว)</div></div></div>
+      <div class="grow"><div class="glabel"><small>›</small> Test / Train</div><div class="gtrack"><div class="bar b-amber" style="left:76.67%;width:16.66%">Test/Train</div></div></div>
+      <div class="grow"><div class="glabel"><small>›</small> Go-Live</div><div class="gtrack"><div class="bar b-risk" style="left:93.33%;width:6.67%">Go-Live</div></div></div>
+    </div>
+    <div class="glegend">
+      <span><i class="b-mah"></i>มหิดล (ฐาน)</span><span><i class="b-good"></i>ทำได้เลย/โอกาส</span>
+      <span><i class="b-teal"></i>วลัยลักษณ์</span><span><i class="b-risk"></i>ความเสี่ยง/หลัง baseline</span>
+      <span><i class="b-blue"></i>Build</span><span><span class="ln"></span>เส้น M2</span><span style="color:var(--mahidol)">★ baseline มหิดล</span>
+    </div>
+    <div class="warn"><b>อ่านกราฟ:</b> งาน <b>Paper Fit/Gap (เขียว) เริ่มได้เลยตอนนี้</b> โดยไม่ต้องรอมหิดล — แต่ <b>System Fit/Gap (แดง) ติดอยู่หลังเส้น baseline (11 พ.ย.)</b> ซึ่งเลย M2 ไปแล้ว → จึงต้องส่ง M2 แบบ provisional แล้วยืนยันกับระบบจริงในช่วง Build</div>
+  </section>
+
+  <!-- แผนปรับใหม่ -->
+  <section>
+    <h2><span class="n">3</span>แผนวลัยลักษณ์ที่ปรับให้สมจริง — แยก Fit/Gap เป็น 2 ระยะ</h2>
+    <table>
+      <thead><tr><th style="width:16%">ระยะ</th><th style="width:18%">ช่วงเวลา</th><th>ทำอะไร / ปรับจากเดิมอย่างไร</th></tr></thead>
+      <tbody>
+        <tr><td><b>Phase 0</b> Setup</td><td>มิ.ย.–ก.ค.</td><td>เดิม + <b>เพิ่ม:</b> ขอ artifact มหิดล (req spec, เคส UAT, SAP IAM, DB schema, source) เป็นฐานความรู้แทนการพึ่งคน</td></tr>
+        <tr><td><b>Phase 1a</b> Paper Fit/Gap ✅</td><td>ก.ค.–ต.ค.</td><td><b>ใหม่:</b> เทียบ req วลัยลักษณ์ ↔ req มหิดล (ที่ระบบถูกสร้างมา) — <b>ทำได้เลยไม่ต้องรอระบบ</b> · domain มาจากผู้ใช้วลัยลักษณ์</td></tr>
+        <tr><td><b>Phase 2</b> Design (M2)</td><td>ก.ย.–8 พ.ย.</td><td>ออกแบบจาก Paper Fit/Gap · <b>ติดป้าย “Provisional — รอยืนยันกับ baseline”</b> ในเอกสารส่งมอบ M2</td></tr>
+        <tr class="hl-red"><td colspan="3" style="text-align:center;color:#b3372e;font-weight:700">— GATE: baseline มหิดลพร้อม ~11 พ.ย. 2026 —</td></tr>
+        <tr><td><b>Phase 1b</b> System Fit/Gap ⚠️</td><td>กลาง พ.ย.–ธ.ค.</td><td><b>ใหม่:</b> ยืนยัน gap ที่วิเคราะห์บนกระดาษ กับระบบจริง → ปรับ design · <b>คาบกับ Build ตอนต้น</b> (เผื่อ rework)</td></tr>
+        <tr><td><b>Phase 3</b> Build</td><td>พ.ย.–ก.พ.</td><td>Config + Develop gap + <b>Integration/Migration ใช้ทีมมหิดลที่ว่างแล้ว</b> (จองหน้าต่างหลัง go-live)</td></tr>
+        <tr><td><b>Phase 4–5</b> Test/Go-Live</td><td>ม.ค.–7 เม.ย.</td><td>เหมือนเดิม แต่ buffer หดเพราะ Phase 1b กินเวลา → ต้องเฝ้าระวัง</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>หลักการ:</b> ดึงทุกอย่างที่ “ไม่ต้องใช้ระบบมหิดล” มาทำก่อน (req วลัยลักษณ์, Paper Fit/Gap, To-be design) เพื่อให้ตอน baseline มา เหลือแค่ “ยืนยัน + ต่อระบบ” ซึ่งเร็ว — ลดเวลาที่เป็นคอขวด</div>
+  </section>
+
+  <!-- Risk -->
+  <section>
+    <h2><span class="n">4</span>Risk Register (ปรับใหม่ตามความจริง)</h2>
+    <table>
+      <thead><tr><th style="width:30%">ความเสี่ยง</th><th style="width:8%">ระดับ</th><th>การรับมือ</th></tr></thead>
+      <tbody>
+        <tr><td><b>R1</b> มหิดลเลื่อนจาก 11 พ.ย. (ตอนนี้ติด UAT)</td><td><span class="badge" style="background:var(--risk)">สูงมาก</span></td><td>ขอ commit baseline date เป็นลายลักษณ์, ทำ Paper Fit/Gap คู่ขนาน, กำหนด drop-dead date, แจ้งลูกค้าเร็ว (ดู memo ข้อ 6)</td></tr>
+        <tr><td><b>R2</b> ฐานเปลี่ยนระหว่างทาง (ยังพัฒนาอยู่)</td><td><span class="badge" style="background:var(--risk)">สูง</span></td><td>Freeze เวอร์ชันที่จะ Fit/Gap, จัดการผ่าน Change Request, ออกแบบ M2 เป็น provisional</td></tr>
+        <tr><td><b>R3</b> ไม่มีใครรู้ระบบมหิดล + ทีมมหิดลบล็อก</td><td><span class="badge" style="background:var(--risk)">สูง</span></td><td>เรียนจาก artifact + เคส UAT มหิดล, async Q&amp;A ผ่าน SPOC, ให้ Dev+BA reverse-engineer, จองทีมมหิดลหลัง go-live</td></tr>
+        <tr><td><b>R4</b> ทีมเรา 7 คน ไม่ครบบทบาทตาม TOR</td><td><span class="badge" style="background:var(--accent)">กลาง-สูง</span></td><td>เคาะคนทำ Migration/QA/Integration, จัดคนเพิ่มจุดวิกฤต หรือ re-scope, เคลียร์ compliance กับวลัยลักษณ์ (ดูข้อ 5)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ทีม -->
+  <section>
+    <h2><span class="n">5</span>ทีมจริง vs ที่ต้องมี — ช่องโหว่ที่ต้องเคาะ</h2>
+    <p class="lead">ทีมจริง: <b>PM · PC · BA · PO · Dev × 3</b> (7 คน) — ไม่มีใครรู้ระบบมหิดล</p>
+    <table>
+      <thead><tr><th style="width:26%">งานวิกฤต</th><th style="width:24%">ตาม TOR ควรมี</th><th>ของจริง / ต้องตัดสินใจ</th></tr></thead>
+      <tbody>
+        <tr><td>Data Migration (รู้ DB มหิดล)</td><td>Sr Data Engineer + DBA</td><td><b>ขาด</b> — เสี่ยงสุด ต้องพึ่ง artifact + ทีมมหิดลหลัง go-live / หาคนเสริม</td></tr>
+        <tr><td>QA / SIT / UAT facilitation</td><td>Software Tester/QA</td><td><b>ขาด</b> — ให้ BA/PO ช่วย แต่ควรมี QA จริงช่วง ม.ค.–มี.ค.</td></tr>
+        <tr><td>Integration (HAIT/SAP/PACS/LIS)</td><td>System Engineer</td><td><b>ขาด</b> — Dev รับ แต่ต้องเรียน SAP IAM จากมหิดล</td></tr>
+        <tr><td>UI/UX</td><td>Graphic UI + UX</td><td><b>ขาด</b> — ถ้าต่อยอด UI เดิมมหิดลอาจพอ แต่ต้องยืนยัน</td></tr>
+        <tr><td>วิเคราะห์/ออกแบบ/Fit-Gap</td><td>System Analyst</td><td>BA + PO รับได้ (domain วลัยลักษณ์เข้าถึงได้)</td></tr>
+      </tbody>
+    </table>
+    <div class="warn"><b>⚠️ Compliance:</b> ถ้าตอนประมูลผูกไว้ว่ามี 13 ตำแหน่งตาม TOR แต่ของจริง 7 → ต้องเคลียร์กับวลัยลักษณ์ตั้งแต่ต้น (จัดคนเพิ่ม / ใช้ทีมมหิดลเป็นส่วนหนึ่ง / ปรับความเข้าใจ)</div>
+  </section>
+
+  <!-- Memo -->
+  <section>
+    <h2><span class="n">6</span>ร่างบันทึกแจ้งความเสี่ยง + ขอยืนยัน Baseline (Escalation Memo)</h2>
+    <p class="lead">พร้อมส่ง — ปรับชื่อ/วันที่แล้วใช้ได้เลย · เป้าหมาย: ล็อก baseline date + ให้ลูกค้ารับทราบว่า M2 จะเป็น Paper Fit/Gap</p>
+    <div class="memo">
+      <h4>บันทึกข้อความ — แจ้งความเสี่ยงด้านกำหนดการและขอยืนยัน Baseline ระบบฐาน</h4>
+      <div class="row"><span class="lbl">เรียน</span> ผู้บริหารโครงการ / ผู้แทนมหาวิทยาลัยวลัยลักษณ์ และทีมพัฒนา HIS (ฐานมหิดล)</div>
+      <div class="row"><span class="lbl">จาก</span> <span style="color:#9a7b2e">[Project Manager — ทีมผู้รับจ้าง]</span></div>
+      <div class="row"><span class="lbl">วันที่</span> <span style="color:#9a7b2e">__ /__ /2026</span></div>
+      <div class="row"><span class="lbl">เรื่อง</span> Dependency ของระบบ DIS วลัยลักษณ์ ต่อ baseline ของ HIS ฐานมหิดล และผลต่อกำหนดส่งงวด M2</div>
+      <hr style="border:none;border-top:1px solid var(--line);margin:12px 0">
+      <p><b>1. บริบท</b> — ระบบ DIS ของวลัยลักษณ์พัฒนาต่อยอดจาก HIS ฐานมหิดล ซึ่งปัจจุบันยังอยู่ระหว่าง UAT/Pilot และมีกำหนด Go-live ระลอกสุดท้าย (baseline) ประมาณ <b>11 พ.ย. 2026</b></p>
+      <p><b>2. ข้อเท็จจริงด้านเวลา</b></p>
+      <ul>
+        <li>กำหนดส่งงวด <b>M2 (Fit/Gap + ออกแบบ)</b> ของวลัยลักษณ์ = <b>8 พ.ย. 2026</b></li>
+        <li>baseline ฐานมหิดลพร้อมใช้ = <b>~11 พ.ย. 2026 (หลัง M2)</b></li>
+      </ul>
+      <p><b>3. ผลกระทบ</b> — ไม่สามารถทำ Fit/Gap กับ “ระบบจริงที่นิ่งแล้ว” ให้เสร็จทันงวด M2 ได้ ดังนั้นเอกสารงวด M2 จะจัดทำบนฐาน <b>“Paper Fit/Gap” (เทียบความต้องการวลัยลักษณ์กับข้อกำหนดที่ระบบมหิดลถูกสร้างมา)</b> และถือเป็น <b>ฉบับชั่วคราว (provisional)</b> ที่ต้องยืนยันกับ baseline จริงในช่วง Build</p>
+      <p><b>4. ความเสี่ยง</b> — หากฐานมหิดลเลื่อนจาก 11 พ.ย. 2026 จะกระทบ Build, การเชื่อมต่อ, การโอนย้ายข้อมูล และอาจทำให้ Go-Live (7 เม.ย. 2027) เลื่อน รวมถึงประเด็นค่าปรับตามสัญญา</p>
+      <p><b>5. สิ่งที่ขอการยืนยัน/สนับสนุน</b></p>
+      <ol>
+        <li>ยืนยัน <b>baseline date ของฐานมหิดลเป็นลายลักษณ์อักษร</b> และแจ้งทันทีหากมีการเลื่อน</li>
+        <li>รับทราบและยอมรับแนวทาง <b>Fit/Gap แบบ 2 ระยะ</b> (Paper ก่อน → System หลัง baseline) สำหรับงวด M2</li>
+        <li>จัดสรร <b>หน้าต่างทีมมหิดลหลัง Go-live (กลาง พ.ย. เป็นต้นไป)</b> เพื่อถ่ายทอดความรู้ + ร่วม Integration/Migration</li>
+        <li>ส่งมอบ <b>เอกสาร req / เคส UAT / แนวทาง SAP Interface (IAM) / DB schema</b> ของฐานมหิดล เป็นฐานความรู้</li>
+        <li>ตัดสินใจเรื่อง <b>กำลังคนบทบาทที่ยังขาด</b> (Data Migration, QA, Integration) — จัดเพิ่มหรือใช้ทีมมหิดลร่วม</li>
+      </ol>
+      <p><b>6. Drop-dead date</b> — เพื่อรักษากำหนด Go-Live 7 เม.ย. 2027 ฐานมหิดลควรนิ่ง (baseline) ไม่เกิน <span style="color:#9a7b2e">[ระบุวัน เช่น ปลาย พ.ย. 2026]</span> หากเกินกว่านี้ ขอเสนอให้ทบทวนกำหนดการ/ขอบเขตงวดร่วมกัน</p>
+      <div class="sign2">
+        <div><div class="ln"></div>(<span style="color:#9a7b2e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>)<br>Project Manager — ผู้รับจ้าง</div>
+        <div><div class="ln"></div>(<span style="color:#9a7b2e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>)<br>ผู้แทนวลัยลักษณ์</div>
+        <div><div class="ln"></div>(<span style="color:#9a7b2e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>)<br>ผู้แทนทีมฐานมหิดล</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>เอกสารกลยุทธ์ภายใน · อิงแผน HIS มหิดล (baseline ~11 พ.ย. 2026) · วันที่/รายละเอียดเป็นค่าตั้งต้น ปรับตามจริงก่อนใช้ · ทาน baseline date กับทีมมหิดลให้แน่นอน</footer>
+</div>
+</body>
+</html>
