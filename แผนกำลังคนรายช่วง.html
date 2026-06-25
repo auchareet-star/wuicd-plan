@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แผนกำลังคนรายช่วง (ละเอียด) — ใครทำอะไร ช่วงไหน กี่คน · DIS วลัยลักษณ์</title>
+<style>
+  :root{
+    --primary:#0d6e6e; --primary-dark:#0a5252; --accent:#e8743b;
+    --bg:#eef1f3; --card:#fff; --line:#d7dde2; --ink:#1f2d3d; --muted:#5b6b7b;
+    --over:#b3201a; --miss:#d6453d; --ok:#2e9e5b; --warnc:#c79500; --blue:#3b82c4; --purple:#8e44ad;
+    --m1:#3b82c4; --m2:#0d6e6e; --m3:#c79500; --m4:#d6453d;
+  }
+  *{box-sizing:border-box}
+  body{font-family:"Sarabun","Segoe UI Thai","Leelawadee UI","Tahoma",sans-serif;
+    margin:0; background:var(--bg); color:var(--ink); line-height:1.6; font-size:14.5px}
+  .wrap{max-width:1220px; margin:0 auto; padding:26px 20px 80px}
+  .topnav{margin-bottom:12px; font-size:13px}
+  .topnav a{color:var(--primary-dark); text-decoration:none; font-weight:700}
+  header.cover{background:linear-gradient(135deg,#0d6e6e,#0a5252); color:#fff;
+    border-radius:16px; padding:26px 30px; box-shadow:0 10px 28px rgba(13,110,110,.28)}
+  header.cover .tag{font-size:12.5px; letter-spacing:1px; font-weight:800; opacity:.85}
+  header.cover h1{margin:5px 0 4px; font-size:24px}
+  header.cover .sub{font-size:14px; opacity:.93}
+  header.cover .pills{margin-top:14px; display:flex; flex-wrap:wrap; gap:8px}
+  header.cover .pill{background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.28);
+    padding:5px 12px; border-radius:999px; font-size:12.5px; font-weight:700}
+  header.cover .pill.red{background:rgba(214,69,61,.35); border-color:rgba(255,180,175,.5)}
+  section{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:20px 24px; margin-top:18px; box-shadow:0 2px 8px rgba(31,45,61,.05)}
+  h2{font-size:18px; color:var(--primary-dark); margin:2px 0 12px; padding-bottom:7px; border-bottom:2px solid var(--line)}
+  h2 .n{display:inline-block; background:var(--primary); color:#fff; border-radius:7px; min-width:26px;
+    text-align:center; padding:1px 8px; margin-right:9px; font-size:14px}
+  h3{color:var(--primary-dark); font-size:15px; margin:14px 0 6px}
+  .lead{color:var(--muted); font-size:13.5px; margin:0 0 10px}
+  p{margin:7px 0} ul,ol{margin:6px 0; padding-left:20px} li{margin:3px 0}
+  strong{color:var(--primary-dark)}
+  table{width:100%; border-collapse:collapse; margin:8px 0; font-size:13px}
+  th,td{border:1px solid var(--line); padding:7px 9px; text-align:left; vertical-align:top}
+  th{background:var(--primary); color:#fff; font-weight:600}
+  tbody tr:nth-child(even){background:#f7fafa}
+  .badge{display:inline-block; padding:1px 8px; border-radius:5px; font-size:11px; font-weight:700; color:#fff; white-space:nowrap}
+  .b-have{background:var(--ok)} .b-gap{background:var(--miss)} .b-part{background:var(--warnc)}
+  .bad{background:#fdecea; border-left:4px solid var(--miss); border-radius:9px; padding:11px 15px; font-size:13px; margin:11px 0}
+  .bad b{color:#b3372e}
+  .warn{background:#fff4e5; border-left:4px solid #f0a14b; border-radius:9px; padding:11px 15px; font-size:13px; margin:11px 0}
+  .warn b{color:#b4651b}
+  .note{background:#eef7f7; border-left:4px solid var(--primary); border-radius:9px; padding:11px 15px; font-size:13px; margin:11px 0}
+  .good{background:#eaf7ef; border-left:4px solid var(--ok); border-radius:9px; padding:11px 15px; font-size:13px; margin:11px 0}
+  .good b{color:#1d7a47}
+  .sum{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin:6px 0}
+  .sc{border:1px solid var(--line); border-radius:12px; padding:13px 15px; text-align:center; background:#fafcfc}
+  .sc .big{font-size:28px; font-weight:800; line-height:1}
+  .sc .lab{font-size:12px; color:var(--muted); margin-top:5px}
+  .sc.have{border-top:4px solid var(--ok)} .sc.have .big{color:var(--ok)}
+  .sc.miss{border-top:4px solid var(--miss)} .sc.miss .big{color:var(--miss)}
+  .sc.add{border-top:4px solid var(--accent)} .sc.add .big{color:var(--accent)}
+
+  /* period cards */
+  .pcard{border:1px solid var(--line); border-radius:13px; margin:14px 0; overflow:hidden; box-shadow:0 2px 8px rgba(31,45,61,.05)}
+  .pcard>.ph{display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:11px 16px; color:#fff}
+  .pcard>.ph .seq{background:rgba(255,255,255,.25); border-radius:7px; font-weight:800; padding:2px 10px; font-size:13px}
+  .pcard>.ph .ttl{font-weight:800; font-size:15px}
+  .pcard>.ph .dt{font-size:12.5px; opacity:.92; font-weight:700}
+  .pcard>.ph .day{margin-left:auto; font-size:11.5px; background:rgba(0,0,0,.18); padding:2px 9px; border-radius:6px; font-weight:700}
+  .ph0{background:#6b7b8c}.ph1{background:#0d6e6e}.ph2{background:#2a9d8f}
+  .ph3{background:#3b82c4}.ph4{background:#c79500}.ph5{background:#d6453d}.ph6{background:#7a5bb5}
+  .pcard .body{padding:6px 16px 14px}
+  .pcard table{margin:8px 0 4px}
+  .pcard th{background:#43586a; font-size:12px; padding:6px 8px}
+  .pcard td{padding:6px 8px; font-size:12.7px}
+  .rolecell{font-weight:700; white-space:nowrap}
+  .cnt{display:inline-block; min-width:20px; text-align:center; font-weight:800; border-radius:5px; padding:1px 7px; font-size:12px}
+  .cnt.real{background:#e7f1ee; color:#0a5252}
+  .cnt.tor{background:#eef1f3; color:#5b6b7b}
+  .cnt.zero{background:#fdecea; color:#b3372e}
+  .load{font-weight:800; font-size:12px; border-radius:5px; padding:1px 6px; white-space:nowrap}
+  .L1{background:#dcefe9; color:#3a8f7f}.L2{background:#7fc4b4; color:#06453b}
+  .L3{background:#0d6e6e; color:#fff}.L4{background:#b3201a; color:#fff}
+  .milestone-bar{background:#fff4e5; border:1px dashed #e6b25a; border-radius:9px; padding:8px 14px; margin:6px 0; font-size:12.7px; color:#8a5a12; font-weight:700}
+  .gate-bar{background:#fdecea; border:1px dashed #e08178; border-radius:9px; padding:8px 14px; margin:6px 0; font-size:12.7px; color:#b3372e; font-weight:700; text-align:center}
+  .focus{font-size:12.5px; color:var(--muted); margin:2px 0 0}
+  .focus b{color:var(--primary-dark)}
+
+  /* heatmap matrix */
+  .hmwrap{overflow-x:auto}
+  .hm{font-size:11.5px; min-width:1080px; border-collapse:collapse}
+  .hm th{background:#2a6f6f; text-align:center; padding:6px 3px; font-size:10.8px; position:sticky; top:0}
+  .hm th.role{text-align:left; background:var(--primary); min-width:150px; position:sticky; left:0; z-index:3}
+  .hm td{text-align:center; padding:4px 2px; font-weight:800}
+  .hm td.role{text-align:left; font-weight:700; background:#f3f7f7; position:sticky; left:0; color:var(--ink); min-width:150px}
+  .hm td.role small{color:var(--muted); font-weight:400; display:block; font-size:10px}
+  .c0{background:#f1f4f6; color:#c2cbd2}
+  .c1{background:#dcefe9; color:#2f7d6e}
+  .c2{background:#7fc4b4; color:#06453b}
+  .c3{background:#0d6e6e; color:#fff}
+  .gaprow td{background:#fff6f5}
+  .gaprow td.role{background:#fbe0dd; color:#9c2b24}
+  .gcell{background:#fdecea!important; color:#b3372e!important}
+  .legend{display:flex; flex-wrap:wrap; gap:14px; font-size:12px; color:var(--muted); margin-top:8px; align-items:center}
+  .legend b{display:inline-block; min-width:22px; text-align:center; border-radius:4px; margin-right:4px; padding:1px 4px}
+  footer{text-align:center; color:var(--muted); font-size:12.5px; margin-top:26px; padding-top:14px; border-top:1px solid var(--line)}
+  @media print{body{background:#fff} section,header.cover,.pcard{box-shadow:none} .topnav{display:none}
+    .pcard{break-inside:avoid}
+    th,td,.hm td,.badge,.cnt,.load,header.cover,.sc,.pcard>.ph{ -webkit-print-color-adjust:exact; print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topnav"><a href="index.html">🏠 หน้ารวม</a> · <a href="แผนกำลังคน-ทีมรวม18.html">🤝 ทีมรวม 18 คน (pool มหิดล)</a> · <a href="แผนกำลังคนภายใน.html">👥 แผนกำลังคน (ภาพรวม)</a> · <a href="แผนดำเนินงาน-FitGap-Develop.html">🗺️ แผนดำเนินงาน</a> · <a href="ความครอบคลุมโมดูล.html">🧩 Module Coverage</a></div>
+
+  <header class="cover">
+    <div class="tag">INTERNAL · กำลังคนรายช่วงแบบละเอียด — ใครทำอะไร ช่วงไหน กี่คน</div>
+    <h1>แผนกำลังคนรายช่วง (ซอยย่อย 16 ช่วง)</h1>
+    <div class="sub">โครงการ Dental Information System · ม.วลัยลักษณ์ · 11/06/2026 → 07/04/2027 (300 วัน) + รับประกัน 2 ปี</div>
+    <div class="pills">
+      <span class="pill">👥 ทีมจริง 7 คน (PM·PC·BA·PO·Dev×3)</span>
+      <span class="pill">📋 TOR กำหนด 16 คน / 13 ตำแหน่ง</span>
+      <span class="pill red">🚫 ไม่มีใครรู้ระบบมหิดล</span>
+      <span class="pill red">🔴 Dev เกินกำลัง พ.ย.–ก.พ.</span>
+    </div>
+  </header>
+
+  <!-- 0 วิธีอ่าน -->
+  <section>
+    <h2><span class="n">0</span>วิธีอ่านเอกสารนี้</h2>
+    <p class="lead">หน้านี้ <b>ซอยไทม์ไลน์ 300 วันเป็น 16 ช่วงย่อย</b> (≈ครึ่งเดือน/อิงกิจกรรมจริง) แต่ละช่วงบอก 3 อย่าง: <b>ตำแหน่งไหน · กี่คน · ทำอะไร</b> — เทียบ 2 มุมเสมอ คือ “ทีมจริง 7 คน” กับ “ตามที่ TOR กำหนด/ที่ควรมี” เพื่อให้เห็นจุดที่ต้องเสริมคน · อิงวันจริงจาก <a href="แผนดำเนินงาน-FitGap-Develop.html">แผนดำเนินงาน</a> + เงื่อนไข <a href="ปรับแผน-Dependency-มหิดล.html">baseline มหิดล ~11 พ.ย.</a> + <a href="ความครอบคลุมโมดูล.html">Track A/B</a></p>
+    <div class="legend">
+      <span><span class="cnt real">2</span> = จำนวนคน “ทีมจริง” ที่ลงช่วงนั้น (จาก 7)</span>
+      <span><span class="cnt tor">1</span> = จำนวนที่ TOR/ที่ควรมี</span>
+      <span><span class="cnt zero">0</span> = ไม่มีคนรับ (ช่องโหว่)</span>
+      <span><span class="load L1">เบา</span> <span class="load L2">ปานกลาง</span> <span class="load L3">เต็มเวลา</span> <span class="load L4">⚠ เกินกำลัง</span></span>
+    </div>
+    <div class="note">ตัวเลข “จำนวนคน” เป็น <b>FTE โดยประมาณ</b> (1 = ทำงานช่วงนั้นเต็มเวลา, 0.5 = ครึ่งเวลา) เพื่อวางแผนและตัดสินใจ ปรับตามจริงได้ · บทบาทที่ทีมจริงไม่มี (System Engineer, DBA, QA, UI/UX, Data Engineer/Migration, Implementer, Mobile Dev) แสดงเป็น “ควรมี” พร้อมระบุว่าตอนนี้ใครรับภาระแทน</div>
+  </section>
+
+  <!-- 1 บัญชีตำแหน่ง -->
+  <section>
+    <h2><span class="n">1</span>บัญชีตำแหน่ง — ทีมจริง 7 vs TOR 16</h2>
+    <div class="sum">
+      <div class="sc have"><div class="big">7</div><div class="lab">ทีมจริง (หัวคน)</div></div>
+      <div class="sc miss"><div class="big">16</div><div class="lab">TOR กำหนด (หัวคน)</div></div>
+      <div class="sc miss"><div class="big">13</div><div class="lab">ตำแหน่งตาม TOR</div></div>
+      <div class="sc add"><div class="big">−9</div><div class="lab">ขาด (หัวคน)</div></div>
+    </div>
+    <table>
+      <thead><tr><th style="width:5%">#</th><th style="width:26%">ตำแหน่งตาม TOR (ข้อ 4.17)</th><th style="width:8%">TOR</th><th style="width:8%">วุฒิ/ปสก.</th><th style="width:13%">ทีมจริงรับโดย</th><th>สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Project Manager</td><td>1</td><td>≥16 ปี*</td><td><b>PM</b></td><td><span class="badge b-have">มี</span></td></tr>
+        <tr><td>2</td><td>System Analyst (วิเคราะห์ระบบ)</td><td>1</td><td>≥7 ปี</td><td><b>BA</b></td><td><span class="badge b-part">BA รับ (คนเดียว)</span></td></tr>
+        <tr><td>3</td><td>System Engineer (ระบบ/Integration/Infra)</td><td>1</td><td>≥7 ปี</td><td>Dev แบ่งมา</td><td><span class="badge b-gap">ขาด</span></td></tr>
+        <tr><td>4</td><td>Senior Programmer</td><td>1</td><td>≥7 ปี</td><td><b>Dev 1</b> (อาวุโส)</td><td><span class="badge b-part">มีบางส่วน</span></td></tr>
+        <tr><td>5</td><td>Programmer</td><td>3</td><td>≥5 ปี</td><td><b>Dev 1·2·3</b></td><td><span class="badge b-part">มี 3 (รวม Sr.)</span></td></tr>
+        <tr><td>6</td><td>DB Analyst / Designer</td><td>1</td><td>≥5 ปี</td><td>Dev แบ่งมา</td><td><span class="badge b-gap">ขาด</span></td></tr>
+        <tr><td>7</td><td>Database Administrator (DBA)</td><td>1</td><td>≥5 ปี</td><td>Dev แบ่งมา</td><td><span class="badge b-gap">ขาด</span></td></tr>
+        <tr><td>8</td><td>Senior Data Engineer (Migration)</td><td>1</td><td>≥5 ปี</td><td>Dev แบ่งมา</td><td><span class="badge b-gap">ขาด — เสี่ยงสุด</span></td></tr>
+        <tr><td>9</td><td>เจ้าหน้าที่จัดตั้งระบบสารสนเทศ (Implementer)</td><td>2</td><td>≥5 ปี</td><td>Dev/PC แบ่งมา</td><td><span class="badge b-gap">ขาด</span></td></tr>
+        <tr><td>10</td><td>Software Tester / QA</td><td>1</td><td>≥5 ปี</td><td>BA/PO ช่วย</td><td><span class="badge b-gap">ขาด</span></td></tr>
+        <tr><td>11</td><td>Project Coordinator</td><td>1</td><td>≥5 ปี</td><td><b>PC</b></td><td><span class="badge b-have">มี</span></td></tr>
+        <tr><td>12</td><td>Graphic UI Designer</td><td>1</td><td>≥5 ปี</td><td>Dev แบ่งมา</td><td><span class="badge b-gap">ขาด</span></td></tr>
+        <tr><td>13</td><td>UX Designer</td><td>1</td><td>≥5 ปี</td><td>Dev/BA แบ่งมา</td><td><span class="badge b-gap">ขาด</span></td></tr>
+        <tr style="background:#eef7f7"><td>+</td><td><b>PO (Product Owner)</b> — ไม่อยู่ใน TOR ตรง ๆ</td><td>—</td><td>—</td><td><b>PO</b></td><td><span class="badge b-have">ทีมจริงมีเพิ่ม</span></td></tr>
+      </tbody>
+    </table>
+    <p class="focus">* PM: บริหารโครงการ ≥16 ปี + เป็น PM ระบบ IT ≥10 ปี · ตำแหน่ง 12–13 TOR แยก Graphic UI กับ UX เป็น 2 คน</p>
+    <div class="bad"><b>🔴 ช่องโหว่ที่ลากยาวทั้งโครงการ:</b> 6 บทบาทที่ TOR กำหนดแต่ทีมจริงไม่มีเลย — <b>System Engineer · DB Analyst/Designer · DBA · Senior Data Engineer (Migration) · QA/Tester · UI/UX</b> (รวม Implementer ×2) → ตอนนี้ <b>โยนให้ Dev 3 คน + BA</b> ซึ่งเต็มมืออยู่แล้ว</div>
+  </section>
+
+  <!-- 2 ไทม์ไลน์ซอยย่อย -->
+  <section>
+    <h2><span class="n">2</span>ไทม์ไลน์ซอยย่อย 16 ช่วง — ตำแหน่งไหน กี่คน ทำอะไร</h2>
+    <p class="lead">ไล่จากเซ็นสัญญา (11/06/2026) ถึงส่งมอบ (07/04/2027) · คอลัมน์ <b>“จริง”</b> = ทีมจริงลงกี่ FTE · <b>“TOR/ควรมี”</b> = ที่ควรเป็น · <b>โหลด</b> = ความหนักของบทบาทนั้นในช่วงนี้</p>
+
+    <!-- ===== PHASE 0 ===== -->
+    <div class="pcard">
+      <div class="ph ph0"><span class="seq">ช่วง 1</span><span class="ttl">Kick-off &amp; ตั้งฐานราก</span><span class="dt">11–25 มิ.ย. 2026</span><span class="day">Day 0–14 · Phase 0</span></div>
+      <div class="body">
+        <p class="focus"><b>โฟกัส:</b> เปิดโครงการ · ตั้ง governance/RACI · เปิด MOU + จองคิวทีมมหิดล · <b>ขอ artifact มหิดล</b> (req spec, เคส UAT, SAP IAM, DB schema, source) · ตั้ง environment</p>
+        <table>
+          <thead><tr><th style="width:21%">ตำแหน่ง</th><th style="width:7%">จริง</th><th style="width:9%">TOR/ควรมี</th><th style="width:9%">โหลด</th><th>ทำอะไรในช่วงนี้</th></tr></thead>
+          <tbody>
+            <tr><td class="rolecell">PM</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td>Kick-off, RACI, ปฏิทินอิง deadline 30/150/280/300, เปิด MOU/SLA + จอง Consult Sprint, ขอสิทธิ์เข้าถึง HAIT/มหิดล</td></tr>
+            <tr><td class="rolecell">PC</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L2">ปานกลาง</span></td><td>จัดประชุม kick-off, Stakeholder Register, ตั้ง repo เอกสาร + ช่องทางสื่อสาร, ตามขอ artifact</td></tr>
+            <tr><td class="rolecell">BA</td><td><span class="cnt real">0.5</span></td><td><span class="cnt tor">1</span></td><td><span class="load L1">เบา</span></td><td>อ่าน TOR ภาคผนวก ก/ข/ค, ร่างโครง RTM, ตั้งเทมเพลต Fit/Gap</td></tr>
+            <tr><td class="rolecell">PO</td><td><span class="cnt real">0.5</span></td><td><span class="cnt tor">—</span></td><td><span class="load L1">เบา</span></td><td>ยืนยันขอบเขต/ลำดับความสำคัญเบื้องต้น, ชี้ตัว Process Owner ฝั่งวลัยลักษณ์</td></tr>
+            <tr><td class="rolecell">Dev ×3</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L1">เบา</span></td><td>ตั้ง Dev/Test environment, repo, ALM/issue tracker, เริ่มอ่าน schema/source มหิดลที่ได้รับ</td></tr>
+            <tr><td class="rolecell">System Engineer</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">1</span></td><td><span class="load L2">ปานกลาง</span></td><td><i>ควรมีตั้ง infra/network/sizing — ตอนนี้ Dev รับแทน</i></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="ph ph0"><span class="seq">ช่วง 2</span><span class="ttl">ทำแผน 9 ฉบับ → ส่ง M1</span><span class="dt">26 มิ.ย.–10 ก.ค. 2026</span><span class="day">Day 15–30 · Phase 0</span></div>
+      <div class="body">
+        <p class="focus"><b>โฟกัส:</b> ปิดเอกสารแผนบริหารโครงการ 9 ฉบับ + โครงสร้างทีม (M1-10) → ส่งงวด M1</p>
+        <table>
+          <thead><tr><th style="width:21%">ตำแหน่ง</th><th style="width:7%">จริง</th><th style="width:9%">TOR/ควรมี</th><th style="width:9%">โหลด</th><th>ทำอะไรในช่วงนี้</th></tr></thead>
+          <tbody>
+            <tr><td class="rolecell">PM</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td>คุม/อนุมัติแผน 9 ฉบับ, ยืนยันจองคิว Consult Sprint A–D ล่วงหน้าทั้งก้อน, ตรวจรับ M1</td></tr>
+            <tr><td class="rolecell">PC</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td>เรียบเรียง 9 ฉบับ + M1-10 โครงสร้างทีม, จัดรูปแบบ/ตรวจคำ, เตรียมแฟ้มส่งมอบ M1</td></tr>
+            <tr><td class="rolecell">BA</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L2">ปานกลาง</span></td><td>ร่างแผนสำรวจ/ออกแบบ, แผน Migration (โครง), แผนทดสอบ (โครง), RTM โครงร่าง</td></tr>
+            <tr><td class="rolecell">PO</td><td><span class="cnt real">0.5</span></td><td><span class="cnt tor">—</span></td><td><span class="load L1">เบา</span></td><td>review แผนภาพรวม, ยืนยันขอบเขต/สมมติฐาน Track A/B</td></tr>
+            <tr><td class="rolecell">Dev ×3</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L1">เบา</span></td><td>environment พร้อมใช้, ทำ mock/stub HAIT Plus, ศึกษา schema/source เชิงลึก (reverse-engineer เริ่ม)</td></tr>
+          </tbody>
+        </table>
+        <div class="milestone-bar">◆ M1 · งวด 20% — ส่ง 11/07/2026 (ตรงเสาร์ → จริงควรปิดภายในศุกร์ 10/07) · แผน 9 ฉบับผ่านอนุมัติ + ทีม + คิวมหิดลถูกจองแล้ว</div>
+      </div>
+    </div>
+
+    <!-- ===== PHASE 1a ===== -->
+    <div class="pcard">
+      <div class="ph ph1"><span class="seq">ช่วง 3</span><span class="ttl">RTM + เก็บ Requirement วลัยลักษณ์</span><span class="dt">11–31 ก.ค. 2026</span><span class="day">Day 30–50 · Phase 1a</span></div>
+      <div class="body">
+        <p class="focus"><b>โฟกัส:</b> แตก TOR เป็น RTM ละบรรทัด · เก็บ req ผู้ใช้วลัยลักษณ์ (To-be) — <b>ทำได้เลยไม่ต้องรอมหิดล</b> · Inventory ความสามารถ HIS เดิม</p>
+        <table>
+          <thead><tr><th style="width:21%">ตำแหน่ง</th><th style="width:7%">จริง</th><th style="width:9%">TOR/ควรมี</th><th style="width:9%">โหลด</th><th>ทำอะไรในช่วงนี้</th></tr></thead>
+          <tbody>
+            <tr><td class="rolecell">BA</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">2</span></td><td><span class="load L3">เต็มเวลา</span></td><td>ทำ RTM จากภาคผนวก ก/ข/ค, สัมภาษณ์ผู้ใช้ทุกคลินิก/ห้อง, เขียน req To-be — <b>งานหนักสุดของช่วงนี้</b></td></tr>
+            <tr><td class="rolecell">PO</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">—</span></td><td><span class="load L2">ปานกลาง</span></td><td>เปิดประตูเข้าถึง Process Owner แต่ละหน่วย, จัดลำดับความสำคัญ req, ตัดสิน scope</td></tr>
+            <tr><td class="rolecell">PC</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L2">ปานกลาง</span></td><td>นัด workshop ผู้ใช้, จดบันทึก, ตามเอกสาร, จัดคิว Consult Sprint A (สถาปัตยกรรม/ข้อมูล)</td></tr>
+            <tr><td class="rolecell">Dev ×3</td><td><span class="cnt real">1.5</span></td><td><span class="cnt tor">2</span></td><td><span class="load L2">ปานกลาง</span></td><td>Inventory ฟังก์ชัน/API/รายงาน HIS เดิม, reverse-engineer ระบบ Phase 1 มหิดล + เอกสาร, เริ่ม spike เทคนิค</td></tr>
+            <tr><td class="rolecell">UI/UX</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">1</span></td><td><span class="load L1">เบา</span></td><td><i>ควรเริ่มเก็บ pain point หน้าจอ/journey ผู้ใช้ — ตอนนี้ BA เก็บรวมไปด้วย</i></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="ph ph1"><span class="seq">ช่วง 4</span><span class="ttl">Fit/Gap Workshop รายโมดูล (Track A)</span><span class="dt">1–31 ส.ค. 2026</span><span class="day">Day 51–81 · Phase 1a</span></div>
+      <div class="body">
+        <p class="focus"><b>โฟกัส:</b> Paper Fit/Gap จับคู่ req ↔ ความสามารถเดิม จัดประเภท Fit/Config/Partial/Gap รายโมดูล Track A (~20 โมดูล) · เริ่ม Consult Sprint A</p>
+        <table>
+          <thead><tr><th style="width:21%">ตำแหน่ง</th><th style="width:7%">จริง</th><th style="width:9%">TOR/ควรมี</th><th style="width:9%">โหลด</th><th>ทำอะไรในช่วงนี้</th></tr></thead>
+          <tbody>
+            <tr><td class="rolecell">BA</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">2</span></td><td><span class="load L4">⚠ เกินกำลัง</span></td><td>นำ Fit/Gap Workshop ทุกโมดูล, จัดประเภท gap, เขียนผล — <b>คนเดียวรับ 2 track โหลดเกิน</b></td></tr>
+            <tr><td class="rolecell">Dev ×3</td><td><span class="cnt real">2</span></td><td><span class="cnt tor">2</span></td><td><span class="load L2">ปานกลาง</span></td><td>ประเมินความเป็นไปได้/effort เชิงเทคนิคของแต่ละ gap, ลองเชื่อม mock, ดู schema มหิดลลึกขึ้น</td></tr>
+            <tr><td class="rolecell">PO</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">—</span></td><td><span class="load L2">ปานกลาง</span></td><td>ตัดสิน Build vs Config รายข้อ, ยืนยัน scope กับ Process Owner, คุมไม่ให้ scope บาน</td></tr>
+            <tr><td class="rolecell">PC</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L2">ปานกลาง</span></td><td>คุมตาราง workshop, บันทึก/ถอดความรู้ทุก session, ประสานคิวมหิดล (Sprint A)</td></tr>
+            <tr><td class="rolecell">PM</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L2">ปานกลาง</span></td><td>เฝ้า critical path, escalate ถ้ามหิดลไม่ว่าง/artifact ไม่มา, คุมความเสี่ยง baseline</td></tr>
+          </tbody>
+        </table>
+        <div class="warn"><b>⚠️ จุดเริ่มโหลดพุ่ง:</b> BA คนเดียวรับ Fit/Gap ทั้ง Track A + เตรียม Track B → ควรหา <b>System Analyst เสริม +1</b> ตั้งแต่ ส.ค. หรือดึง PO มาช่วยวิเคราะห์</div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="ph ph2"><span class="seq">ช่วง 5</span><span class="ttl">Fit/Gap ปิดท้าย + Integration/Data + เริ่มออกแบบ + เริ่ม Track B</span><span class="dt">1–30 ก.ย. 2026</span><span class="day">Day 82–111 · Phase 1a⊕2 (PEAK 1)</span></div>
+      <div class="body">
+        <p class="focus"><b>โฟกัส (จุด PEAK 1):</b> Fit/Gap ด้าน Integration &amp; ข้อมูล (HAIT/SAP/PACS/LIS) · เริ่ม Design คู่ขนาน · <b>เริ่มออกแบบ Track B (Dental Lab/Mobile/Micro/Patho) ได้เลย — ไม่ต้องรอ baseline</b></p>
+        <table>
+          <thead><tr><th style="width:21%">ตำแหน่ง</th><th style="width:7%">จริง</th><th style="width:9%">TOR/ควรมี</th><th style="width:9%">โหลด</th><th>ทำอะไรในช่วงนี้</th></tr></thead>
+          <tbody>
+            <tr><td class="rolecell">BA</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">2</span></td><td><span class="load L4">⚠ เกินกำลัง</span></td><td>ปิด Fit/Gap, เริ่มเขียน SRS/Workflow To-be, ออกแบบ Track B — โหลดทับ 3 งาน</td></tr>
+            <tr><td class="rolecell">Dev ×3</td><td><span class="cnt real">2.5</span></td><td><span class="cnt tor">3</span></td><td><span class="load L3">เต็มเวลา</span></td><td>Integration/Data Fit-Gap → API Spec + Migration Mapping, spike Track B (Dental Lab/Mobile), เริ่มออกแบบ DB</td></tr>
+            <tr><td class="rolecell">DB Analyst/DBA</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">2</span></td><td><span class="load L3">เต็มเวลา</span></td><td><i>ควรมีออกแบบ Database Schema + Data Dictionary — ตอนนี้ Dev แบ่งมาทำ</i></td></tr>
+            <tr><td class="rolecell">Data Engineer (Migration)</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">1</span></td><td><span class="load L2">ปานกลาง</span></td><td><i>ควรเริ่มทำ Migration Data Mapping จาก DB มหิดล — ช่องโหว่เสี่ยงสุด</i></td></tr>
+            <tr><td class="rolecell">UI/UX</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">2</span></td><td><span class="load L3">เต็มเวลา</span></td><td><i>ควรเริ่มออกแบบ UX/UI หน้าจอ Track B + Mobile — ตอนนี้ไม่มีเจ้าภาพ</i></td></tr>
+            <tr><td class="rolecell">PO</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">—</span></td><td><span class="load L2">ปานกลาง</span></td><td>เคาะ Gap Backlog + priority, ตัดสินแนวทาง Track B (build/เฟส), ประสาน Sprint C (review Fit/Gap)</td></tr>
+            <tr><td class="rolecell">PM</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td>คุม 2 งานทับซ้อน, ดัน escalation memo (baseline date + Track B scope), จองมหิดล Sprint C</td></tr>
+          </tbody>
+        </table>
+        <div class="bad"><b>🔴 PEAK 1 (ก.ย.–ต.ค.):</b> Fit/Gap (P1) ทับ Design (P2) → ถ้าไม่เสริม <b>System Analyst / DB Designer / UI-UX</b> งานออกแบบ M2 จะกระจุกที่ BA+Dev จนเสี่ยงคุณภาพ</div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="ph ph2"><span class="seq">ช่วง 6</span><span class="ttl">Gap Backlog + ออกแบบเข้มข้น</span><span class="dt">1–18 ต.ค. 2026</span><span class="day">Day 112–129 · Phase 2 (PEAK 1)</span></div>
+      <div class="body">
+        <p class="focus"><b>โฟกัส:</b> ปิด Fit/Gap Workshop (~9 ต.ค.) · จัดลำดับ Gap Backlog + ประเมิน effort · ออกแบบรายละเอียดเข้มข้น (ระวังวันหยุด 13/23 ต.ค.)</p>
+        <table>
+          <thead><tr><th style="width:21%">ตำแหน่ง</th><th style="width:7%">จริง</th><th style="width:9%">TOR/ควรมี</th><th style="width:9%">โหลด</th><th>ทำอะไรในช่วงนี้</th></tr></thead>
+          <tbody>
+            <tr><td class="rolecell">BA</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">2</span></td><td><span class="load L3">เต็มเวลา</span></td><td>เขียน SRS, Workflow As-is/To-be, BPM, User Authorization Matrix, ปิด Fit/Gap Report</td></tr>
+            <tr><td class="rolecell">Dev ×3</td><td><span class="cnt real">2.5</span></td><td><span class="cnt tor">3</span></td><td><span class="load L3">เต็มเวลา</span></td><td>ประเมิน effort backlog, Technical Spec, System Architecture, DB Schema, API Spec, Migration Mapping</td></tr>
+            <tr><td class="rolecell">DB Analyst/DBA</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">2</span></td><td><span class="load L3">เต็มเวลา</span></td><td><i>ควรปิด Database Schema Design + Data Dictionary — Dev รับแทน</i></td></tr>
+            <tr><td class="rolecell">UI/UX</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">2</span></td><td><span class="load L2">ปานกลาง</span></td><td><i>ควรส่งแบบหน้าจอหลัก Track B + Mobile ให้ Dev เริ่ม build ทัน พ.ย.</i></td></tr>
+            <tr><td class="rolecell">PO</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">—</span></td><td><span class="load L2">ปานกลาง</span></td><td>อนุมัติ backlog + priority, ติดป้าย “provisional” กับสิ่งที่รอ baseline, รับรองเอกสาร M2</td></tr>
+            <tr><td class="rolecell">PC</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L2">ปานกลาง</span></td><td>รวบเอกสารส่งมอบ M2 (13 ฉบับ), จัดรูปแบบ, เตรียม buffer ก่อน M2</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== PHASE 2 close ===== -->
+    <div class="pcard">
+      <div class="ph ph2"><span class="seq">ช่วง 7</span><span class="ttl">ปิดเอกสารออกแบบ → ส่ง M2 (Provisional)</span><span class="dt">19 ต.ค.–8 พ.ย. 2026</span><span class="day">Day 130–150 · Phase 2</span></div>
+      <div class="body">
+        <p class="focus"><b>โฟกัส:</b> ปิดเอกสารออกแบบ M2 ครบ 13 ฉบับ + ออกแบบความปลอดภัย (OWASP/Zero Trust/TLS/Audit) → ส่ง M2 ติดป้าย <b>“Provisional — รอยืนยัน baseline”</b></p>
+        <table>
+          <thead><tr><th style="width:21%">ตำแหน่ง</th><th style="width:7%">จริง</th><th style="width:9%">TOR/ควรมี</th><th style="width:9%">โหลด</th><th>ทำอะไรในช่วงนี้</th></tr></thead>
+          <tbody>
+            <tr><td class="rolecell">BA</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">2</span></td><td><span class="load L3">เต็มเวลา</span></td><td>ปิด SRS/BPM/Workflow/Auth Matrix, ตรวจ RTM ครบ trace, ป้าย provisional</td></tr>
+            <tr><td class="rolecell">Dev ×3</td><td><span class="cnt real">2</span></td><td><span class="cnt tor">3</span></td><td><span class="load L3">เต็มเวลา</span></td><td>ปิด Tech Spec/Architecture/DB Schema/API/Migration Mapping, ออกแบบความปลอดภัย, เตรียม skeleton โค้ด Track B</td></tr>
+            <tr><td class="rolecell">UI/UX</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">2</span></td><td><span class="load L2">ปานกลาง</span></td><td><i>ควรส่ง UX/UI final ของหน้าจอ M2 — ตอนนี้ Dev/BA แบ่งทำ</i></td></tr>
+            <tr><td class="rolecell">PC</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td>รวมแฟ้มส่งมอบ M2 (13 ฉบับ), จัดประชุมตรวจรับ, คุม buffer</td></tr>
+            <tr><td class="rolecell">PO</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">—</span></td><td><span class="load L2">ปานกลาง</span></td><td>รับรองเอกสารออกแบบ, ยืนยันกับวลัยลักษณ์ว่า M2 เป็น Paper Fit/Gap (provisional)</td></tr>
+            <tr><td class="rolecell">PM</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td>ส่ง escalation memo ล็อก baseline date, ตรวจรับ M2, จองมหิดล Sprint D (Integration)</td></tr>
+          </tbody>
+        </table>
+        <div class="milestone-bar">◆ M2 · งวด 20% — ส่ง 08/11/2026 (ตรงอาทิตย์ → จริงควรปิดภายในศุกร์ 06/11) · เอกสารวิเคราะห์/ออกแบบ + Fit/Gap result + Backlog อนุมัติ (ฉบับ provisional)</div>
+        <div class="gate-bar">▼ GATE: baseline ฐานมหิดลพร้อม ~11 พ.ย. 2026 — หลังจุดนี้ระบบ Phase 1 นิ่ง (ใช้ศึกษา/เชื่อมต่อได้) แต่ <b>ทีมมหิดลไม่ว่าง (ทำ Phase 2 ต่อ) → พึ่งคนไม่ได้</b></div>
+      </div>
+    </div>
+
+    <!-- ===== PHASE 1b + 3 ===== -->
+    <div class="pcard">
+      <div class="ph ph3"><span class="seq">ช่วง 8</span><span class="ttl">System Fit/Gap (vs ระบบจริง) + เริ่ม Build</span><span class="dt">11–30 พ.ย. 2026</span><span class="day">Day 153–172 · Phase 1b⊕3</span></div>
+      <div class="body">
+        <p class="focus"><b>โฟกัส:</b> ยืนยัน gap บนกระดาษกับ <b>ระบบจริงที่นิ่งแล้ว</b> → ปรับ design (เผื่อ rework) · เริ่ม Configure ส่วน Fit/Config · <b>Track B build เต็มสูบ</b> (ไม่ติด baseline)</p>
+        <table>
+          <thead><tr><th style="width:21%">ตำแหน่ง</th><th style="width:7%">จริง</th><th style="width:9%">TOR/ควรมี</th><th style="width:9%">โหลด</th><th>ทำอะไรในช่วงนี้</th></tr></thead>
+          <tbody>
+            <tr><td class="rolecell">Dev ×3</td><td><span class="cnt real">3</span></td><td><span class="cnt tor">5</span></td><td><span class="load L4">⚠ เกินกำลัง</span></td><td>Config Fit/Config + เริ่ม Develop gap Track A + Build Track B (Dental Lab/Mobile) + ปรับ design ตามระบบจริง</td></tr>
+            <tr><td class="rolecell">BA</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td>นำ System Fit/Gap เทียบระบบจริง, ออก Change Request, อัปเดต SRS/Mapping จาก provisional → confirmed</td></tr>
+            <tr><td class="rolecell">System Engineer</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td><i>ควรเริ่ม Integration HAIT/SAP IAM/PACS/LIS (Sprint D) — Dev แบ่งมารับ</i></td></tr>
+            <tr><td class="rolecell">Mobile Dev</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">2</span></td><td><span class="load L3">เต็มเวลา</span></td><td><i>ควรเริ่ม Mobile 3 แอป (Patient/Student/Dentist) — งานเฉพาะทาง ตอนนี้ Dev รับรวม</i></td></tr>
+            <tr><td class="rolecell">PO</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">—</span></td><td><span class="load L2">ปานกลาง</span></td><td>เคาะ Change Request หลัง System Fit/Gap, จัดลำดับ build, คุม scope Track B</td></tr>
+            <tr><td class="rolecell">PM</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L2">ปานกลาง</span></td><td>คุมความเสี่ยง rework, จัดการคิว Sprint D มหิดล, เฝ้า buffer ที่หดจาก Phase 1b</td></tr>
+          </tbody>
+        </table>
+        <div class="bad"><b>🔴 จุดเริ่ม Dev เกินกำลัง (พ.ย.):</b> Config + Develop Track A gap + Build Track B + Integration + ปรับ design พร้อมกันบน Dev 3 คน → ตามแผนต้องเสริม <b>Mobile Dev +1–2, Developer +2–3, Data Engineer +1</b> เริ่ม ต.ค.–พ.ย.</div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="ph ph3"><span class="seq">ช่วง 9</span><span class="ttl">Build เข้มข้น + Integration + Mobile + ETL</span><span class="dt">1–31 ธ.ค. 2026</span><span class="day">Day 173–203 · Phase 3</span></div>
+      <div class="body">
+        <p class="focus"><b>โฟกัส:</b> Develop gap รายโมดูล + Track B + Integration build (Sprint D) + Mobile 3 แอป + สร้าง ETL Migration + Dry-run รอบแรก (ระวังวันหยุด 5/10 ธ.ค. + ปีใหม่)</p>
+        <table>
+          <thead><tr><th style="width:21%">ตำแหน่ง</th><th style="width:7%">จริง</th><th style="width:9%">TOR/ควรมี</th><th style="width:9%">โหลด</th><th>ทำอะไรในช่วงนี้</th></tr></thead>
+          <tbody>
+            <tr><td class="rolecell">Dev ×3 (Sr.+Prog)</td><td><span class="cnt real">3</span></td><td><span class="cnt tor">5</span></td><td><span class="load L4">⚠ เกินกำลัง</span></td><td>Develop gap Track A + Track B (Dental Lab/Micro/Patho/CSSD/IC/KPI/PR/MIS), Unit test</td></tr>
+            <tr><td class="rolecell">System Engineer</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">1</span></td><td><span class="load L4">⚠ เกินกำลัง</span></td><td><i>Integration HAIT/SAP/PACS/LIS — Dev แบ่งมา ทำให้คอขวดหนักขึ้น</i></td></tr>
+            <tr><td class="rolecell">Mobile Dev</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">2</span></td><td><span class="load L4">⚠ เกินกำลัง</span></td><td><i>Mobile 3 แอป + เตรียม deploy App Store/Play — ตอนนี้แทรกในงาน Dev</i></td></tr>
+            <tr><td class="rolecell">Data Engineer (Migration)</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td><i>สร้าง ETL + Dry-run จาก DB มหิดล — ช่องโหว่เสี่ยงสุด ต้องมีเจ้าภาพ</i></td></tr>
+            <tr><td class="rolecell">BA</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L2">ปานกลาง</span></td><td>ตอบ clarification ระหว่าง build, เริ่มเขียน Test Case จาก SRS (เกลี่ยโหลดล่วงหน้า)</td></tr>
+            <tr><td class="rolecell">QA/Tester</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">1</span></td><td><span class="load L2">ปานกลาง</span></td><td><i>ควรเริ่มเตรียม Test Plan/Test Case + สภาพแวดล้อมทดสอบ — BA ช่วยบางส่วน</i></td></tr>
+            <tr><td class="rolecell">PM/PC</td><td><span class="cnt real">1.5</span></td><td><span class="cnt tor">2</span></td><td><span class="load L2">ปานกลาง</span></td><td>คุมความคืบหน้า build, จัดคิว Sprint D, เฝ้าวันหยุดยาว/OT, ตามผล Dry-run</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="ph ph3"><span class="seq">ช่วง 10</span><span class="ttl">Build ปิดงาน + Mobile + เริ่ม SIT</span><span class="dt">1–31 ม.ค. 2027</span><span class="day">Day 204–234 · Phase 3⊕4</span></div>
+      <div class="body">
+        <p class="focus"><b>โฟกัส:</b> ปิดฟีเจอร์ที่เหลือ + Mobile 3 แอป + Integration ต่อ + Unit test ครบ + เริ่ม System Integration Test (SIT) + เตรียม UAT/Master Data</p>
+        <table>
+          <thead><tr><th style="width:21%">ตำแหน่ง</th><th style="width:7%">จริง</th><th style="width:9%">TOR/ควรมี</th><th style="width:9%">โหลด</th><th>ทำอะไรในช่วงนี้</th></tr></thead>
+          <tbody>
+            <tr><td class="rolecell">Dev ×3</td><td><span class="cnt real">3</span></td><td><span class="cnt tor">5</span></td><td><span class="load L4">⚠ เกินกำลัง</span></td><td>ปิด build Track A+B, แก้ defect SIT, เชื่อม Integration ครบ, ปิด Mobile</td></tr>
+            <tr><td class="rolecell">QA/Tester</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td><i>ควรนำ SIT + บันทึก defect + regression — ตอนนี้ BA/PO ช่วยแทน ไม่พอ</i></td></tr>
+            <tr><td class="rolecell">BA</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td>คุม Test Case, ช่วย SIT, เตรียม UAT script, เริ่มร่างคู่มือผู้ใช้</td></tr>
+            <tr><td class="rolecell">Data Engineer (Migration)</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td><i>Dry-run รอบ 2 + reconciliation + เตรียม Master Data</i></td></tr>
+            <tr><td class="rolecell">PO</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">—</span></td><td><span class="load L2">ปานกลาง</span></td><td>เตรียม UAT (Process Owner), จัดลำดับแก้ defect ตาม priority</td></tr>
+            <tr><td class="rolecell">PM/PC</td><td><span class="cnt real">1.5</span></td><td><span class="cnt tor">2</span></td><td><span class="load L2">ปานกลาง</span></td><td>คุม SIT, วางแผนอบรม 4 กลุ่ม, จองห้อง/อุปกรณ์, จัดคิว Migration sync มหิดล</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="ph ph4"><span class="seq">ช่วง 11</span><span class="ttl">ปิด Build + SIT จบ + Dry-run Migration</span><span class="dt">1–16 ก.พ. 2027</span><span class="day">Day 235–250 · Phase 3⊕4 (PEAK 2)</span></div>
+      <div class="body">
+        <p class="focus"><b>โฟกัส (จุด PEAK 2):</b> ปิด Build/SIT (~16 ก.พ.) · Migration rehearsal · เริ่ม Master Data Setup · Dev ยังปิดงานขณะ QA/Trainer เริ่มแล้ว</p>
+        <table>
+          <thead><tr><th style="width:21%">ตำแหน่ง</th><th style="width:7%">จริง</th><th style="width:9%">TOR/ควรมี</th><th style="width:9%">โหลด</th><th>ทำอะไรในช่วงนี้</th></tr></thead>
+          <tbody>
+            <tr><td class="rolecell">Dev ×3</td><td><span class="cnt real">3</span></td><td><span class="cnt tor">4</span></td><td><span class="load L4">⚠ เกินกำลัง</span></td><td>ปิด defect SIT รอบสุดท้าย, freeze build, สนับสนุนทีมทดสอบ, แก้ Integration ที่ค้าง</td></tr>
+            <tr><td class="rolecell">QA/Tester</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">1</span></td><td><span class="load L4">⚠ เกินกำลัง</span></td><td><i>ปิด SIT Report + เตรียม E2E — ภาระตกที่ BA/PO ไม่พอช่วงนี้</i></td></tr>
+            <tr><td class="rolecell">Data Engineer (Migration)</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">1</span></td><td><span class="load L4">⚠ เกินกำลัง</span></td><td><i>Migration rehearsal + reconciliation — จุดเสี่ยงสุด ต้องมีคนจริง</i></td></tr>
+            <tr><td class="rolecell">BA</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L4">⚠ เกินกำลัง</span></td><td>ปิด SIT Report (แทน QA), Master Data, คู่มือ, UAT script — โหลดทับหนัก</td></tr>
+            <tr><td class="rolecell">PO</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">—</span></td><td><span class="load L3">เต็มเวลา</span></td><td>เตรียม UAT sign-off, ประสาน Process Owner ทุกหน่วยให้พร้อมทดสอบ</td></tr>
+            <tr><td class="rolecell">PM/PC</td><td><span class="cnt real">1.5</span></td><td><span class="cnt tor">2</span></td><td><span class="load L3">เต็มเวลา</span></td><td>คุม buffer ก่อน M3, ยืนยันคิว Migration sync + อบรม, จัด OT/กำลังสำรอง</td></tr>
+          </tbody>
+        </table>
+        <div class="bad"><b>🔴 PEAK 2 (ก.พ.–มี.ค.):</b> Build (P3) ทับ Test/Train (P4) → <b>QA/Tester</b> และ <b>Data Engineer</b> ที่ขาด ทำให้ Dev+BA ต้องรับงานทดสอบ/migration เอง ทั้งที่เต็มมือ — ช่วงเสี่ยงเลื่อนส่งมอบมากสุด</div>
+      </div>
+    </div>
+
+    <!-- ===== PHASE 4 ===== -->
+    <div class="pcard">
+      <div class="ph ph4"><span class="seq">ช่วง 12</span><span class="ttl">Master Data + UAT + Migration rehearsal</span><span class="dt">17–28 ก.พ. 2027</span><span class="day">Day 251–262 · Phase 4</span></div>
+      <div class="body">
+        <p class="focus"><b>โฟกัส:</b> Set up Master Data · UAT โดย Process Owner เริ่ม · Migration rehearsal → ตรวจความถูกต้อง</p>
+        <table>
+          <thead><tr><th style="width:21%">ตำแหน่ง</th><th style="width:7%">จริง</th><th style="width:9%">TOR/ควรมี</th><th style="width:9%">โหลด</th><th>ทำอะไรในช่วงนี้</th></tr></thead>
+          <tbody>
+            <tr><td class="rolecell">PO</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">—</span></td><td><span class="load L3">เต็มเวลา</span></td><td>นำ UAT กับ Process Owner ทุกหน่วย, รวบรวมผล, ตัดสิน accept/แก้</td></tr>
+            <tr><td class="rolecell">QA/Tester</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td><i>ควร facilitate UAT + ติดตาม defect — BA รับแทน</i></td></tr>
+            <tr><td class="rolecell">BA</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td>คุม UAT script, จัดบันทึก defect, ปิดคู่มือผู้ใช้, เตรียมเอกสารอบรม</td></tr>
+            <tr><td class="rolecell">Dev ×3</td><td><span class="cnt real">2.5</span></td><td><span class="cnt tor">3</span></td><td><span class="load L3">เต็มเวลา</span></td><td>แก้ defect จาก UAT, สนับสนุน Master Data, เตรียม cutover script</td></tr>
+            <tr><td class="rolecell">Data Engineer (Migration)</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td><i>Migration rehearsal + reconciliation (Sprint Migration sync มหิดล)</i></td></tr>
+            <tr><td class="rolecell">PM/PC</td><td><span class="cnt real">1.5</span></td><td><span class="cnt tor">2</span></td><td><span class="load L2">ปานกลาง</span></td><td>คุมตาราง UAT/อบรม, จัดโลจิสติกส์อบรม 4 กลุ่ม, ตามผล rehearsal</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="ph ph4"><span class="seq">ช่วง 13</span><span class="ttl">UAT ปิด + E2E + อบรม 4 กลุ่ม + Migration final → M3</span><span class="dt">1–18 มี.ค. 2027</span><span class="day">Day 263–280 · Phase 4</span></div>
+      <div class="body">
+        <p class="focus"><b>โฟกัส:</b> ปิด UAT (sign-off) · E2E Test ครบ flow · ฝึกอบรม 4 กลุ่ม (ผู้บริหาร / Key-user / End-user ≥20 / Process Owner) + ส่งคู่มือ · Migration final</p>
+        <table>
+          <thead><tr><th style="width:21%">ตำแหน่ง</th><th style="width:7%">จริง</th><th style="width:9%">TOR/ควรมี</th><th style="width:9%">โหลด</th><th>ทำอะไรในช่วงนี้</th></tr></thead>
+          <tbody>
+            <tr><td class="rolecell">PO</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">—</span></td><td><span class="load L3">เต็มเวลา</span></td><td>ปิด UAT sign-off, ตรวจรับ E2E, ยืนยันความพร้อม Go-Live</td></tr>
+            <tr><td class="rolecell">QA/Tester</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td><i>ควรนำ E2E Test + ปิด defect ก่อนตัดเข้า production</i></td></tr>
+            <tr><td class="rolecell">PC (Trainer)</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td>จัดอบรม 4 กลุ่ม, ทะเบียนผู้เข้าอบรม, ส่งมอบคู่มือ/วิดีโอ</td></tr>
+            <tr><td class="rolecell">BA</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td>เป็นวิทยากร/เนื้อหาอบรม, ปิดคู่มือ, ช่วย E2E, ปิดเอกสารส่งมอบ M3</td></tr>
+            <tr><td class="rolecell">Dev ×3</td><td><span class="cnt real">2</span></td><td><span class="cnt tor">3</span></td><td><span class="load L3">เต็มเวลา</span></td><td>แก้ defect E2E/UAT รอบสุดท้าย, เตรียม cutover, standby ระหว่างอบรม</td></tr>
+            <tr><td class="rolecell">Data Engineer (Migration)</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td><i>Migration final + reconciliation + ตรวจความถูกต้องก่อน cutover</i></td></tr>
+            <tr><td class="rolecell">PM</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td>ตรวจรับ M3, ยืนยัน Go-Live readiness, จองมหิดล Cutover standby</td></tr>
+          </tbody>
+        </table>
+        <div class="milestone-bar">◆ M3 · งวด 40% — ส่ง 18/03/2027 · UAT ผ่าน + อบรมครบ 4 กลุ่ม + Migration พร้อม + E2E ผ่าน</div>
+      </div>
+    </div>
+
+    <!-- ===== PHASE 5 ===== -->
+    <div class="pcard">
+      <div class="ph ph5"><span class="seq">ช่วง 14</span><span class="ttl">Cutover + Go-Live + Hypercare เริ่ม</span><span class="dt">18–31 มี.ค. 2027</span><span class="day">Day 280–293 · Phase 5</span></div>
+      <div class="body">
+        <p class="focus"><b>โฟกัส:</b> Cutover ขึ้น Production · Migrate ข้อมูลรอบสุดท้าย · Go-Live · Hypercare เฝ้าระวังใกล้ชิด (มหิดล standby ช่วง cutover)</p>
+        <table>
+          <thead><tr><th style="width:21%">ตำแหน่ง</th><th style="width:7%">จริง</th><th style="width:9%">TOR/ควรมี</th><th style="width:9%">โหลด</th><th>ทำอะไรในช่วงนี้</th></tr></thead>
+          <tbody>
+            <tr><td class="rolecell">Dev ×3</td><td><span class="cnt real">3</span></td><td><span class="cnt tor">3</span></td><td><span class="load L4">⚠ เกินกำลัง</span></td><td>Cutover, แก้ปัญหา Go-Live แบบ real-time, Hypercare war-room, hotfix</td></tr>
+            <tr><td class="rolecell">Data Engineer (Migration)</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">1</span></td><td><span class="load L4">⚠ เกินกำลัง</span></td><td><i>Migrate รอบสุดท้าย + reconciliation วันตัดระบบ — งานวิกฤตที่สุด</i></td></tr>
+            <tr><td class="rolecell">System Engineer</td><td><span class="cnt zero">0</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td><i>คุม production env/Integration ตอน cutover — Dev รับแทน</i></td></tr>
+            <tr><td class="rolecell">PO</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">—</span></td><td><span class="load L3">เต็มเวลา</span></td><td>ตัดสิน go/no-go, รับเรื่องผู้ใช้, จัดลำดับ hotfix ตามผลกระทบ</td></tr>
+            <tr><td class="rolecell">PM/PC</td><td><span class="cnt real">2</span></td><td><span class="cnt tor">2</span></td><td><span class="load L3">เต็มเวลา</span></td><td>คุม cutover checklist, ประสานมหิดล standby, สื่อสารผู้ใช้, บันทึกปัญหา Hypercare</td></tr>
+            <tr><td class="rolecell">BA</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L2">ปานกลาง</span></td><td>support ผู้ใช้หน้างาน, จดปัญหา → backlog hotfix, อัปเดตคู่มือ</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="ph ph5"><span class="seq">ช่วง 15</span><span class="ttl">Hypercare + ส่งมอบปิดโครงการ → M4</span><span class="dt">1–7 เม.ย. 2027</span><span class="day">Day 294–300 · Phase 5</span></div>
+      <div class="body">
+        <p class="focus"><b>โฟกัส:</b> Hypercare ต่อเนื่อง · ส่งมอบ Source Code + เอกสารทั้งหมด + คู่มือ · ปิดโครงการ → งวดสุดท้าย</p>
+        <table>
+          <thead><tr><th style="width:21%">ตำแหน่ง</th><th style="width:7%">จริง</th><th style="width:9%">TOR/ควรมี</th><th style="width:9%">โหลด</th><th>ทำอะไรในช่วงนี้</th></tr></thead>
+          <tbody>
+            <tr><td class="rolecell">Dev ×3</td><td><span class="cnt real">2</span></td><td><span class="cnt tor">3</span></td><td><span class="load L3">เต็มเวลา</span></td><td>Hypercare/hotfix, จัดระเบียบ source code, As-built doc, ส่งมอบ repo</td></tr>
+            <tr><td class="rolecell">PC</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td>รวบรวมแฟ้มส่งมอบ M4 (Cutover/Deploy/Source/As-built/Admin/Acceptance/SLA), จัดตรวจรับ</td></tr>
+            <tr><td class="rolecell">PM</td><td><span class="cnt real">1</span></td><td><span class="cnt tor">1</span></td><td><span class="load L3">เต็มเวลา</span></td><td>ปิดโครงการ, ตรวจรับ M4, ส่งมอบทางการ, เปิดสัญญา warranty + โควตามหิดล</td></tr>
+            <tr><td class="rolecell">PO/BA</td><td><span class="cnt real">1.5</span></td><td><span class="cnt tor">2</span></td><td><span class="load L2">ปานกลาง</span></td><td>ตรวจรับฝั่งผู้ใช้, ปิดคู่มือ admin, สรุป lesson learned, ส่งต่อ warranty</td></tr>
+          </tbody>
+        </table>
+        <div class="milestone-bar">◆ M4 · งวด 20% — ส่ง 07/04/2027 · ระบบใช้งานจริงครบถ้วน + ส่งมอบ Source Code/เอกสาร/คู่มือ + ปิดโครงการ</div>
+      </div>
+    </div>
+
+    <!-- ===== PHASE 6 ===== -->
+    <div class="pcard">
+      <div class="ph ph6"><span class="seq">ช่วง 16</span><span class="ttl">Warranty &amp; Support (รับประกัน 2 ปี)</span><span class="dt">8 เม.ย. 2027 – 7 เม.ย. 2029</span><span class="day">Phase 6 · 2 ปี</span></div>
+      <div class="body">
+        <p class="focus"><b>โฟกัส:</b> บำรุงรักษาตาม SLA · Update patch · ดูแลระบบ/สิทธิ์ · กันปัญหา Integration HAIT Plus · ต่อโควตาทีมมหิดล</p>
+        <table>
+          <thead><tr><th style="width:21%">ตำแหน่ง</th><th style="width:7%">จริง</th><th style="width:9%">TOR/ควรมี</th><th style="width:9%">โหลด</th><th>ทำอะไรในช่วงนี้</th></tr></thead>
+          <tbody>
+            <tr><td class="rolecell">Support/Dev (หมุนเวร)</td><td><span class="cnt real">1–2</span></td><td><span class="cnt tor">2–3</span></td><td><span class="load L2">ปานกลาง</span></td><td>รับแจ้งปัญหา, แก้ตาม SLA (Minor: รับ 30 นาที/แก้ 1 วัน · Major: รับ 1 ชม./แก้ 24 ชม.), patch, ดูแล Integration</td></tr>
+            <tr><td class="rolecell">PM/Support Mgr</td><td><span class="cnt real">0.5</span></td><td><span class="cnt tor">1</span></td><td><span class="load L1">เบา</span></td><td>คุม SLA, escalation, ต่อสัญญา/โควตามหิดล, รายงานบำรุงรักษา</td></tr>
+          </tbody>
+        </table>
+        <div class="note">หลัง Go-Live ทีมหลักเริ่มถอนได้ แต่ต้องกันคน <b>รู้ระบบ (โดยเฉพาะ Integration + Migration)</b> ไว้ช่วง warranty และ <b>ต่อโควตาทีม HIS เดิม</b> เพื่อกันปัญหา Interface กับ HAIT Plus ในอนาคต</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 Matrix heatmap -->
+  <section>
+    <h2><span class="n">3</span>ตารางความต้องการกำลังคน — บทบาท × 16 ช่วง (ที่ควรมี)</h2>
+    <p class="lead">ตัวเลข = จำนวนคน (FTE) ที่ <b>ควรมี</b> ในแต่ละช่วง · <span style="color:#b3372e;font-weight:700">แถวสีแดง = บทบาทที่ทีมจริงไม่มี (ช่องโหว่)</span> · ช่องสีแดง = ช่วงที่บทบาทนั้นจำเป็นแต่ไม่มีคนรับ</p>
+    <div class="hmwrap">
+    <table class="hm">
+      <thead>
+        <tr>
+          <th class="role">บทบาท \ ช่วง</th>
+          <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="role">PM <small>มี</small></td>
+          <td class="c3">1</td><td class="c3">1</td><td class="c2">1</td><td class="c2">1</td><td class="c3">1</td><td class="c2">1</td><td class="c3">1</td><td class="c2">1</td><td class="c2">.5</td><td class="c2">.5</td><td class="c3">1</td><td class="c2">.5</td><td class="c3">1</td><td class="c3">1</td><td class="c3">1</td><td class="c1">.5</td></tr>
+        <tr><td class="role">Project Coordinator <small>มี (PC)</small></td>
+          <td class="c2">1</td><td class="c3">1</td><td class="c2">1</td><td class="c2">1</td><td class="c2">1</td><td class="c2">1</td><td class="c3">1</td><td class="c1">.5</td><td class="c2">1</td><td class="c2">1</td><td class="c3">1</td><td class="c2">1</td><td class="c3">1</td><td class="c3">1</td><td class="c3">1</td><td class="c0">·</td></tr>
+        <tr><td class="role">System Analyst <small>มี (BA)</small></td>
+          <td class="c1">.5</td><td class="c2">1</td><td class="c3">1</td><td class="c3">2</td><td class="c3">2</td><td class="c3">2</td><td class="c3">2</td><td class="c3">1</td><td class="c2">1</td><td class="c3">1</td><td class="c3">1</td><td class="c3">1</td><td class="c3">1</td><td class="c2">1</td><td class="c2">1</td><td class="c0">·</td></tr>
+        <tr><td class="role">PO <small>มี (เพิ่มจาก TOR)</small></td>
+          <td class="c1">.5</td><td class="c1">.5</td><td class="c2">1</td><td class="c2">1</td><td class="c2">1</td><td class="c2">1</td><td class="c2">1</td><td class="c2">1</td><td class="c1">.5</td><td class="c2">1</td><td class="c3">1</td><td class="c3">1</td><td class="c3">1</td><td class="c3">1</td><td class="c2">1</td><td class="c0">·</td></tr>
+        <tr><td class="role">Senior Programmer <small>มี (Dev1)</small></td>
+          <td class="c1">.5</td><td class="c1">.5</td><td class="c2">1</td><td class="c2">1</td><td class="c3">1</td><td class="c3">1</td><td class="c3">1</td><td class="c3">1</td><td class="c3">1</td><td class="c3">1</td><td class="c3">1</td><td class="c3">1</td><td class="c2">1</td><td class="c3">1</td><td class="c2">1</td><td class="c1">.5</td></tr>
+        <tr><td class="role">Programmer ×2 <small>มี (Dev2·3)</small></td>
+          <td class="c1">.5</td><td class="c1">.5</td><td class="c2">1</td><td class="c2">1</td><td class="c3">2</td><td class="c3">2</td><td class="c3">2</td><td class="c3">2</td><td class="c3">2</td><td class="c3">2</td><td class="c3">2</td><td class="c2">1.5</td><td class="c2">1</td><td class="c3">2</td><td class="c2">1.5</td><td class="c1">1</td></tr>
+        <tr class="gaprow"><td class="role">System Engineer <small>ขาด</small></td>
+          <td class="gcell">.5</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="gcell">1</td><td class="c0">·</td><td class="gcell">.5</td><td class="gcell">1</td><td class="gcell">1</td><td class="gcell">1</td><td class="gcell">1</td><td class="gcell">.5</td><td class="gcell">.5</td><td class="gcell">1</td><td class="gcell">.5</td><td class="gcell">.5</td></tr>
+        <tr class="gaprow"><td class="role">DB Analyst/Designer + DBA <small>ขาด</small></td>
+          <td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="gcell">.5</td><td class="gcell">2</td><td class="gcell">2</td><td class="gcell">1</td><td class="gcell">1</td><td class="gcell">1</td><td class="gcell">.5</td><td class="gcell">.5</td><td class="gcell">.5</td><td class="gcell">.5</td><td class="gcell">.5</td><td class="gcell">.5</td><td class="gcell">.5</td></tr>
+        <tr class="gaprow"><td class="role">Sr Data Engineer (Migration) <small>ขาด·เสี่ยงสุด</small></td>
+          <td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="gcell">.5</td><td class="gcell">.5</td><td class="gcell">.5</td><td class="gcell">.5</td><td class="gcell">1</td><td class="gcell">1</td><td class="gcell">1</td><td class="gcell">1</td><td class="gcell">1</td><td class="gcell">1</td><td class="gcell">.5</td><td class="c0">·</td></tr>
+        <tr class="gaprow"><td class="role">Mobile Developer <small>ขาด</small></td>
+          <td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="gcell">.5</td><td class="gcell">.5</td><td class="gcell">.5</td><td class="gcell">2</td><td class="gcell">2</td><td class="gcell">2</td><td class="gcell">1</td><td class="gcell">.5</td><td class="gcell">.5</td><td class="gcell">.5</td><td class="c0">·</td><td class="c0">·</td></tr>
+        <tr class="gaprow"><td class="role">QA / Tester <small>ขาด</small></td>
+          <td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="gcell">1</td><td class="gcell">1</td><td class="gcell">1</td><td class="gcell">1</td><td class="gcell">1</td><td class="gcell">.5</td><td class="gcell">.5</td><td class="c0">·</td></tr>
+        <tr class="gaprow"><td class="role">UI/UX Designer ×2 <small>ขาด</small></td>
+          <td class="c0">·</td><td class="c0">·</td><td class="gcell">.5</td><td class="gcell">1</td><td class="gcell">2</td><td class="gcell">2</td><td class="gcell">1</td><td class="gcell">.5</td><td class="gcell">.5</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td></tr>
+        <tr class="gaprow"><td class="role">Implementer ×2 <small>ขาด</small></td>
+          <td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="gcell">.5</td><td class="gcell">1</td><td class="gcell">1</td><td class="gcell">1</td><td class="gcell">2</td><td class="gcell">2</td><td class="gcell">2</td><td class="gcell">1</td><td class="gcell">.5</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="legend">
+      <span><b class="c1">.5</b> เบา</span>
+      <span><b class="c2">1</b> ปานกลาง</span>
+      <span><b class="c3">2</b> เต็ม/มาก</span>
+      <span><b class="c0">·</b> ไม่ต้องใช้</span>
+      <span><b class="gcell" style="padding:1px 6px">ช่องแดง</b> = บทบาทที่ทีมจริงไม่มีแต่จำเป็นช่วงนั้น (ตอนนี้โยนให้ Dev/BA)</span>
+    </div>
+    <div class="bad"><b>🔴 อ่านตาราง:</b> 7 แถวล่าง (สีแดง) คือบทบาทที่ TOR กำหนดแต่ทีมจริงไม่มี · เห็นชัดว่ากระจุกหนักช่วง <b>5–14 (ก.ย. 2026–มี.ค. 2027)</b> — ตรงกับช่วง Dev เกินกำลัง 4 เดือนเต็มในแผนเดิม</div>
+  </section>
+
+  <!-- 4 จุดเสริมคน -->
+  <section>
+    <h2><span class="n">4</span>สรุปจุดที่ต้องเสริมคน (อิงช่วงจริง)</h2>
+    <table>
+      <thead><tr><th style="width:22%">ตำแหน่งที่ควรเพิ่ม</th><th style="width:8%">จำนวน</th><th style="width:14%">เริ่ม (ช่วง)</th><th style="width:14%">ถึง</th><th>เหตุผล/งานที่รับ</th></tr></thead>
+      <tbody>
+        <tr><td>UI/UX Designer</td><td>+1</td><td>ก.ย. (ช่วง 5)</td><td>ธ.ค. (ช่วง 9)</td><td>ออกแบบหน้าจอ Track B + Mobile ก่อน build · part-time ได้</td></tr>
+        <tr><td>Developer (Track B / gap)</td><td>+2–3</td><td>ก.ย.–ต.ค. (ช่วง 5–6)</td><td>ก.พ. (ช่วง 11)</td><td>Track B build ใหม่ทั้งหมด (Dental Lab + โมดูลรอง) — Dev 3 ไม่พอ</td></tr>
+        <tr><td>Mobile Developer</td><td>+1–2</td><td>ต.ค.–พ.ย. (ช่วง 6–8)</td><td>ก.พ. (ช่วง 11)</td><td>Mobile 3 แอป (Patient/Student/Dentist) เป็นงานเฉพาะทาง</td></tr>
+        <tr><td>Data/DB Engineer (Migration)</td><td>+1</td><td>พ.ย. (ช่วง 8)</td><td>เม.ย. (ช่วง 14)</td><td>Migration จาก DB มหิดล + DB design — <b>จุดเสี่ยงสุด</b></td></tr>
+        <tr><td>QA / Tester</td><td>+1</td><td>ธ.ค. (ช่วง 9)</td><td>มี.ค. (ช่วง 13)</td><td>SIT/UAT/E2E ช่วง ม.ค.–มี.ค.</td></tr>
+        <tr><td>System Engineer (Integration)</td><td>+1 (หรือ part-time)</td><td>พ.ย. (ช่วง 8)</td><td>เม.ย. (ช่วง 14)</td><td>Integration HAIT/SAP IAM/PACS/LIS + production env</td></tr>
+      </tbody>
+    </table>
+    <div class="sum" style="margin-top:12px">
+      <div class="sc have"><div class="big">7</div><div class="lab">ทีมตอนนี้</div></div>
+      <div class="sc add"><div class="big">+6–8</div><div class="lab">ควรเพิ่ม (กระจุก ก.ย.–มี.ค.)</div></div>
+      <div class="sc miss"><div class="big">~13–16</div><div class="lab">ทีมที่ควรเป็นจริง<br>(≈ระดับ TOR)</div></div>
+    </div>
+    <div class="note"><b>ข้อสังเกต:</b> ตัวเลขนี้ทำให้ทีมกลับมาใกล้ระดับ TOR (16 คน) ซึ่งสมเหตุสมผล เพราะ scope จริง (Fit/Gap 2 ระยะ + build ใหม่ Track B + ไม่มีฐานช่วย + ไม่มีใครรู้ระบบมหิดล) หนักกว่าสมมติฐาน “เอาของเดิมมาปรับนิดหน่อย” มาก · ถ้าเพิ่มคนไม่ได้ → ต้อง <b>เจรจาลด/เลื่อน scope Track B</b> หรือ <b>ส่งเป็นเฟส</b> (ดู <a href="ความครอบคลุมโมดูล.html">Module Coverage ตัวเลือก 1–3</a>) และยกเข้า <a href="ปรับแผน-Dependency-มหิดล.html">escalation memo</a></div>
+  </section>
+
+  <footer>เอกสารภายใน · กำลังคนรายช่วง (ซอย 16 ช่วง) · FTE เป็นการประมาณการเพื่อวางแผน/ตัดสินใจ ปรับตามจริงได้ · อิง TOR ข้อ 4.17 (บุคลากร 16 คน/13 ตำแหน่ง) + แผนดำเนินงาน + Dependency มหิดล + Module Coverage · ทีมจริง 7 คน (PM·PC·BA·PO·Dev×3)</footer>
+</div>
+</body>
+</html>
