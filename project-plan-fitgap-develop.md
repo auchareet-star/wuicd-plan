@@ -2,7 +2,7 @@
 ### Fit/Gap Analysis + Development + ขั้นตอนที่จำเป็นตามแนวทาง TOR
 มหาวิทยาลัยวลัยลักษณ์ — คณะทันตแพทยศาสตร์ / โรงพยาบาลทันตกรรม
 
-> 📎 **เอกสารที่เกี่ยวข้อง:** [หน้ารวม (index.html)](index.html) · [แผนฉบับ HTML](แผนดำเนินงาน-FitGap-Develop.html) · [เอกสารส่งมอบรายงวด + มาตรฐาน](เอกสารส่งมอบรายงวด.html) · [Template 38 ฉบับ](templates/)
+> 📎 **เอกสารที่เกี่ยวข้อง:** [หน้ารวม (index.html)](index.html) · [แผนฉบับ HTML](project-plan-fitgap-develop.html) · [เอกสารส่งมอบรายงวด + มาตรฐาน](deliverables-by-milestone.html) · [Template 38 ฉบับ](templates/)
 
 ---
 
@@ -14,7 +14,7 @@
 | ระยะเวลา | **ต้องแล้วเสร็จภายใน 300 วัน** นับจากวันลงนาม/แจ้งเริ่มงาน (NTP) |
 | วันเซ็นสัญญา (NTP) | **11/06/2026** (พฤหัสบดี) → ครบ 300 วัน = **07/04/2027** |
 | การรับประกัน | **2 ปี** หลังส่งมอบ + ผูก SLA (ดูข้อ 8) |
-| มาตรฐานบังคับ | ISO 29110, HA (Healthcare Accreditation), Made in Thailand, แต้มต่อ SME — [ดูคำอธิบาย + เอกสารส่งมอบรายงวด](เอกสารส่งมอบรายงวด.html#std) |
+| มาตรฐานบังคับ | ISO 29110, HA (Healthcare Accreditation), Made in Thailand, แต้มต่อ SME — [ดูคำอธิบาย + เอกสารส่งมอบรายงวด](deliverables-by-milestone.html#std) |
 | รูปแบบระบบ | Web Application + Mobile App (Patient / Student / Dentist) ทำงาน Real-time, Fully Integrated |
 | ระบบเดิมที่ต้องเชื่อมต่อ | **HAIT Plus (HIS เดิม)**, WU-HRMS, SAP (IM/PU/GL/AP/AR/AA/CO/FM), PACS, LIS/RIS |
 
